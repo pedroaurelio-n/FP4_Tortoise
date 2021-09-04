@@ -24,15 +24,18 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Air Configs")]
     public float raycastHeightOffset;
+    public float spherecastRadius;
     public float inAirTimer;
     public float leapingVelocity;
     public float fallingVelocity;
+    public float groundHitLerpRate;
     public LayerMask groundLayer;
 
     private InputManager inputManager;
     private PlayerManager playerManager;
     private PlayerAnimatorManager animatorManager;
     private Rigidbody playerRigidBody;
+    private CapsuleCollider playerCapsuleCollider;
 
     private void Awake()
     {
@@ -41,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         animatorManager = GetComponent<PlayerAnimatorManager>();
 
         playerRigidBody = GetComponent<Rigidbody>();
+        playerCapsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     public void HandleAllMovement()
@@ -108,7 +112,9 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 raycastOrigin = transform.position;
+        Vector3 targetPosition;
         raycastOrigin.y = raycastOrigin.y + raycastHeightOffset;
+        targetPosition = transform.position;
 
         if (!isGrounded && !isJumping)
         {
@@ -122,19 +128,34 @@ public class PlayerMovement : MonoBehaviour
             playerRigidBody.AddForce(Vector3.down * fallingVelocity * inAirTimer);
         }
 
-        if (Physics.SphereCast(raycastOrigin, 0.2f, Vector3.down, out hit, groundLayer))
+        if (Physics.SphereCast(raycastOrigin, spherecastRadius, Vector3.down, out hit, groundLayer))
         {
             if (!isGrounded && playerManager.isInteracting)
             {
                 animatorManager.PlayTargetAnimation("Landing", true);
             }
 
+            Vector3 raycastHitPoint = hit.point;
+            targetPosition.y = raycastHitPoint.y;
             inAirTimer = 0;
             isGrounded = true;
         }
 
         else
             isGrounded = false;
+
+        if (isGrounded && !isJumping)
+        {
+            if (playerManager.isInteracting || inputManager.MoveAmount > 0)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / groundHitLerpRate);
+            }
+
+            else
+            {
+                transform.position = targetPosition;
+            }
+        }
     }
 
     public void HandleJumping()
@@ -149,5 +170,15 @@ public class PlayerMovement : MonoBehaviour
 
             playerRigidBody.velocity = playerVelocity;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Vector3 raycastOrigin = transform.position;
+        raycastOrigin.y = raycastOrigin.y + raycastHeightOffset;
+
+        Gizmos.DrawWireSphere(raycastOrigin, spherecastRadius);
     }
 }
