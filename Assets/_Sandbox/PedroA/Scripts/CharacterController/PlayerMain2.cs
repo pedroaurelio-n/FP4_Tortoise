@@ -19,4 +19,9 @@ public class PlayerMain2 : MonoBehaviour
     {
         PlayerMovement.HandleFixedUpdateMovements();
     }
+
+    private void LateUpdate()
+    {
+        PlayerMovement.HandleLateUpdateMovements();
+    }
 }

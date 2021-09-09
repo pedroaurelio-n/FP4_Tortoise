@@ -37,7 +37,7 @@ public class PlayerAnimationManager2 : MonoBehaviour
             verticalValue = verticalMovement;
         }
 
-        if (isSprinting)
+        if (isSprinting && verticalMovement > 0.5f)
         {
             verticalValue = 2;
         }
@@ -95,9 +95,14 @@ public class PlayerAnimationManager2 : MonoBehaviour
         return playerAnimator.GetBool("isJumping");
     }
 
-    public void HandleJumpingAnimation()
+    public AnimatorStateInfo GetCurrentAnimation()
     {
-        playerAnimator.SetTrigger("hasJumped");
+        return playerAnimator.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public void HandleJumpingAnimation(string jump)
+    {
+        playerAnimator.SetTrigger(jump);
     }
 
     public void SetGroundedBool(bool isGrounded)

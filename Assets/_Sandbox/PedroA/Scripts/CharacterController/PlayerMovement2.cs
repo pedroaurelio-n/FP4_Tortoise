@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class PlayerMovement2 : MonoBehaviour
 {
-    public delegate void TestHeight();
-    public static event TestHeight testHeight;
-
-
     [SerializeField] private PlayerMain2 playerMain;
     [SerializeField] private Camera mainCamera;
 
     [Header("Movement Flags")]
     public bool isSprinting;
     public bool isGrounded;
+    public bool canDoubleJump;
 
     [Header("Speeds")]
     [SerializeField] private float walkingSpeed;
@@ -21,14 +18,18 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private float sprintingSpeed;
     [SerializeField] private float rotationSpeed;
 
-    [Header("Jump Configs")]
+    [Header("Jump & Falling Configs")]
     [SerializeField] private float jumpHeight;
     [SerializeField] private float gravityAmplifierGrounded;
     [SerializeField] private float gravityAmplifierMidAir;
+    [SerializeField] private int additionalJumps;
+    [SerializeField] private float groundToFallingDelay;
 
 
     private Vector3 _movementDirection;
     private Vector3 _playerVelocity;
+
+    private int jumpsQuantity;
 
     private CharacterController playerCharacterController;
 
@@ -37,21 +38,37 @@ public class PlayerMovement2 : MonoBehaviour
         playerCharacterController = GetComponent<CharacterController>();
     }
 
+    private void Start()
+    {
+        canDoubleJump = false;
+        isGrounded = true;
+    }
+
+    private void GroundCheck(bool check)
+    {
+        if (isGrounded != check)
+            isGrounded = check;
+    }
+
     public void HandleUpdateMovements()
     {
-        isGrounded = playerCharacterController.isGrounded;
-        playerMain.PlayerAnimationManager.SetGroundedBool(isGrounded);
-
         if (isGrounded && _playerVelocity.y < 0)
-        {
             _playerVelocity.y = 0f;
-        }
     }
 
     public void HandleFixedUpdateMovements()
     {
         HandleMovement();
         HandleRotation();
+    }
+
+    public void HandleLateUpdateMovements()
+    {
+        GroundCheck(playerCharacterController.isGrounded);
+        playerMain.PlayerAnimationManager.SetGroundedBool(isGrounded);
+        
+        if (isGrounded)
+            jumpsQuantity = additionalJumps;
     }
 
     private void HandleMovement()
@@ -83,11 +100,6 @@ public class PlayerMovement2 : MonoBehaviour
                 movementVelocity = _movementDirection * walkingSpeed;
             }
         }
-
-        //Vector3 movementVelocity = new Vector3(_movementDirection.x, 0, _movementDirection.y);
-        //movementVelocity = _movementDirection;
-        //playerRigidBody.AddForce(movementVelocity, ForceMode.Force);
-
 
         playerCharacterController.Move(movementVelocity * Time.deltaTime);
 
@@ -121,16 +133,31 @@ public class PlayerMovement2 : MonoBehaviour
         transform.rotation = playerRotation;
     }
 
+    private void HandleFalling()
+    {
+        //create transition movement -> falling from:
+            //height bigger than x
+            //or
+            //fall time bigger than y
+    }
+
     public void HandleJumping()
     {
-        if (isGrounded)
+        if (jumpsQuantity > 0)
         {
-            playerMain.PlayerAnimationManager.HandleJumpingAnimation();
-            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
+            bool canDoubleJump = playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
+                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling") ||
+                                        (!isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement"));
 
-            if (testHeight != null)
-                testHeight();
-            //playerMain.PlayerAnimationManager.PlayTargetAnimation("EmptyLanding");
+            if (canDoubleJump)
+                playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasDoubleJumped");
+
+            else
+                playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasJumped");
+
+            jumpsQuantity--;
+            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
+        
         }
     }
 }
