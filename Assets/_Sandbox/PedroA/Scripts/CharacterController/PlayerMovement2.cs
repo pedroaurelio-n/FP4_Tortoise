@@ -10,7 +10,7 @@ public class PlayerMovement2 : MonoBehaviour
     [Header("Movement Flags")]
     public bool isSprinting;
     public bool isGrounded;
-    public bool canDoubleJump;
+    public bool isGliding;
 
     [Header("Speeds")]
     [SerializeField] private float walkingSpeed;
@@ -23,6 +23,7 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private float gravityAmplifierGrounded;
     [SerializeField] private float gravityAmplifierMidAir;
     [SerializeField] private int additionalJumps;
+    [SerializeField] private float glideGravityReducer;
     [SerializeField] private float groundToFallingDelay;
 
 
@@ -40,7 +41,6 @@ public class PlayerMovement2 : MonoBehaviour
 
     private void Start()
     {
-        canDoubleJump = false;
         isGrounded = true;
     }
 
@@ -59,6 +59,7 @@ public class PlayerMovement2 : MonoBehaviour
     public void HandleFixedUpdateMovements()
     {
         HandleMovement();
+        HandleFalling();
         HandleRotation();
     }
 
@@ -103,18 +104,6 @@ public class PlayerMovement2 : MonoBehaviour
 
         playerCharacterController.Move(movementVelocity * Time.deltaTime);
 
-        if (isGrounded)
-        {
-            _playerVelocity.y += Physics.gravity.y * -gravityAmplifierGrounded * Time.deltaTime;
-            playerCharacterController.Move(_playerVelocity * Time.deltaTime);
-        }
-
-        else
-        {
-            _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
-            playerCharacterController.Move(_playerVelocity * Time.deltaTime);
-        }
-
         playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
     }
 
@@ -135,6 +124,32 @@ public class PlayerMovement2 : MonoBehaviour
 
     private void HandleFalling()
     {
+        if (isGrounded)
+        {
+            isGliding = false;
+            _playerVelocity.y += Physics.gravity.y * -gravityAmplifierGrounded * Time.deltaTime;
+            playerCharacterController.Move(_playerVelocity * Time.deltaTime);
+        }
+
+        else
+        {
+            bool canGlide = playerMain.PlayerInputManager.glideInput && _playerVelocity.y < 0 && jumpsQuantity <= 0;
+            
+            if (canGlide)
+            {
+                isGliding = true;
+                _playerVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
+                playerCharacterController.Move(_playerVelocity * Time.deltaTime);
+            }
+
+            else
+            {
+                isGliding = false;
+                _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
+                playerCharacterController.Move(_playerVelocity * Time.deltaTime);
+            }
+        }
+
         //create transition movement -> falling from:
             //height bigger than x
             //or

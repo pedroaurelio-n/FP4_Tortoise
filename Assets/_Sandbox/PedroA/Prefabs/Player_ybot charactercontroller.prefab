@@ -1020,6 +1020,7 @@ GameObject:
   - component: {fileID: 2927527073464664977}
   - component: {fileID: 2927527073464664967}
   - component: {fileID: 2927527073464664974}
+  - component: {fileID: 1807943387285338042}
   - component: {fileID: 2927527073464664976}
   m_Layer: 0
   m_Name: Player_ybot charactercontroller
@@ -1077,7 +1078,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   isSprinting: 0
   isGrounded: 0
-  canDoubleJump: 0
+  isGliding: 0
   walkingSpeed: 1.8
   runningSpeed: 6.3
   sprintingSpeed: 9
@@ -1086,6 +1087,7 @@ MonoBehaviour:
   gravityAmplifierGrounded: -25
   gravityAmplifierMidAir: -2.5
   additionalJumps: 1
+  glideGravityReducer: 0.1
   groundToFallingDelay: 0.1
 --- !u!114 &2927527073464664973
 MonoBehaviour:
@@ -1105,6 +1107,7 @@ MonoBehaviour:
   VerticalInput: 0
   jumpInput: 0
   sprintInput: 0
+  glideInput: 0
 --- !u!114 &2927527073464664977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1155,6 +1158,22 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1807943387285338042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927527073464664970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c072ca83f2fd6b441a45c56ae34f0a45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
+  torso: {fileID: 0}
+  glideTrue: {fileID: 0}
+  glideFalse: {fileID: 0}
 --- !u!114 &2927527073464664976
 MonoBehaviour:
   m_ObjectHideFlags: 0
