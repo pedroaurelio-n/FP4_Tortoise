@@ -16,6 +16,7 @@ public class InputManager2 : MonoBehaviour
     public bool jumpInput;
     public bool sprintInput;
     public bool glideInput;
+    public bool anyglideInput;
 
     public void HandleAllInputs()
     {
@@ -55,6 +56,9 @@ public class InputManager2 : MonoBehaviour
 
             playerControls.PlayerActions.Glide.performed += ctx => glideInput = true;
             playerControls.PlayerActions.Glide.canceled += ctx => glideInput = false;
+
+            playerControls.PlayerActions.AnyGlide.performed += ctx => anyglideInput = true;
+            playerControls.PlayerActions.AnyGlide.canceled += ctx => anyglideInput = false;
         }
 
         playerControls.Enable();

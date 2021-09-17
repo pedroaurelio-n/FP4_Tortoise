@@ -134,8 +134,10 @@ public class PlayerMovement2 : MonoBehaviour
         else
         {
             bool canGlide = playerMain.PlayerInputManager.glideInput && _playerVelocity.y < 0 && jumpsQuantity <= 0;
+            bool canAnyGlide = playerMain.PlayerInputManager.anyglideInput && _playerVelocity.y < 0;
+
             
-            if (canGlide)
+            if (canGlide || canAnyGlide)
             {
                 isGliding = true;
                 _playerVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;

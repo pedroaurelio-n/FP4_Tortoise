@@ -197,6 +197,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""AnyGlide"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e81f680-7f44-43b6-8678-ad099bc68705"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -265,6 +273,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Glide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""841957ae-cc7c-41d4-ab6b-5a58cd2cf299"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnyGlide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93e06f34-4627-4f51-8ca4-d1fd7d9eebf6"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AnyGlide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -280,6 +310,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_Glide = m_PlayerActions.FindAction("Glide", throwIfNotFound: true);
+        m_PlayerActions_AnyGlide = m_PlayerActions.FindAction("AnyGlide", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -373,6 +404,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_Sprint;
     private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_Glide;
+    private readonly InputAction m_PlayerActions_AnyGlide;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -380,6 +412,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_PlayerActions_Sprint;
         public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
         public InputAction @Glide => m_Wrapper.m_PlayerActions_Glide;
+        public InputAction @AnyGlide => m_Wrapper.m_PlayerActions_AnyGlide;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -398,6 +431,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Glide.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnGlide;
                 @Glide.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnGlide;
                 @Glide.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnGlide;
+                @AnyGlide.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAnyGlide;
+                @AnyGlide.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAnyGlide;
+                @AnyGlide.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAnyGlide;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -411,6 +447,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Glide.started += instance.OnGlide;
                 @Glide.performed += instance.OnGlide;
                 @Glide.canceled += instance.OnGlide;
+                @AnyGlide.started += instance.OnAnyGlide;
+                @AnyGlide.performed += instance.OnAnyGlide;
+                @AnyGlide.canceled += instance.OnAnyGlide;
             }
         }
     }
@@ -425,5 +464,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnGlide(InputAction.CallbackContext context);
+        void OnAnyGlide(InputAction.CallbackContext context);
     }
 }

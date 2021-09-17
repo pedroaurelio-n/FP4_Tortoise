@@ -5379,7 +5379,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.06195337, y: -0.0000000034159102, z: -4.8489257e-10, w: 0.99807906}
+  m_LocalRotation: {x: 0.06195337, y: 0.0000000034159102, z: 4.8489257e-10, w: 0.99807906}
   m_LocalPosition: {x: 1.4027491, y: 2.7645314, z: -7.701806}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -14266,7 +14266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockMouse: 1
-  showGraphy: 0
+  showGraphy: 1
   graphy: {fileID: 978647144}
 --- !u!4 &1784631846
 Transform:
@@ -17138,11 +17138,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695355188464837177, guid: 7eea90098d9a45946b736c227acb4137, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.0000000042903943
+      value: -0.0000000042903943
       objectReference: {fileID: 0}
     - target: {fileID: 4695355188464837177, guid: 7eea90098d9a45946b736c227acb4137, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.1021855e-10
+      value: 3.1021855e-10
       objectReference: {fileID: 0}
     - target: {fileID: 4695355188703307951, guid: 7eea90098d9a45946b736c227acb4137, type: 3}
       propertyPath: m_LocalPosition.x
