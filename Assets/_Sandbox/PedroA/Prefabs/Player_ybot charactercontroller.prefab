@@ -1083,12 +1083,13 @@ MonoBehaviour:
   runningSpeed: 6.3
   sprintingSpeed: 9
   rotationSpeed: 15
-  jumpHeight: 6
+  normalJumpHeight: 7.5
+  doubleJumpHeightDecreaser: 0.7
+  lowJumpMultiplier: 1.7
   gravityAmplifierGrounded: -25
   gravityAmplifierMidAir: -2.5
   additionalJumps: 1
   glideGravityReducer: 0.1
-  groundToFallingDelay: 0.1
 --- !u!114 &2927527073464664973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1108,6 +1109,8 @@ MonoBehaviour:
   jumpInput: 0
   sprintInput: 0
   glideInput: 0
+  anyglideInput: 0
+  canTriggerJump: 1
 --- !u!114 &2927527073464664977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,10 +1173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c072ca83f2fd6b441a45c56ae34f0a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 0}
-  torso: {fileID: 0}
-  glideTrue: {fileID: 0}
-  glideFalse: {fileID: 0}
+  playerMovement: {fileID: 2927527073464664972}
+  torso1: {fileID: 8407959064881113848}
+  glideTrue: {fileID: 2100000, guid: b56ee9e5303841a4d9046fab781ca8ab, type: 2}
+  glideFalse: {fileID: 2100000, guid: ce753cc453db73a4b9e3022824635e6f, type: 2}
 --- !u!114 &2927527073464664976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2381,7 +2384,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4565884009001823619, guid: b83c5bfc41542e141b69bcf533940f78, type: 3}
+  - {fileID: 2100000, guid: ce753cc453db73a4b9e3022824635e6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

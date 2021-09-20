@@ -18,6 +18,8 @@ public class InputManager2 : MonoBehaviour
     public bool glideInput;
     public bool anyglideInput;
 
+    public bool canTriggerJump = true;
+
     public void HandleAllInputs()
     {
         HandleMovementInput();
@@ -36,9 +38,15 @@ public class InputManager2 : MonoBehaviour
     {
         if (jumpInput)
         {
-            jumpInput = false;
-            playerMain.PlayerMovement.HandleJumping();
+            if (canTriggerJump)
+            {
+                playerMain.PlayerMovement.HandleJumping();
+                canTriggerJump = false;
+            }
         }
+
+        else
+            canTriggerJump = true;
     }
 
     private void OnEnable()
@@ -53,6 +61,7 @@ public class InputManager2 : MonoBehaviour
             playerControls.PlayerActions.Sprint.canceled += ctx => sprintInput = false;
 
             playerControls.PlayerActions.Jump.performed += ctx => jumpInput = true;
+            playerControls.PlayerActions.Jump.canceled += ctx => jumpInput = false;
 
             playerControls.PlayerActions.Glide.performed += ctx => glideInput = true;
             playerControls.PlayerActions.Glide.canceled += ctx => glideInput = false;

@@ -19,12 +19,13 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private float rotationSpeed;
 
     [Header("Jump & Falling Configs")]
-    [SerializeField] private float jumpHeight;
+    [SerializeField] private float normalJumpHeight;
+    [SerializeField] private float doubleJumpHeightDecreaser;
+    [SerializeField] private float lowJumpMultiplier;
     [SerializeField] private float gravityAmplifierGrounded;
     [SerializeField] private float gravityAmplifierMidAir;
     [SerializeField] private int additionalJumps;
     [SerializeField] private float glideGravityReducer;
-    [SerializeField] private float groundToFallingDelay;
 
 
     private Vector3 _movementDirection;
@@ -147,34 +148,44 @@ public class PlayerMovement2 : MonoBehaviour
             else
             {
                 isGliding = false;
-                _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
+                //_playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
+
+                if (!playerMain.PlayerInputManager.jumpInput)
+                    _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * lowJumpMultiplier * Time.deltaTime;
+                
+                else
+                    _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
+
                 playerCharacterController.Move(_playerVelocity * Time.deltaTime);
             }
         }
-
-        //create transition movement -> falling from:
-            //height bigger than x
-            //or
-            //fall time bigger than y
     }
 
     public void HandleJumping()
     {
         if (jumpsQuantity > 0)
         {
+            var doubleJumpHeight = normalJumpHeight * doubleJumpHeightDecreaser;
+            float jumpHeight;
+
             bool canDoubleJump = playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
                                         playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling") ||
                                         (!isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement"));
 
             if (canDoubleJump)
+            {
+                jumpHeight = doubleJumpHeight;
                 playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasDoubleJumped");
+            }
 
             else
+            {
+                jumpHeight = normalJumpHeight;
                 playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasJumped");
+            }
 
             jumpsQuantity--;
-            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
-        
+            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);        
         }
     }
 }
