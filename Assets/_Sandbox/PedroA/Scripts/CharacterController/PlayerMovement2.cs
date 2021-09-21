@@ -18,6 +18,12 @@ public class PlayerMovement2 : MonoBehaviour
     [SerializeField] private float sprintingSpeed;
     [SerializeField] private float rotationSpeed;
 
+    [Header("Grounded Configs")]
+    public Vector3 platformOffset; 
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private float radius;
+    [SerializeField] private LayerMask groundLayer;
+
     [Header("Jump & Falling Configs")]
     [SerializeField] private float normalJumpHeight;
     [SerializeField] private float doubleJumpHeightDecreaser;
@@ -66,7 +72,13 @@ public class PlayerMovement2 : MonoBehaviour
 
     public void HandleLateUpdateMovements()
     {
-        GroundCheck(playerCharacterController.isGrounded);
+        //GroundCheck(playerCharacterController.isGrounded);
+
+        var colliders = Physics.OverlapSphere(transform.position + offset + platformOffset, radius, groundLayer);
+        bool isColliding = colliders.Length != 0;
+
+        GroundCheck(isColliding);
+
         playerMain.PlayerAnimationManager.SetGroundedBool(isGrounded);
         
         if (isGrounded)
@@ -187,5 +199,12 @@ public class PlayerMovement2 : MonoBehaviour
             jumpsQuantity--;
             _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);        
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(transform.position + offset + platformOffset, radius);
     }
 }
