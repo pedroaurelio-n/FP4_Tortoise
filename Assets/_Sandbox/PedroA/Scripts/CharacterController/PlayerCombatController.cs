@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackController : MonoBehaviour
+public class PlayerCombatController : MonoBehaviour
 {
     [SerializeField] private PlayerMain playerMain;
     [SerializeField] private float attackDuration;
@@ -18,8 +18,6 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (!isAttacking)
         {
-            Debug.Log("attack");
-
             isAttacking = true;
             playerMain.PlayerAnimationManager.SetTrigger("hasAttacked");
 
@@ -33,4 +31,12 @@ public class PlayerAttackController : MonoBehaviour
 
         isAttacking = false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.parent.TryGetComponent(out EnemyMain Enemy))
+        {
+            Debug.Log("Player Damaged");
+        }
+    }    
 }

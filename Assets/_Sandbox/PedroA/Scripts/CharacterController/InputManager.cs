@@ -56,7 +56,7 @@ public class InputManager : MonoBehaviour
         if (attackInput)
         {
             attackInput = false;
-            playerMain.PlayerAttackController.LaunchAttack();
+            playerMain.PlayerCombatController.LaunchAttack();
         }
     }
 
