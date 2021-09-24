@@ -311,6 +311,52 @@ Transform:
   m_Father: {fileID: 569049376626458840}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1075284591089236128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1993990882531785300}
+  - component: {fileID: 7184157005768820616}
+  m_Layer: 3
+  m_Name: CombatController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1993990882531785300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075284591089236128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2588297583382436144}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7184157005768820616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075284591089236128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f58c738017e1d41ae7f83f32e32aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMain: {fileID: 2927527073464664975}
+  attackDuration: 1.5
+  isAttacking: 0
 --- !u!1 &1122262939581632927
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,7 +729,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2588297583382436144}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4031089621626749029
 SkinnedMeshRenderer:
@@ -1020,10 +1066,11 @@ GameObject:
   - component: {fileID: 2927527073464664977}
   - component: {fileID: 2927527073464664967}
   - component: {fileID: 2927527073464664974}
+  - component: {fileID: 7979932013617210762}
   - component: {fileID: 1807943387285338042}
   - component: {fileID: 2927527073464664976}
   m_Layer: 3
-  m_Name: Player_ybot charactercontroller
+  m_Name: PlayerCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1040,6 +1087,7 @@ Transform:
   m_LocalPosition: {x: 1.4027491, y: 0.336, z: -1.617147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1993990882531785300}
   - {fileID: 2871485365200543966}
   - {fileID: 439283704485124639}
   - {fileID: 8051073001133537700}
@@ -1062,6 +1110,7 @@ MonoBehaviour:
   PlayerMovement: {fileID: 2927527073464664972}
   PlayerInputManager: {fileID: 2927527073464664973}
   PlayerAnimationManager: {fileID: 2927527073464664977}
+  PlayerAttackController: {fileID: 7184157005768820616}
 --- !u!114 &2927527073464664972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1116,6 +1165,7 @@ MonoBehaviour:
   sprintInput: 0
   glideInput: 0
   anyglideInput: 0
+  attackInput: 0
   canTriggerJump: 1
 --- !u!114 &2927527073464664977
 MonoBehaviour:
@@ -1167,6 +1217,22 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!54 &7979932013617210762
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927527073464664970}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &1807943387285338042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1257,7 +1323,7 @@ Transform:
   - {fileID: 6142551324797882011}
   - {fileID: 7769784593364224567}
   m_Father: {fileID: 2588297583382436144}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3591810247555977824
 GameObject:
@@ -1875,7 +1941,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2588297583382436144}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6416985399166072037
 GameObject:
@@ -2369,7 +2435,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2588297583382436144}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8407959064881113848
 SkinnedMeshRenderer:

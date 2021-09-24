@@ -8,6 +8,7 @@ public class PlayerMain : MonoBehaviour
     public PlayerMovement PlayerMovement;
     public InputManager PlayerInputManager;
     public PlayerAnimationManager PlayerAnimationManager;
+    public PlayerAttackController PlayerAttackController;
 
     private void Update()
     {

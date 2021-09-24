@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
     public bool sprintInput;
     public bool glideInput;
     public bool anyglideInput;
+    public bool attackInput;
 
     public bool canTriggerJump = true;
 
@@ -24,6 +25,7 @@ public class InputManager : MonoBehaviour
     {
         HandleMovementInput();
         HandleJumpingInput();
+        HandleAttackInput();
     }
 
     private void HandleMovementInput()
@@ -49,6 +51,15 @@ public class InputManager : MonoBehaviour
             canTriggerJump = true;
     }
 
+    private void HandleAttackInput()
+    {
+        if (attackInput)
+        {
+            attackInput = false;
+            playerMain.PlayerAttackController.LaunchAttack();
+        }
+    }
+
     private void OnEnable()
     {
         if (playerControls == null)
@@ -68,6 +79,8 @@ public class InputManager : MonoBehaviour
 
             playerControls.PlayerActions.AnyGlide.performed += ctx => anyglideInput = true;
             playerControls.PlayerActions.AnyGlide.canceled += ctx => anyglideInput = false;
+
+            playerControls.PlayerActions.Attack.performed += ctx => attackInput = true;
         }
 
         playerControls.Enable();

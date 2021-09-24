@@ -85,24 +85,9 @@ public class PlayerAnimationManager : MonoBehaviour
         return new Vector2(snappedHorizontal, snappedVertical);
     }
 
-    public bool GetInteractionBool()
-    {
-        return playerAnimator.GetBool("isInteracting");
-    }
-
-    public bool GetJumpingBool()
-    {
-        return playerAnimator.GetBool("isJumping");
-    }
-
     public AnimatorStateInfo GetCurrentAnimation()
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0);
-    }
-
-    public void HandleJumpingAnimation(string jump)
-    {
-        playerAnimator.SetTrigger(jump);
     }
 
     public void SetGroundedBool(bool isGrounded)
@@ -110,8 +95,8 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.SetBool("isGrounded", isGrounded);
     }
 
-    public void PlayTargetAnimation(string targetAnimation)
+    public void SetTrigger(string param)
     {
-        playerAnimator.CrossFade(targetAnimation, 0.2f);
+        playerAnimator.SetTrigger(param);
     }
 }

@@ -187,13 +187,13 @@ public class PlayerMovement : MonoBehaviour
             if (canDoubleJump)
             {
                 jumpHeight = doubleJumpHeight;
-                playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasDoubleJumped");
+                playerMain.PlayerAnimationManager.SetTrigger("hasDoubleJumped");
             }
 
             else
             {
                 jumpHeight = normalJumpHeight;
-                playerMain.PlayerAnimationManager.HandleJumpingAnimation("hasJumped");
+                playerMain.PlayerAnimationManager.SetTrigger("hasJumped");
             }
 
             jumpsQuantity--;
