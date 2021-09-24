@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GlideMaterialChange : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement2 playerMovement;
+    [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private SkinnedMeshRenderer torso1;
 
     [SerializeField] private Material glideTrue;

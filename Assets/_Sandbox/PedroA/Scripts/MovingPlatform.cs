@@ -56,12 +56,10 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out PlayerMovement2 player))
+        if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
             Debug.Log("enter");
             player.platformOffset = platformOffset;
-            //player.gameObject.transform.parent = transform;
-            //player.externalMovementSpeed = points[index].position;
         }
     }
 
@@ -70,19 +68,15 @@ public class MovingPlatform : MonoBehaviour
         if (other.gameObject.TryGetComponent(out CharacterController player))
         {
             player.Move(rb.velocity * Time.deltaTime);
-            //player.gameObject.transform.parent = transform;
-            //player.externalMovementSpeed = points[index].position;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out PlayerMovement2 player))
+        if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
             player.platformOffset = Vector3.zero;
             Debug.Log("exit");
-            //player.gameObject.transform.parent = null;
-            //player.externalMovementSpeed = Vector3.zero;
         }
     }
 }

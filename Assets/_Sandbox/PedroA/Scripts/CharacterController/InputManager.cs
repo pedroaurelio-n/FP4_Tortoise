@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager2 : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    [SerializeField] private PlayerMain2 playerMain;
+    [SerializeField] private PlayerMain playerMain;
 
     private PlayerControls playerControls;
 

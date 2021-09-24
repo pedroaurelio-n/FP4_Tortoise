@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement2 : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerMain2 playerMain;
+    [SerializeField] private PlayerMain playerMain;
     [SerializeField] private Camera mainCamera;
 
     [Header("Movement Flags")]

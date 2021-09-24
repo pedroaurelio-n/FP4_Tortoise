@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CheckMaxHeight : MonoBehaviour
 {
-    public PlayerMovement2 playerMovement;
+    public PlayerMovement playerMovement;
 
     float height;
     float maxHeight;

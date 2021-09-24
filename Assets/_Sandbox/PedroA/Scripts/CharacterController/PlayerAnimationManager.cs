@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorManager : MonoBehaviour
+public class PlayerAnimationManager : MonoBehaviour
 {
     [SerializeField] private bool applyAnimationSnapping;
     private Animator playerAnimator;
@@ -37,7 +37,7 @@ public class PlayerAnimatorManager : MonoBehaviour
             verticalValue = verticalMovement;
         }
 
-        if (isSprinting)
+        if (isSprinting && verticalMovement > 0.5f)
         {
             verticalValue = 2;
         }
@@ -95,10 +95,14 @@ public class PlayerAnimatorManager : MonoBehaviour
         return playerAnimator.GetBool("isJumping");
     }
 
-    public void HandleJumpingAnimation()
+    public AnimatorStateInfo GetCurrentAnimation()
     {
-        playerAnimator.SetBool("isJumping", true);
-        PlayTargetAnimation("Jump", false);
+        return playerAnimator.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public void HandleJumpingAnimation(string jump)
+    {
+        playerAnimator.SetTrigger(jump);
     }
 
     public void SetGroundedBool(bool isGrounded)
@@ -106,9 +110,8 @@ public class PlayerAnimatorManager : MonoBehaviour
         playerAnimator.SetBool("isGrounded", isGrounded);
     }
 
-    public void PlayTargetAnimation(string targetAnimation, bool isInteracting)
+    public void PlayTargetAnimation(string targetAnimation)
     {
-        playerAnimator.SetBool("isInteracting", isInteracting);
         playerAnimator.CrossFade(targetAnimation, 0.2f);
     }
 }

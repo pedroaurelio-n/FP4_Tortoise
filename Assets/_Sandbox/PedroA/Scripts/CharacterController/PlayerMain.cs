@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMain2 : MonoBehaviour
+public class PlayerMain : MonoBehaviour
 {
     [Header("Script Components")]
-    public PlayerMovement2 PlayerMovement;
-    public InputManager2 PlayerInputManager;
-    public PlayerAnimationManager2 PlayerAnimationManager;
+    public PlayerMovement PlayerMovement;
+    public InputManager PlayerInputManager;
+    public PlayerAnimationManager PlayerAnimationManager;
 
     private void Update()
     {
