@@ -201,6 +201,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void TriggerKnockback(Vector3 direction, float knockbackHorizontal, float knockbackVertical, float knockbackTime)
+    {
+        Debug.Log("knockback");
+        _playerVelocity = direction * knockbackHorizontal * Time.deltaTime;
+        _playerVelocity.y = knockbackVertical;
+        StartCoroutine(ResetKnockbackVelocity(knockbackTime));
+    }
+
+    private IEnumerator ResetKnockbackVelocity(float knockbackTime)
+    {
+        float elapsedTime = 0;
+        Vector3 start = _playerVelocity;
+
+        while (elapsedTime < knockbackTime)
+        {
+            _playerVelocity = Vector3.Lerp(start, Vector3.zero, (elapsedTime/knockbackTime));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        _playerVelocity = Vector3.zero;
+        yield return null;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
