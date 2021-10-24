@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
 {
-    public delegate void PlayerDamageHit(Vector3 hitNormal);
+    public delegate void PlayerDamageHit(Vector3 hitNormal, int damage);
     public static event PlayerDamageHit onPlayerDamageHit;
 
     [SerializeField] private PlayerMain playerMain;
@@ -39,11 +39,10 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (other.transform.parent.TryGetComponent(out EnemyMain enemy))
         {
-            Debug.Log("Player Damaged");
             Vector3 hitNormal = transform.position - enemy.transform.position;
 
             if (onPlayerDamageHit != null)
-                onPlayerDamageHit(hitNormal);
+                onPlayerDamageHit(hitNormal, -enemy.attackDamage);
         }
     }    
 }

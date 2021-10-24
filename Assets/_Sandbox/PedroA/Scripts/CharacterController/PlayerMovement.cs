@@ -203,7 +203,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void TriggerKnockback(Vector3 direction, float knockbackHorizontal, float knockbackVertical, float knockbackTime)
     {
-        Debug.Log("knockback");
         _playerVelocity = direction * knockbackHorizontal * Time.deltaTime;
         _playerVelocity.y = knockbackVertical;
         StartCoroutine(ResetKnockbackVelocity(knockbackTime));
