@@ -3214,22 +3214,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 163230782, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 702472871, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
-      propertyPath: healthGroup
-      value: 
-      objectReference: {fileID: 192397157}
-    - target: {fileID: 702472871, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
-      propertyPath: fadeDuration
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 702472871, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
-      propertyPath: fadeStartDelay
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8334466796389946722, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -3284,11 +3268,6 @@ PrefabInstance:
       objectReference: {fileID: 963194227}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
---- !u!225 &192397157 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 192397157, guid: 972375a295f17124e912f70dfd0bf7d0, type: 3}
-  m_PrefabInstance: {fileID: 192397155}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &196529753
 Mesh:
   m_ObjectHideFlags: 0

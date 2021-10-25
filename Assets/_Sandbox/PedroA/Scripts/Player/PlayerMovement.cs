@@ -37,13 +37,15 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _movementDirection;
     private Vector3 _playerVelocity;
 
-    private int jumpsQuantity;
+    private int _jumpsQuantity;
 
     private CharacterController playerCharacterController;
+    private float _startStepOffset;
 
     private void Awake()
     {
         playerCharacterController = GetComponent<CharacterController>();
+        _startStepOffset = playerCharacterController.stepOffset;
     }
 
     private void Start()
@@ -71,9 +73,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void HandleLateUpdateMovements()
-    {
-        //GroundCheck(playerCharacterController.isGrounded);
-
+    {        
         var colliders = Physics.OverlapSphere(transform.position + offset + platformOffset, radius, groundLayer);
         bool isColliding = colliders.Length != 0;
 
@@ -82,7 +82,13 @@ public class PlayerMovement : MonoBehaviour
         playerMain.PlayerAnimationManager.SetGroundedBool(isGrounded);
         
         if (isGrounded)
-            jumpsQuantity = additionalJumps;
+        {
+            playerCharacterController.stepOffset = _startStepOffset;
+            _jumpsQuantity = additionalJumps;
+        }
+
+        else
+            playerCharacterController.stepOffset = 0f;
     }
 
     private void HandleMovement()
@@ -146,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
 
         else
         {
-            bool canGlide = playerMain.PlayerInputManager.glideInput && _playerVelocity.y < 0 && jumpsQuantity <= 0;
+            bool canGlide = playerMain.PlayerInputManager.glideInput && _playerVelocity.y < 0 && _jumpsQuantity <= 0;
             bool canAnyGlide = playerMain.PlayerInputManager.anyglideInput && _playerVelocity.y < 0;
 
             
@@ -175,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleJumping()
     {
-        if (jumpsQuantity > 0)
+        if (_jumpsQuantity > 0)
         {
             var doubleJumpHeight = normalJumpHeight * doubleJumpHeightDecreaser;
             float jumpHeight;
@@ -196,8 +202,8 @@ public class PlayerMovement : MonoBehaviour
                 playerMain.PlayerAnimationManager.SetTrigger("hasJumped");
             }
 
-            jumpsQuantity--;
-            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);        
+            _jumpsQuantity--;
+            _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
         }
     }
 
