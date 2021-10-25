@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 702472870}
   - component: {fileID: 702472869}
   - component: {fileID: 702472871}
+  - component: {fileID: 192397157}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -165,9 +166,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19222508768814249a0387287df34c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthGroup: {fileID: 192397157}
   healthCircle: {fileID: 163230782}
   healthText: {fileID: 1720374606}
   circleFillDuration: 0.5
+  fadeStartDelay: 2.5
+  fadeDuration: 0.8
+--- !u!225 &192397157
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702472867}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1145483912
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,6 +3067,7 @@ MonoBehaviour:
   torso1: {fileID: 2660943123267249834}
   glideTrue: {fileID: 2100000, guid: b56ee9e5303841a4d9046fab781ca8ab, type: 2}
   glideFalse: {fileID: 2100000, guid: ce753cc453db73a4b9e3022824635e6f, type: 2}
+  knockbackMaterial: {fileID: 2100000, guid: 0a7235cd83046cc4ba435d9fd599be63, type: 2}
 --- !u!114 &8710570569024409538
 MonoBehaviour:
   m_ObjectHideFlags: 0
