@@ -25,4 +25,12 @@ public class PlayerMain : MonoBehaviour
     {
         PlayerMovement.HandleLateUpdateMovements();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out ICollectable collectable))
+        {
+            collectable.Collect();
+        }
+    }
 }
