@@ -2960,8 +2960,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
   maxHealth: 5
-  knockbackHorizontal: 1000
-  knockbackVertical: 8
+  knockbackHorizontal: 1100
+  knockbackVertical: 9
   knockbackTime: 0.4
 --- !u!114 &8710570569024409567
 MonoBehaviour:

@@ -37,7 +37,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.TryGetComponent(out EnemyMain enemy))
+        if (other.transform.parent.TryGetComponent(out Enemy enemy))
         {
             Vector3 hitNormal = transform.position - enemy.transform.position;
 

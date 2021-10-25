@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8013796604776012598
 Transform:
   m_ObjectHideFlags: 0
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8013796604822911818}
-  - component: {fileID: 8013796604822911814}
+  - component: {fileID: 7792158417412729063}
   - component: {fileID: 8013796604822911813}
   - component: {fileID: 8013796604822911812}
   - component: {fileID: 8013796604822911815}
@@ -133,7 +133,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8013796604822911814
+--- !u!114 &7792158417412729063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,11 +142,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8013796604822911808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7044e358160ac2b48bec90ab7cd76051, type: 3}
+  m_Script: {fileID: 11500000, guid: 93d07d3db92c9494a9c1eba419321bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 1
-  dead: {fileID: 2100000, guid: 0a7235cd83046cc4ba435d9fd599be63, type: 2}
+  maxHealth: 1
+  wanderSpeed: 0
+  followSpeed: 0
 --- !u!33 &8013796604822911813
 MeshFilter:
   m_ObjectHideFlags: 0
