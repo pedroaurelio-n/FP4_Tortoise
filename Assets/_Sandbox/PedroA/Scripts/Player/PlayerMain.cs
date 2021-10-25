@@ -6,7 +6,7 @@ public class PlayerMain : MonoBehaviour
 {
     [Header("Script Components")]
     public PlayerMovement PlayerMovement;
-    public InputManager PlayerInputManager;
+    public PlayerInputManager PlayerInputManager;
     public PlayerAnimationManager PlayerAnimationManager;
     public PlayerCombatController PlayerCombatController;
 
