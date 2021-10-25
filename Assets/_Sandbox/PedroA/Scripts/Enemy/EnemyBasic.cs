@@ -11,6 +11,8 @@ public class EnemyBasic : Enemy
     [SerializeField] private float minimumFollowDistance;
     [SerializeField] private float maximumFollowDistance;
     [SerializeField] private float followSpeedMultiplier;
+    [SerializeField] private float delayOnDamage;
+    [SerializeField] private float knockbackforce;
     [SerializeField] private Transform target;
     [SerializeField] private Transform point;
     [SerializeField] private BoxCollider wanderArea;
@@ -22,11 +24,15 @@ public class EnemyBasic : Enemy
     private bool isAlive;
     private Color currentColor;
 
+    private Rigidbody rigidBody;
     private NavMeshAgent navMeshAgent;
     private MeshRenderer meshRenderer;
 
     private void Awake()
     {
+        InitializeValues();
+
+        rigidBody = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         meshRenderer = GetComponent<MeshRenderer>();
     }
@@ -37,8 +43,6 @@ public class EnemyBasic : Enemy
 
         point.parent = null;
 
-        CurrentHealth = MaxHealth;
-
         Move();
     }
 
@@ -47,7 +51,6 @@ public class EnemyBasic : Enemy
         if (MovementType == EnemyMovementType.WANDER && IsCloseToPlayer())
         {
             MovementType = EnemyMovementType.FOLLOW;
-            Debug.Log("Start Follow");
             Move();
         }
 
@@ -55,7 +58,6 @@ public class EnemyBasic : Enemy
         if (MovementType == EnemyMovementType.FOLLOW && !IsCloseToPlayer())
         {
             MovementType = EnemyMovementType.WANDER;
-            Debug.Log("Start Wander");
             Move();
         }
     }
@@ -65,7 +67,7 @@ public class EnemyBasic : Enemy
         return Vector3.Distance(transform.position, target.position) < minimumFollowDistance;
     }
 
-    public override void Move()
+    protected override void Move()
     {
         switch (MovementType)
         {
@@ -139,10 +141,14 @@ public class EnemyBasic : Enemy
     private IEnumerator DamageFeedback()
     {
         navMeshAgent.isStopped = true;
+        //navMeshAgent.updatePosition = false;
         navMeshAgent.velocity = Vector3.zero;
-        yield return new WaitForSeconds(delayBetweenPoints);
+        yield return new WaitForSeconds(delayOnDamage);
 
+        Debug.Log("Stop feedback");
         navMeshAgent.isStopped = false;
+        rigidBody.velocity = Vector3.zero;
+        //navMeshAgent.updatePosition = true;
     }
 
     private Vector3 GetRandomPointInsideCollider(BoxCollider boxCollider)
@@ -157,24 +163,34 @@ public class EnemyBasic : Enemy
         return boxCollider.transform.TransformPoint(point);
     }
 
-    public override void TakeDamage()
+    public override void TakeDamage(Vector3 hitNormal)
     {
-        CurrentHealth--;
+        _currentHealth--;
 
-        if (CurrentHealth <= 0)
+        if (_currentHealth <= 0)
             Die();
 
         else
         {
             StartCoroutine(DamageFeedback());
-            meshRenderer.material.DOColor(Color.white, 0.1f).OnComplete(delegate {
-                meshRenderer.material.DOColor(currentColor, delayBetweenPoints);
-            });
+            rigidBody.AddForce(hitNormal.normalized * knockbackforce, ForceMode.Impulse);
+
+            Tween damageWhite = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
+            Tween damageWhite2 = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
+            Tween damageCurrent = meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.05f);
+
+            Sequence damageSequence = DOTween.Sequence();
+            damageSequence.Append(damageWhite)
+            .Append(damageCurrent)
+            .Append(damageWhite2)
+            .Append(meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.85f));
+
+            damageSequence.Play();
         }
 
     }
 
-    public override void Die()
+    protected override void Die()
     {
         isAlive = false;
         navMeshAgent.isStopped = true;

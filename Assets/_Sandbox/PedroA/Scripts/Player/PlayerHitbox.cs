@@ -8,7 +8,9 @@ public class PlayerHitbox : MonoBehaviour
     {
         if (other.transform.parent.TryGetComponent(out IDamageable target))
         {
-            target.TakeDamage();
+            Vector3 hitNormal = other.ClosestPoint(transform.position) - transform.position;
+
+            target.TakeDamage(hitNormal);
         }
     }
 }

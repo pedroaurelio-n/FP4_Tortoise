@@ -42,7 +42,7 @@ public class PlayerCombatController : MonoBehaviour
             Vector3 hitNormal = transform.position - enemy.transform.position;
 
             if (onPlayerDamageHit != null)
-                onPlayerDamageHit(hitNormal, -enemy.attackDamage);
+                onPlayerDamageHit(hitNormal, -enemy.GetAttackDamage());
         }
     }    
 }
