@@ -9,6 +9,7 @@ public class PlayerMain : MonoBehaviour
     public PlayerInputManager PlayerInputManager;
     public PlayerAnimationManager PlayerAnimationManager;
     public PlayerCombatController PlayerCombatController;
+    public PlayerInteractController PlayerInteractController;
 
     private void Update()
     {

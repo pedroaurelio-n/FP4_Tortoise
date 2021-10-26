@@ -15,12 +15,14 @@ public class TA_Move : TriggerAction
         //transform.parent = _Dynamic;
     }
     
-    public override void TryToActivateAction()
+    public override bool TryToActivateAction()
     {
         if (CanActivateAction())
             ActivateAction();
         else
             Debug.Log("Couldn't perform action");
+
+        return CanActivateAction();
     }
 
     protected override bool CanActivateAction()
