@@ -15,6 +15,7 @@ public class EnemyBasic : Enemy
     [SerializeField] private float knockbackforce;
     [SerializeField] private Transform target;
     [SerializeField] private Transform point;
+    [SerializeField] private Transform _Dynamic;
     [SerializeField] private BoxCollider wanderArea;
 
     public EnemyMovementType MovementType;
@@ -40,8 +41,9 @@ public class EnemyBasic : Enemy
     private void Start()
     {
         isAlive = true;
+        canDamagePlayer = true;
 
-        point.parent = null;
+        point.parent = _Dynamic;
 
         Move();
     }
@@ -141,14 +143,13 @@ public class EnemyBasic : Enemy
     private IEnumerator DamageFeedback()
     {
         navMeshAgent.isStopped = true;
-        //navMeshAgent.updatePosition = false;
         navMeshAgent.velocity = Vector3.zero;
+        canDamagePlayer = false;
         yield return new WaitForSeconds(delayOnDamage);
 
-        Debug.Log("Stop feedback");
         navMeshAgent.isStopped = false;
         rigidBody.velocity = Vector3.zero;
-        //navMeshAgent.updatePosition = true;
+        canDamagePlayer = true;
     }
 
     private Vector3 GetRandomPointInsideCollider(BoxCollider boxCollider)

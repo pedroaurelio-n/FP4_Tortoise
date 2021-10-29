@@ -20,7 +20,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool attackInput;
     public bool interactInput;
 
-    public bool canTriggerJump = true;
+    public bool canTriggerJumpInput = true;
 
     public void HandleAllInputs()
     {
@@ -42,15 +42,15 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (jumpInput)
         {
-            if (canTriggerJump)
+            if (canTriggerJumpInput)
             {
                 playerMain.PlayerMovement.HandleJumping();
-                canTriggerJump = false;
+                canTriggerJumpInput = false;
             }
         }
 
         else
-            canTriggerJump = true;
+            canTriggerJumpInput = true;
     }
 
     private void HandleAttackInput()

@@ -11,6 +11,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected int _maxHealth;
     protected int _attackDamage;
     protected int _currentHealth;
+    protected bool canDamagePlayer;
 
     protected void InitializeValues()
     {
@@ -20,6 +21,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     }
 
     public int GetAttackDamage() { return _attackDamage; }
+    public bool CanDamagePlayer() { return canDamagePlayer; }
 
     protected abstract void Move();
     public abstract void TakeDamage(Vector3 hitNormal);

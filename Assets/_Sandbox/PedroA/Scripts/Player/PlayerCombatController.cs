@@ -52,6 +52,9 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (other.transform.parent.TryGetComponent(out Enemy enemy) && !isInvincible)
         {
+            if (!enemy.CanDamagePlayer())
+                return;
+                
             Vector3 hitNormal = transform.position - enemy.transform.position;
 
             if (onPlayerDamageHit != null)

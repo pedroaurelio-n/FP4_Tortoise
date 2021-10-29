@@ -64,6 +64,7 @@ MonoBehaviour:
   knockbackforce: 5
   target: {fileID: 0}
   point: {fileID: 4151529501329418843}
+  _Dynamic: {fileID: 0}
   wanderArea: {fileID: 0}
   MovementType: 0
 --- !u!33 &2475135831808560542

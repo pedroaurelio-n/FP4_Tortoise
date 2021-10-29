@@ -2521,7 +2521,7 @@ MonoBehaviour:
   playerMain: {fileID: 8710570569024409565}
   attackDuration: 0.7
   knockbackHorizontal: 1200
-  knockbackVertical: 10
+  knockbackVertical: 9
   knockbackTime: 0.5
   invincibilityTime: 1.5
   isAttacking: 0
@@ -3047,7 +3047,7 @@ MonoBehaviour:
   anyglideInput: 0
   attackInput: 0
   interactInput: 0
-  canTriggerJump: 1
+  canTriggerJumpInput: 1
 --- !u!114 &8710570569024409539
 MonoBehaviour:
   m_ObjectHideFlags: 0
