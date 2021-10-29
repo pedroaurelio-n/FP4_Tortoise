@@ -24,7 +24,19 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public bool CanDamagePlayer() { return canDamagePlayer; }
 
     protected abstract void Move();
-    public abstract void TakeDamage(Vector3 hitNormal);
+    public virtual void TakeDamage(Vector3 hitNormal)
+    {
+        _currentHealth--;
+
+        if (_currentHealth <= 0)
+            Die();
+
+        else
+        {
+            DamageFeedback(hitNormal);
+        }
+    }
+    protected abstract void DamageFeedback(Vector3 hitNormal);
     protected abstract void Die();
 }
 

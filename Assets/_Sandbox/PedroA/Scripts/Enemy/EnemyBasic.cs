@@ -22,6 +22,7 @@ public class EnemyBasic : Enemy
 
     private Coroutine wanderMovement;
     private Coroutine followMovement;
+    private Coroutine recoverFromDamageFeedback;
     private bool isAlive;
     private Color currentColor;
 
@@ -140,7 +141,7 @@ public class EnemyBasic : Enemy
         yield return null;
     }
 
-    private IEnumerator DamageFeedback()
+    private IEnumerator RecoverFromDamageFeedback()
     {
         navMeshAgent.isStopped = true;
         navMeshAgent.velocity = Vector3.zero;
@@ -164,37 +165,35 @@ public class EnemyBasic : Enemy
         return boxCollider.transform.TransformPoint(point);
     }
 
-    public override void TakeDamage(Vector3 hitNormal)
+    protected override void DamageFeedback(Vector3 hitNormal)
     {
-        _currentHealth--;
+        if (recoverFromDamageFeedback != null)
+            StopCoroutine(recoverFromDamageFeedback);
+        
+        recoverFromDamageFeedback = StartCoroutine(RecoverFromDamageFeedback());
+        rigidBody.AddForce(hitNormal.normalized * knockbackforce, ForceMode.Impulse);
 
-        if (_currentHealth <= 0)
-            Die();
+        Tween damageWhite = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
+        Tween damageWhite2 = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
+        Tween damageCurrent = meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.05f);
 
-        else
-        {
-            StartCoroutine(DamageFeedback());
-            rigidBody.AddForce(hitNormal.normalized * knockbackforce, ForceMode.Impulse);
+        Sequence damageSequence = DOTween.Sequence();
+        damageSequence.Append(damageWhite)
+        .Append(damageCurrent)
+        .Append(damageWhite2)
+        .Append(meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.85f));
 
-            Tween damageWhite = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
-            Tween damageWhite2 = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
-            Tween damageCurrent = meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.05f);
-
-            Sequence damageSequence = DOTween.Sequence();
-            damageSequence.Append(damageWhite)
-            .Append(damageCurrent)
-            .Append(damageWhite2)
-            .Append(meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.85f));
-
-            damageSequence.Play();
-        }
-
+        damageSequence.Play();
     }
 
     protected override void Die()
     {
+        if (recoverFromDamageFeedback != null)
+            StopCoroutine(recoverFromDamageFeedback);
+        
         isAlive = false;
         navMeshAgent.isStopped = true;
+        canDamagePlayer = false;
         navMeshAgent.velocity = Vector3.zero;
 
         currentColor = Color.red;
