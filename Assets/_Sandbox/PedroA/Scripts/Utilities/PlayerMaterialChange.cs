@@ -41,7 +41,7 @@ public class PlayerMaterialChange : MonoBehaviour
 
     private IEnumerator RevertAfterKnockback()
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(1.5f);
         isOnKnockback = false;
     }
 

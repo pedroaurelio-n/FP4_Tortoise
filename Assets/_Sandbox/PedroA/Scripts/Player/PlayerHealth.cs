@@ -7,15 +7,9 @@ public class PlayerHealth : MonoBehaviour
     public delegate void HealthChange(float newHealth, float maxHealth, float value);
     public static event HealthChange onHealthChange;
 
-    [SerializeField] private PlayerMain playerMain;
     [SerializeField] private float maxHealth;
 
     private float _currentHealth;
-
-    [Header("KnockBack Configs")]
-    [SerializeField] private float knockbackHorizontal;
-    [SerializeField] private float knockbackVertical;
-    [SerializeField] private float knockbackTime;
 
     private void Awake()
     {
@@ -27,13 +21,11 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void DecreaseHealth(Vector3 direction, int damage)
+    private void DecreaseHealth(int damage)
     {
         _currentHealth += damage;
         if (onHealthChange != null)
             onHealthChange(_currentHealth, maxHealth, damage);
-
-        playerMain.PlayerMovement.TriggerKnockback(direction, knockbackHorizontal, knockbackVertical, knockbackTime);
     }
 
     private void OnEnable()

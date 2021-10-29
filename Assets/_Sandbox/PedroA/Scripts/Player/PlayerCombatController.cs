@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
 {
-    public delegate void PlayerDamageHit(Vector3 hitNormal, int damage);
+    public delegate void PlayerDamageHit(int damage);
     public static event PlayerDamageHit onPlayerDamageHit;
 
     [SerializeField] private PlayerMain playerMain;
     [SerializeField] private float attackDuration;
 
+    [Header("KnockBack Configs")]
+    [SerializeField] private float knockbackHorizontal;
+    [SerializeField] private float knockbackVertical;
+    [SerializeField] private float knockbackTime;
+    [SerializeField] private float invincibilityTime;
+
     public bool isAttacking;
+    public bool isInvincible;
 
     private void Start()
     {
@@ -35,14 +42,25 @@ public class PlayerCombatController : MonoBehaviour
         isAttacking = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private IEnumerator DisableInvincibility()
     {
-        if (other.transform.parent.TryGetComponent(out Enemy enemy))
+        yield return new WaitForSeconds(invincibilityTime);
+        isInvincible = false;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.parent.TryGetComponent(out Enemy enemy) && !isInvincible)
         {
             Vector3 hitNormal = transform.position - enemy.transform.position;
 
             if (onPlayerDamageHit != null)
-                onPlayerDamageHit(hitNormal, -enemy.GetAttackDamage());
+                onPlayerDamageHit(-enemy.GetAttackDamage());
+
+            playerMain.PlayerMovement.TriggerKnockback(hitNormal, knockbackHorizontal, knockbackVertical, knockbackTime);
+
+            isInvincible = true;
+            StartCoroutine(DisableInvincibility());
         }
-    }    
+    } 
 }

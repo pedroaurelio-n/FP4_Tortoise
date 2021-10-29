@@ -2520,7 +2520,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
   attackDuration: 0.7
+  knockbackHorizontal: 1200
+  knockbackVertical: 10
+  knockbackTime: 0.5
+  invincibilityTime: 1.5
   isAttacking: 0
+  isInvincible: 0
 --- !u!136 &547274395
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2921,6 +2926,7 @@ GameObject:
   - component: {fileID: 529060072}
   - component: {fileID: 8710570569024409567}
   - component: {fileID: 8710570569024409539}
+  - component: {fileID: 1022077917965817610}
   - component: {fileID: 8710570569024409557}
   - component: {fileID: 8710570569024409564}
   - component: {fileID: 4538760325380745688}
@@ -3018,11 +3024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31837085b0e90bb449507a52c7f9029e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMain: {fileID: 8710570569024409565}
   maxHealth: 5
-  knockbackHorizontal: 1100
-  knockbackVertical: 9
-  knockbackTime: 0.4
 --- !u!114 &8710570569024409567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3059,6 +3061,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   applyAnimationSnapping: 0
+--- !u!114 &1022077917965817610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710570569024409560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518b075d077637247acf84c60e476153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &8710570569024409557
 Animator:
   serializedVersion: 3
