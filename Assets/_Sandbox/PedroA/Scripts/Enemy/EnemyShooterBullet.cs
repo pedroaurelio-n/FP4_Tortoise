@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyShooterBullet : Enemy
 {
     [SerializeField] private float triggerInterval;
+    [SerializeField] private float maximumLifeTime;
     [SerializeField] private Rigidbody rb;
     private bool willDestroyOnTrigger;
 
@@ -16,7 +17,12 @@ public class EnemyShooterBullet : Enemy
         canDamagePlayer = true;
     }
 
-    private IEnumerator DestroyOnTrigger()
+    private void Start()
+    {
+        Destroy(gameObject, maximumLifeTime);
+    }
+
+    private IEnumerator ActivateDestroyOnTrigger()
     {
         yield return new WaitForSeconds(triggerInterval);
         willDestroyOnTrigger = true;
@@ -24,7 +30,7 @@ public class EnemyShooterBullet : Enemy
 
     public void StartMovement(Vector3 direction, float speed)
     {
-        StartCoroutine(DestroyOnTrigger());
+        StartCoroutine(ActivateDestroyOnTrigger());
         rb.velocity = direction * speed;
     }
 

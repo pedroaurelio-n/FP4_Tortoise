@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4154056324547041730}
-  - component: {fileID: 1857815809064335533}
+  - component: {fileID: 5618147965933453358}
   m_Layer: 6
   m_Name: Hitbox
   m_TagString: Untagged
@@ -31,18 +31,18 @@ Transform:
   m_Father: {fileID: 2594550119632736577}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1857815809064335533
-SphereCollider:
+--- !u!65 &5618147965933453358
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 556728710444567594}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.51
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8837820433504276885
 GameObject:
@@ -95,6 +95,7 @@ MonoBehaviour:
   maxHealth: 99
   attackDamage: 1
   triggerInterval: 0.05
+  maximumLifeTime: 10
   rb: {fileID: 6430817001679630143}
 --- !u!33 &1383612608237405468
 MeshFilter:
