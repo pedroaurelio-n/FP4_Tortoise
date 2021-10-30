@@ -48,22 +48,27 @@ public class PlayerCombatController : MonoBehaviour
         isInvincible = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void ReceiveDamage(Enemy enemy)
+    {
+        Vector3 hitNormal = transform.position - enemy.transform.position;
+
+        if (onPlayerDamageHit != null)
+            onPlayerDamageHit(-enemy.GetAttackDamage());
+
+        playerMain.PlayerMovement.TriggerKnockback(hitNormal, knockbackHorizontal, knockbackVertical, knockbackTime);
+
+        isInvincible = true;
+        StartCoroutine(DisableInvincibility());
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.transform.parent.TryGetComponent(out Enemy enemy) && !isInvincible)
         {
             if (!enemy.CanDamagePlayer())
                 return;
-                
-            Vector3 hitNormal = transform.position - enemy.transform.position;
 
-            if (onPlayerDamageHit != null)
-                onPlayerDamageHit(-enemy.GetAttackDamage());
-
-            playerMain.PlayerMovement.TriggerKnockback(hitNormal, knockbackHorizontal, knockbackVertical, knockbackTime);
-
-            isInvincible = true;
-            StartCoroutine(DisableInvincibility());
+            ReceiveDamage(enemy);
         }
     } 
 }
