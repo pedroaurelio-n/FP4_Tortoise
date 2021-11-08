@@ -15,6 +15,14 @@ public class PlayerHealth : MonoBehaviour
     {
         _currentHealth = maxHealth;
 
+        //if (onHealthChange != null)
+        //{
+        //    onHealthChange(_currentHealth, maxHealth, 0);
+        //}
+    }
+
+    private void Start()
+    {
         if (onHealthChange != null)
         {
             onHealthChange(_currentHealth, maxHealth, 0);
