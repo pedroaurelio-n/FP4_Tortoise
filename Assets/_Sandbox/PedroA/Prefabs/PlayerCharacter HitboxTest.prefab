@@ -2520,7 +2520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
   attackDuration: 0.7
-  knockbackHorizontal: 3000
+  knockbackHorizontal: 2000
   knockbackVertical: 6.5
   knockbackTime: 0.5
   invincibilityTime: 1.5
