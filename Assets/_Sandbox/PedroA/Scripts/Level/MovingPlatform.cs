@@ -6,7 +6,7 @@ using DG.Tweening;
 public class MovingPlatform : MonoBehaviour
 {
     [SerializeField] private List<Transform> points;
-    [SerializeField] private Vector3 direction;
+    public bool canStart;
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform parent;
     [SerializeField] private float timeDelay;
@@ -25,16 +25,24 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        points.Add(startPoint);
+        CheckStart();
+    }
 
-        foreach(Transform point in points)
+    public void CheckStart()
+    {
+        if (canStart)
         {
-            point.parent = parent;
+            points.Add(startPoint);
+
+            foreach(Transform point in points)
+            {
+                point.parent = parent;
+            }
+
+            index = 0;
+
+            StartCoroutine(Move(index));
         }
-
-        index = 0;
-
-        StartCoroutine(Move(index));
     }
 
     private IEnumerator Move(int index)

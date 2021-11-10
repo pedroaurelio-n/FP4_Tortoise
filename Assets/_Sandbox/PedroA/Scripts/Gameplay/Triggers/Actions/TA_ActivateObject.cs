@@ -1,14 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
-public class TA_Move : TriggerAction
+public class TA_ActivateObject : TriggerAction
 {
-    [SerializeField] private Vector3 newPositionFromOrigin;
-    [SerializeField] private float actionDuration;
-    [SerializeField] private Ease ease;
-    
+    [SerializeField] private GameObject Object;
+
     public override bool TryToActivateAction()
     {
         if (CanActivateAction())
@@ -27,6 +24,7 @@ public class TA_Move : TriggerAction
     protected override void ActivateAction()
     {
         isActionOnProgress = true;
-        transform.parent.DOMove(transform.position+newPositionFromOrigin, actionDuration).SetEase(ease).OnComplete(delegate {isActionOnProgress = false;});
+        Object.SetActive(true);
+        isActionOnProgress = false;
     }
 }
