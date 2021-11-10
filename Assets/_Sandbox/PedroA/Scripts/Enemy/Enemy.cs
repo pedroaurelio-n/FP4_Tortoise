@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
+    [SerializeField] private EnemyWaveTrigger wave;
     [SerializeField] private int maxHealth;
     [SerializeField] private int attackDamage;
 
@@ -37,7 +38,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
     }
     protected abstract void DamageFeedback(Vector3 hitNormal);
-    protected abstract void Die();
+    protected virtual void Die()
+    {
+        if (wave != null)
+            wave.RemoveEnemy(this);
+    }
 }
 
 public enum EnemyMovementType

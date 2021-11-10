@@ -13,6 +13,7 @@ public class EnemyShooter : Enemy
 
     [Header("Shoot Configs")]
     [SerializeField] private float bulletSpeed;
+    [SerializeField] private float startShootingDelay;
     [SerializeField] private float intervalBetweenShots;
     [SerializeField] private float turnSpeed;
 
@@ -77,6 +78,8 @@ public class EnemyShooter : Enemy
 
     private IEnumerator Shoot()
     {
+        yield return new WaitForSeconds(startShootingDelay);
+        
         if (isDead)
             yield break;
 
@@ -109,6 +112,8 @@ public class EnemyShooter : Enemy
 
     protected override void Die()
     {
+        base.Die();
+        
         Deactivate();
         GetComponent<MeshRenderer>().material.color = Color.red;
 

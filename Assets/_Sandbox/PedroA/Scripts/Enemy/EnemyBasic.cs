@@ -188,6 +188,8 @@ public class EnemyBasic : Enemy
 
     protected override void Die()
     {
+        base.Die();
+        
         if (recoverFromDamageFeedback != null)
             StopCoroutine(recoverFromDamageFeedback);
         
