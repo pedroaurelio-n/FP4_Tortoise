@@ -198,6 +198,8 @@ public class EnemyBasic : Enemy
         canDamagePlayer = false;
         navMeshAgent.velocity = Vector3.zero;
 
+        GetComponent<Collider>().enabled = false;
+
         currentColor = Color.red;
         meshRenderer.material.DOColor(currentColor, 0f);
 

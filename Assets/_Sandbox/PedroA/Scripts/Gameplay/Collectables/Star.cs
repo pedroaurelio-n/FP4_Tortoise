@@ -16,7 +16,8 @@ public class Star : Item
     public override void Collect()
     {
         base.Collect();
-        Debug.Log("Star Collected");
+
+        GetComponent<SphereCollider>().enabled = false;
 
         if (onStarCollected != null)
             onStarCollected(value);

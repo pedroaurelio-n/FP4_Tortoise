@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Flags")]
     public bool isSprinting;
     public bool isGrounded;
+    public bool isFalling;
     public bool isGliding;
 
     [Header("Speeds")]
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     [Header("Jump & Falling Configs")]
+    [SerializeField] private float waitForFall;
     [SerializeField] private float normalJumpHeight;
     [SerializeField] private float doubleJumpHeightDecreaser;
     [SerializeField] private float lowJumpMultiplier;
@@ -38,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _playerVelocity;
 
     private int _jumpsQuantity;
+    private Coroutine _fallCoroutine;
 
     private CharacterController playerCharacterController;
     private float _startStepOffset;
@@ -45,12 +48,13 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerCharacterController = GetComponent<CharacterController>();
-        _startStepOffset = playerCharacterController.stepOffset;
     }
 
     private void Start()
     {
+        _startStepOffset = playerCharacterController.stepOffset;
         isGrounded = true;
+        isFalling = false;
     }
 
     private void GroundCheck(bool check)
@@ -85,10 +89,25 @@ public class PlayerMovement : MonoBehaviour
         {
             playerCharacterController.stepOffset = _startStepOffset;
             _jumpsQuantity = additionalJumps;
+            
+            if (isFalling)
+            {
+                Debug.Log("Cancel Fall");
+                isFalling = false;
+                StopCoroutine(_fallCoroutine);
+            }
         }
 
         else
+        {
+            if (!isFalling)
+            {
+                isFalling = true;
+                _fallCoroutine = StartCoroutine(TriggerFalling());
+            }
+            
             playerCharacterController.stepOffset = 0f;
+        }
     }
 
     private void HandleMovement()
@@ -186,9 +205,8 @@ public class PlayerMovement : MonoBehaviour
             var doubleJumpHeight = normalJumpHeight * doubleJumpHeightDecreaser;
             float jumpHeight;
 
-            bool canDoubleJump = playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
-                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling") ||
-                                        (!isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement"));
+            bool canDoubleJump = !isGrounded && (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
+                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling"));
 
             if (canDoubleJump)
             {
@@ -212,6 +230,17 @@ public class PlayerMovement : MonoBehaviour
         _playerVelocity = direction * knockbackHorizontal * Time.deltaTime;
         _playerVelocity.y = knockbackVertical;
         StartCoroutine(ResetKnockbackVelocity(knockbackTime));
+    }
+
+    private IEnumerator TriggerFalling()
+    {
+        yield return new WaitForSeconds(waitForFall);
+
+        if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") && _playerVelocity.y < 0)
+        {
+            Debug.Log("Trigger Fall");
+            playerMain.PlayerAnimationManager.SetTrigger("isFalling");
+        }
     }
 
     private IEnumerator ResetKnockbackVelocity(float knockbackTime)

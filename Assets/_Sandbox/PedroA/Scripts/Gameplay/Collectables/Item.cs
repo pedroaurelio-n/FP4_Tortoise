@@ -6,6 +6,6 @@ public class Item : MonoBehaviour, ICollectable
 {
     public virtual void Collect()
     {
-        Debug.Log("Item Collected");
+        //Debug.Log("Item Collected");
     }
 }

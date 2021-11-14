@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2475135831808560538}
   - component: {fileID: 5579902081047973938}
   - component: {fileID: 2475135831808560536}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: EnemyBasic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d07d3db92c9494a9c1eba419321bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wave: {fileID: 0}
   maxHealth: 3
   attackDamage: 1
   delayBetweenPoints: 2
