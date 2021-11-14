@@ -175,7 +175,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.52
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &5719955555402451310
 PrefabInstance:
@@ -249,6 +249,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 44bdd87e664cca547a45752c7152d360, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 44bdd87e664cca547a45752c7152d360, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.24
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 44bdd87e664cca547a45752c7152d360, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.24
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 44bdd87e664cca547a45752c7152d360, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.24
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 44bdd87e664cca547a45752c7152d360, type: 3}
       propertyPath: m_LocalPosition.x
