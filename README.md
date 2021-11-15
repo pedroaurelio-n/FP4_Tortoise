@@ -1,4 +1,5 @@
 # HIGH CONCEPT
+#
 
 # Hoppe-R
 
@@ -38,6 +39,7 @@
 ### Custo de Produção
  - O jogo será produzido em um período de 1 ano, com uma verba de 250 mil reais.
 
+#
 # GAME DESIGN DOCUMENT
 
 ## Título do Jogo
