@@ -58,43 +58,43 @@
 -   Classificação indicativa de 12 anos de idade de acordo com o guia de classificação “Classind”
     
 
-##   História(Sinopse)
+## História(Sinopse)
     
 
 -   O jogador acompanha a história de um robô e seu companheiro que acordam em seu planeta, agora esgotado dos seus recursos naturais.Para poder recuperar o seu planeta natal, eles partem para uma jornada em busca de maneiras que possam trazer de volta os recursos que foram perdidos.
     
 
-##  Fluxo do Jogo:
+## Fluxo do Jogo:
     
 
-- ###  Gênero do Jogo:
+- ### Gênero do Jogo:
     
 
   -    O jogo é dividido em jogo de aventura, plataforma e história.
     
 
-- ###   Desafios:
+- ### Desafios:
     
 
    -   O jogo proporciona para o jogador desafios de plataforma e uma aventura desafiadora com um enredo envolvente.
     
 
-- ###   Objetivo do jogo
+- ### Objetivo do jogo
     
 
    -   O objetivo do jogo é conseguir restaurar o seu planeta, através da obtenção de um item (Essências elementais) que será obtido na história, que irá restaurar os elementos naturais do planeta natal dos personagens.
     
 
-- ###   Progressão
+- ### Progressão
     
 
     -   A Progressão do jogo gira em torno de níveis e da história de cada nível, que no jogo será apresentado como planetas, e a história de cada planeta será um tipo diferente de problema que será apresentado no nível, e que o jogador terá que solucionar para poder prosseguir no jogo.
     
 
-##   Personagens:
+## Personagens:
     
 
-- ###   Características dos personagens :
+- ### Características dos personagens :
     
 
    -   Os personagens principais, são dois robôs, Hoppe e Robby, onde acordam no futuro e se deparam com o seu planeta natal esgotado de recursos. Os personagens principais possuem como missão restaurar o seu planeta. (Hoppe está de pé e Robby está em sua mochila).
@@ -118,22 +118,22 @@
     -   O Robby será um dos personagens principais da história, no entanto ele não será jogável e apenas auxiliará o jogador em sua gameplay.
     
 
-##   Gameplay:
+## Gameplay:
     
 
-- ###   Fluxo do jogo(Divisão):
+- ### Fluxo do jogo(Divisão):
     
 
   -   O Fluxo de jogo será dividido entre fases, cada fase possuirá uma civilização diferente que terá um problema diferente, onde o jogador terá que solucioná-lo para que possa obter a essência elemental e prosseguir para a próxima fase.
     
 
-- ###  Cenário onde se passa o jogo:
+- ### Cenário onde se passa o jogo:
     
 
   -   O jogo se passa em um cenário onde o planeta natal dos personagens principais se esgotaram, restando apenas a morte da vida no planeta. Além do planeta deles, os planetas onde os personagens irão se aventurar, também possuirão problemas próprios.
     
 
-- ###   Game World:
+- ### Game World:
     
 
    -   O mundo do jogo se passa em um mundo fictício e fantasioso, a interação do jogador com o mundo é através das fases e da progressão dele na história.
@@ -172,7 +172,7 @@
           -   Objetos destrutíveis
 
    
-- ###   Hazards : Coisas que podem machucar o personagem
+- ### Hazards : Coisas que podem machucar o personagem
     
 
     -   Os personagens podem morrer caso uma dessas coisas o afete:
@@ -249,7 +249,7 @@
 
   
 
- -   ###  Equipe necessária :
+ -   ### Equipe necessária :
     
 
      -   A equipe necessária para uma produção eficiente e consistente será composta por Programadores, Animadores , Modeladores, Artistas 2D e Compositores musicais.
@@ -257,7 +257,7 @@
 
   
 
--   ###   Orçamento:
+-   ### Orçamento:
     
 
     -   O jogo será produzido em um período de 1 ano, com uma verba de 250 mil reais.
