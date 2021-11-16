@@ -5,11 +5,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerMain playerMain;
+    public PlayerGroundCheck groundCheck;
     [SerializeField] private Camera mainCamera;
 
     [Header("Movement Flags")]
     public bool isSprinting;
-    public bool isGrounded;
     public bool isFalling;
     public bool isGliding;
 
@@ -18,12 +18,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runningSpeed;
     [SerializeField] private float sprintingSpeed;
     [SerializeField] private float rotationSpeed;
-
-    [Header("Grounded Configs")]
-    public Vector3 platformOffset; 
-    [SerializeField] private Vector3 offset;
-    [SerializeField] private float radius;
-    [SerializeField] private LayerMask groundLayer;
 
     [Header("Jump & Falling Configs")]
     [SerializeField] private float waitForFall;
@@ -38,7 +32,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _movementDirection;
     private Vector3 _playerVelocity;
+    private Vector3 _knockbackVelocity;
 
+    private bool isOnKnockback;
     private int _jumpsQuantity;
     private Coroutine _fallCoroutine;
 
@@ -53,39 +49,28 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _startStepOffset = playerCharacterController.stepOffset;
-        isGrounded = true;
         isFalling = false;
-    }
-
-    private void GroundCheck(bool check)
-    {
-        if (isGrounded != check)
-            isGrounded = check;
+        isOnKnockback = false;
     }
 
     public void HandleUpdateMovements()
     {
-        if (isGrounded && _playerVelocity.y < 0)
+        if (groundCheck.isGrounded && _playerVelocity.y < 0)
             _playerVelocity.y = 0f;
     }
 
     public void HandleFixedUpdateMovements()
     {
-        HandleMovement();
         HandleFalling();
+        HandleMovement();
         HandleRotation();
     }
 
     public void HandleLateUpdateMovements()
-    {        
-        var colliders = Physics.OverlapSphere(transform.position + offset + platformOffset, radius, groundLayer);
-        bool isColliding = colliders.Length != 0;
-
-        GroundCheck(isColliding);
-
-        playerMain.PlayerAnimationManager.SetGroundedBool(isGrounded);
+    {
+        playerMain.PlayerAnimationManager.SetGroundedBool(groundCheck.isGrounded);
         
-        if (isGrounded)
+        if (groundCheck.isGrounded)
         {
             playerCharacterController.stepOffset = _startStepOffset;
             _jumpsQuantity = additionalJumps;
@@ -100,9 +85,10 @@ public class PlayerMovement : MonoBehaviour
 
         else
         {
-            if (!isFalling)
+            if (!isFalling && !isOnKnockback)
             {
                 isFalling = true;
+                //groundCheck.ActivateGroundCheck();
                 _fallCoroutine = StartCoroutine(TriggerFalling());
             }
             
@@ -115,14 +101,14 @@ public class PlayerMovement : MonoBehaviour
         _movementDirection = mainCamera.transform.forward * playerMain.PlayerInputManager.VerticalInput
                             + mainCamera.transform.right * playerMain.PlayerInputManager.HorizontalInput;
         
-        _movementDirection.Normalize();
         _movementDirection.y = 0;
+        _movementDirection.Normalize();
 
         Vector3 movementVelocity;
         isSprinting = playerMain.PlayerInputManager.sprintInput;
 
 
-        if (isSprinting && isGrounded)
+        if (isSprinting && groundCheck.isGrounded)
         {
             movementVelocity = _movementDirection * sprintingSpeed;
         }
@@ -140,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        playerCharacterController.Move(movementVelocity * Time.deltaTime);
+        playerCharacterController.Move(new Vector3(movementVelocity.x, _playerVelocity.y, movementVelocity.z) * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
 
         playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
     }
@@ -162,15 +148,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFalling()
     {
-        if (isGrounded)
+        if (groundCheck.isGrounded)
         {
             isGliding = false;
             _playerVelocity.y += Physics.gravity.y * -gravityAmplifierGrounded * Time.deltaTime;
-            playerCharacterController.Move(_playerVelocity * Time.deltaTime);
         }
 
         else
         {
+            if (_playerVelocity.y < 0)
+            {
+                groundCheck.ActivateGroundCheck();
+            }
+
             bool canGlide = playerMain.PlayerInputManager.glideInput && _playerVelocity.y < 0 && _jumpsQuantity <= 0;
             bool canAnyGlide = playerMain.PlayerInputManager.anyglideInput && _playerVelocity.y < 0;
 
@@ -179,13 +169,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 isGliding = true;
                 _playerVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
-                playerCharacterController.Move(_playerVelocity * Time.deltaTime);
             }
 
             else
             {
                 isGliding = false;
-                //_playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
 
                 if (!playerMain.PlayerInputManager.jumpInput)
                     _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * lowJumpMultiplier * Time.deltaTime;
@@ -193,7 +181,6 @@ public class PlayerMovement : MonoBehaviour
                 else
                     _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
 
-                playerCharacterController.Move(_playerVelocity * Time.deltaTime);
             }
         }
     }
@@ -202,16 +189,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_jumpsQuantity > 0)
         {
+            groundCheck.DeactivateGroundCheck();
             var doubleJumpHeight = normalJumpHeight * doubleJumpHeightDecreaser;
             float jumpHeight;
 
-            bool canDoubleJump = !isGrounded && (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
-                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling"));
+            bool canDoubleJump = !groundCheck.isGrounded && (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Jump") ||
+                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Falling") ||
+                                        playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement"));
 
             if (canDoubleJump)
             {
                 jumpHeight = doubleJumpHeight;
                 playerMain.PlayerAnimationManager.SetTrigger("hasDoubleJumped");
+                Debug.Log("DoubleJump");
             }
 
             else
@@ -227,8 +217,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void TriggerKnockback(Vector3 direction, float knockbackHorizontal, float knockbackVertical, float knockbackTime)
     {
-        _playerVelocity = direction * knockbackHorizontal * Time.deltaTime;
-        _playerVelocity.y = knockbackVertical;
+        isOnKnockback = true;
+        _knockbackVelocity = direction * knockbackHorizontal * Time.deltaTime;
+        _knockbackVelocity.y = knockbackVertical;
         StartCoroutine(ResetKnockbackVelocity(knockbackTime));
     }
 
@@ -236,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(waitForFall);
 
-        if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") && _playerVelocity.y < 0)
+        if (!groundCheck.isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") && _playerVelocity.y < 0)
         {
             Debug.Log("Trigger Fall");
             playerMain.PlayerAnimationManager.SetTrigger("isFalling");
@@ -246,23 +237,17 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator ResetKnockbackVelocity(float knockbackTime)
     {
         float elapsedTime = 0;
-        Vector3 start = _playerVelocity;
+        Vector3 start = _knockbackVelocity;
 
         while (elapsedTime < knockbackTime)
         {
-            _playerVelocity = Vector3.Lerp(start, Vector3.zero, (elapsedTime/knockbackTime));
+            _knockbackVelocity = Vector3.Lerp(start, Vector3.zero, (elapsedTime/knockbackTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        _playerVelocity = Vector3.zero;
+        _knockbackVelocity = Vector3.zero;
+        isOnKnockback = false;
         yield return null;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        Gizmos.DrawWireSphere(transform.position + offset + platformOffset, radius);
     }
 }

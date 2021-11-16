@@ -67,7 +67,7 @@ public class MovingPlatform : MonoBehaviour
         if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
             Debug.Log("enter");
-            player.platformOffset = platformOffset;
+            player.groundCheck.platformOffset = platformOffset;
         }
     }
 
@@ -83,7 +83,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
-            player.platformOffset = Vector3.zero;
+            player.groundCheck.platformOffset = Vector3.zero;
             Debug.Log("exit");
         }
     }

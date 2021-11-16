@@ -4,28 +4,34 @@ using UnityEngine;
 
 public class CheckMaxHeight : MonoBehaviour
 {
-    public PlayerMovement playerMovement;
+    public PlayerGroundCheck groundCheck;
+    public UI_DevStats devStats;
 
-    float height;
-    float maxHeight;
+    private float _height;
+    private float _maxHeight;
+    private float _airTime;
 
     private void Update()
     {
-        if (!playerMovement.isGrounded)
+        if (!groundCheck.isGrounded)
         {
+            _airTime += Time.deltaTime;
+            devStats.ChangeAirTime(_airTime);
 
-            height = transform.position.y;
+            _height = transform.position.y;
 
-            if (height > maxHeight)
-                maxHeight = height;
+            if (_height > _maxHeight)
+                _maxHeight = _height;
         }
 
         else
         {
-            if (maxHeight != 0)
-                Debug.Log(maxHeight - transform.position.y);
+            if (_maxHeight != 0)
+                devStats.ChangeJumpHeight(_maxHeight - transform.position.y);
 
-            maxHeight = 0;
+            _maxHeight = 0;
+
+            _airTime = 0;
         }
     }
 }

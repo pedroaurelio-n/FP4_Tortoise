@@ -50,7 +50,9 @@ public class PlayerCombatController : MonoBehaviour
 
     private void ReceiveDamage(Enemy enemy)
     {
-        Vector3 hitNormal = transform.position - enemy.transform.position;
+        var hitNormal = transform.position - enemy.transform.position;
+        hitNormal.y = 0;
+        hitNormal.Normalize();
 
         if (onPlayerDamageHit != null)
             onPlayerDamageHit(-enemy.GetAttackDamage());

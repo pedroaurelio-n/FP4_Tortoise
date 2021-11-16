@@ -2912,6 +2912,56 @@ Transform:
   m_Father: {fileID: 1594253132847778580}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8624099769097021349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7961252064035361827}
+  - component: {fileID: 6677373970687601472}
+  m_Layer: 3
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7961252064035361827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624099769097021349}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8334466796389946722}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6677373970687601472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624099769097021349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f1430e1b2af4d469f5c2fda6c7813f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrounded: 0
+  platformOffset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0.17, z: 0}
+  radius: 0.23
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &8710570569024409560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2958,6 +3008,7 @@ Transform:
   - {fileID: 4609904431848371702}
   - {fileID: 621608824833968034}
   - {fileID: 1145483916}
+  - {fileID: 7961252064035361827}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2991,9 +3042,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
+  groundCheck: {fileID: 0}
   mainCamera: {fileID: 0}
   isSprinting: 0
-  isGrounded: 0
   isFalling: 0
   isGliding: 0
   walkingSpeed: 1.8
@@ -3001,8 +3052,8 @@ MonoBehaviour:
   sprintingSpeed: 9
   rotationSpeed: 15
   platformOffset: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0.185, z: 0}
-  radius: 0.22
+  offset: {x: 0, y: 0.17, z: 0}
+  radius: 0.23
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -3111,7 +3162,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 0.91, z: 0}
 --- !u!54 &4538760325380745688
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3152,12 +3203,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8710570569024409560}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6600c91ad01052d4ba0af1b264de68c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 8710570569024409566}
+  groundCheck: {fileID: 0}
+  devStats: {fileID: 0}
 --- !u!1 &8812751587116653564
 GameObject:
   m_ObjectHideFlags: 0
