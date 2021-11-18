@@ -35,12 +35,8 @@ public class PlayerGroundCheck : MonoBehaviour
         GroundCheck(isColliding);
     }
 
-    public void ActivateGroundCheck() { Debug.Log("Activate check"); _radius = startRadius; }
-    public void DeactivateGroundCheck() 
-    {
-        Debug.Log("Deactivate check");
-        _radius = 0;
-    }
+    public void ActivateGroundCheck() { _radius = startRadius; }
+    public void DeactivateGroundCheck() { _radius = 0; }
 
     private void OnDrawGizmos()
     {

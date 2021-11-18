@@ -14,6 +14,7 @@ public class PlayerMain : MonoBehaviour
     private void Update()
     {
         PlayerInputManager.HandleAllInputs();
+        PlayerInputManager.CheckForControlSchemeChange();
         PlayerMovement.HandleUpdateMovements();
     }
 

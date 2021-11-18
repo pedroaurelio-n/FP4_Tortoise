@@ -493,7 +493,7 @@ GameObject:
   m_Layer: 3
   m_Name: CameraFocus
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2520,9 +2520,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
   attackDuration: 0.7
-  knockbackHorizontal: 1600
-  knockbackVertical: 6.5
-  knockbackTime: 0.5
+  knockbackHorizontal: 1100
+  knockbackVertical: 13
+  knockbackTime: 0.65
   invincibilityTime: 1.5
   isAttacking: 0
   isInvincible: 0
@@ -2958,10 +2958,11 @@ MonoBehaviour:
   isGrounded: 0
   platformOffset: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 0.17, z: 0}
-  radius: 0.23
+  startRadius: 0.23
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
+  activationDelay: 1
 --- !u!1 &8710570569024409560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,6 +2983,7 @@ GameObject:
   - component: {fileID: 4538760325380745688}
   - component: {fileID: 5284298489012419560}
   - component: {fileID: 8710570569024409538}
+  - component: {fileID: 1556592690}
   m_Layer: 3
   m_Name: PlayerCharacter HitboxTest
   m_TagString: Untagged
@@ -3042,7 +3044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMain: {fileID: 8710570569024409565}
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 6677373970687601472}
   mainCamera: {fileID: 0}
   isSprinting: 0
   isFalling: 0
@@ -3051,16 +3053,10 @@ MonoBehaviour:
   runningSpeed: 6.3
   sprintingSpeed: 9
   rotationSpeed: 15
-  platformOffset: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0.17, z: 0}
-  radius: 0.23
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  waitForFall: 0.14
-  normalJumpHeight: 7.5
-  doubleJumpHeightDecreaser: 0.7
-  lowJumpMultiplier: 1.7
+  waitForFall: 0.15
+  normalJumpHeight: 4
+  doubleJumpHeightDecreaser: 1.1
+  lowJumpMultiplier: 1.9
   gravityAmplifierGrounded: -25
   gravityAmplifierMidAir: -2.5
   additionalJumps: 1
@@ -3208,8 +3204,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6600c91ad01052d4ba0af1b264de68c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 6677373970687601472}
   devStats: {fileID: 0}
+--- !u!114 &1556592690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8710570569024409560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e31538a06d5cc59459ccae23c6c27a22, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CinemachineInputChange, Assembly-CSharp
+        m_MethodName: ChangeCameraSettingsByControlScheme
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1556592690}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.InputSystem.PlayerInput,
+            Unity.InputSystem
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c617fab-c267-4f63-b129-47e36ca76c88
+    m_ActionName: PlayerMovement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b757106b-b552-467e-9561-2e6e0355d5a1
+    m_ActionName: PlayerMovement/Look[/Mouse/delta,/XInputControllerWindows/rightStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 412e9c42-8b79-4ffc-a679-681f63fc07c7
+    m_ActionName: PlayerActions/Sprint[/Keyboard/leftShift,/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 00f336bf-3afa-424a-be9a-e27f49ffea1c
+    m_ActionName: PlayerActions/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e57f2f90-098f-4b41-9f5f-e3c939ca45e9
+    m_ActionName: PlayerActions/Glide[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7e81f680-7f44-43b6-8678-ad099bc68705
+    m_ActionName: PlayerActions/AnyGlide[/Keyboard/leftCtrl,/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40eb7ba5-145f-4189-9787-6092d645c594
+    m_ActionName: PlayerActions/Attack[/Keyboard/e,/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f665b927-b105-4518-9101-815b1ed7539f
+    m_ActionName: PlayerActions/Interact[/Keyboard/f,/XInputControllerWindows/buttonEast]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: KeyboardMouse
+  m_DefaultActionMap: PlayerMovement
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &8812751587116653564
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
+    public delegate void ControlSchemeChanged(PlayerInput input);
+    public static event ControlSchemeChanged onControlSchemeChange;
+
     [SerializeField] private PlayerMain playerMain;
 
     private PlayerControls playerControls;
+    private PlayerInput playerInput;
 
     private Vector2 _inputMovementVector;
     public float MoveAmount;
@@ -21,6 +26,37 @@ public class PlayerInputManager : MonoBehaviour
     public bool interactInput;
 
     public bool canTriggerJumpInput = true;
+
+    private string _currentControlScheme;
+
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+    }
+
+    private void Start()
+    {
+        if (onControlSchemeChange != null)
+        {
+            onControlSchemeChange(playerInput);
+            Debug.Log("Send Control Start Event");
+        }
+    }
+
+    public void CheckForControlSchemeChange()
+    {
+        var checkNewScheme = playerInput.currentControlScheme;
+        if (checkNewScheme != _currentControlScheme)
+        {
+            _currentControlScheme = checkNewScheme;
+
+            if (onControlSchemeChange != null)
+            {
+                onControlSchemeChange(playerInput);
+                Debug.Log("Send Control Change Event");
+            }
+        }
+    }
 
     public void HandleAllInputs()
     {

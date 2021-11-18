@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerMain playerMain;
     public PlayerGroundCheck groundCheck;
+    //[SerializeField] private PlayerCameraFollow cameraFollow;
     [SerializeField] private Camera mainCamera;
 
     [Header("Movement Flags")]
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
             
             if (isFalling)
             {
-                Debug.Log("Cancel Fall");
+                //cameraFollow.OnHitGround();
                 isFalling = false;
                 StopCoroutine(_fallCoroutine);
             }
@@ -107,22 +108,23 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movementVelocity;
         isSprinting = playerMain.PlayerInputManager.sprintInput;
 
+        var moveAmount = playerMain.PlayerInputManager.MoveAmount;
 
         if (isSprinting && groundCheck.isGrounded)
         {
-            movementVelocity = _movementDirection * sprintingSpeed;
+            movementVelocity = _movementDirection * sprintingSpeed * moveAmount;
         }
 
         else
         {
             if (playerMain.PlayerInputManager.MoveAmount >= 0.5f)
             {
-                movementVelocity = _movementDirection * runningSpeed;
+                movementVelocity = _movementDirection * runningSpeed * moveAmount;
             }
 
             else
             {
-                movementVelocity = _movementDirection * walkingSpeed;
+                movementVelocity = _movementDirection * walkingSpeed * moveAmount;
             }
         }
 
@@ -202,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpHeight = doubleJumpHeight;
                 playerMain.PlayerAnimationManager.SetTrigger("hasDoubleJumped");
                 Debug.Log("DoubleJump");
+                _jumpsQuantity--;
             }
 
             else
@@ -210,7 +213,6 @@ public class PlayerMovement : MonoBehaviour
                 playerMain.PlayerAnimationManager.SetTrigger("hasJumped");
             }
 
-            _jumpsQuantity--;
             _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
         }
     }
@@ -250,4 +252,7 @@ public class PlayerMovement : MonoBehaviour
         isOnKnockback = false;
         yield return null;
     }
+
+    public Vector3 GetPlayerVelocity() { return playerCharacterController.velocity; }
+    public int GetAvalilableJumps() { return _jumpsQuantity; }
 }
