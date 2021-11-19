@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
+    [SerializeField] private PlayerMain playerMain;
     [SerializeField] private bool applyAnimationSnapping;
     private Animator playerAnimator;
 
@@ -85,9 +86,19 @@ public class PlayerAnimationManager : MonoBehaviour
         return new Vector2(snappedHorizontal, snappedVertical);
     }
 
+    public void PlayAnimation(string animation)
+    {
+        playerAnimator.Play(animation);
+    }
+
     public AnimatorStateInfo GetCurrentAnimation()
     {
         return playerAnimator.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public bool IsAnimatorInTransition()
+    {
+        return playerAnimator.IsInTransition(0);
     }
 
     public void SetGroundedBool(bool isGrounded)
@@ -95,8 +106,33 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.SetBool("isGrounded", isGrounded);
     }
 
+    public void SetAttackBool(int index, bool value)
+    {
+        playerAnimator.SetBool("Attack" + index, value);
+    }
+
     public void SetTrigger(string param)
     {
         playerAnimator.SetTrigger(param);
+    }
+
+    public void SetRootMotion(bool value)
+    {
+        playerAnimator.applyRootMotion = value;
+    }
+
+    public void CombatControllerEvent_ComboPossible()
+    {
+        playerMain.PlayerCombatController.ComboPossible();
+    }
+
+    public void CombatControllerEvent_NextAttack()
+    {
+        playerMain.PlayerCombatController.NextAttack();
+    }
+
+    public void CombatControllerEvent_ResetCombo()
+    {
+        playerMain.PlayerCombatController.ResetCombo();
     }
 }

@@ -128,9 +128,12 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        playerCharacterController.Move(new Vector3(movementVelocity.x, _playerVelocity.y, movementVelocity.z) * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
+        if (!playerMain.PlayerCombatController.isAttacking)
+        {
+            playerCharacterController.Move(new Vector3(movementVelocity.x, _playerVelocity.y, movementVelocity.z) * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
+            playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
+        }
 
-        playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
     }
 
     private void HandleRotation()
@@ -189,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleJumping()
     {
-        if (_jumpsQuantity > 0)
+        if (_jumpsQuantity > 0 && !playerMain.PlayerCombatController.isAttacking)
         {
             groundCheck.DeactivateGroundCheck();
             var doubleJumpHeight = normalJumpHeight * doubleJumpHeightDecreaser;
