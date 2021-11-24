@@ -14,6 +14,7 @@ public class PlayerGroundCheck : MonoBehaviour
     [SerializeField] private float activationDelay;
 
     private float _radius;
+    private bool isOnMovingPlatform;
 
     private void Start()
     {
@@ -37,6 +38,8 @@ public class PlayerGroundCheck : MonoBehaviour
 
     public void ActivateGroundCheck() { _radius = startRadius; }
     public void DeactivateGroundCheck() { _radius = 0; }
+
+    public void SetMovingPlatformBool(bool value) { isOnMovingPlatform = value; }
 
     private void OnDrawGizmos()
     {

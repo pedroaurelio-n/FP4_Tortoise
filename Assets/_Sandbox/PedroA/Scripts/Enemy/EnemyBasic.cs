@@ -99,14 +99,25 @@ public class EnemyBasic : Enemy
 
         while (MovementType == EnemyMovementType.WANDER)
         {
-            var currentDestination = GetRandomPointInsideCollider(wanderArea);
-            point.position = currentDestination;
+            var currentWaypoint = GetRandomPointInsideCollider(wanderArea);
+            point.position = currentWaypoint;
+
+            /*var colliders = Physics.OverlapSphere(point.position, 0f, groundLayer);
+
+            while (colliders.Length > 0)
+            {
+                Debug.Log("Waypoint colliding");
+                currentWaypoint = GetRandomPointInsideCollider(wanderArea);
+                point.position = currentWaypoint;
+                yield return null;
+            }*/
+
 
             navMeshAgent.isStopped = false;
 
-            while (Vector3.Distance(transform.position, currentDestination) > minimumWanderDistance)
+            while (Vector3.Distance(transform.position, currentWaypoint) > minimumWanderDistance)
             {
-                navMeshAgent.SetDestination(currentDestination);
+                navMeshAgent.SetDestination(currentWaypoint);
                 yield return null;
             }
 

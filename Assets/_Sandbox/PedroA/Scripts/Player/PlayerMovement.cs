@@ -106,11 +106,11 @@ public class PlayerMovement : MonoBehaviour
         _movementDirection.Normalize();
 
         Vector3 movementVelocity;
-        isSprinting = playerMain.PlayerInputManager.sprintInput;
+        isSprinting = playerMain.PlayerInputManager.sprintInput && groundCheck.isGrounded;
 
         var moveAmount = playerMain.PlayerInputManager.MoveAmount;
 
-        if (isSprinting && groundCheck.isGrounded)
+        if (isSprinting)
         {
             movementVelocity = _movementDirection * sprintingSpeed * moveAmount;
         }

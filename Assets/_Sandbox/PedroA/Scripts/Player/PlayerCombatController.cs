@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
 {
+    public delegate void AttackStarted();
+    public static event AttackStarted onAttackStart;
+    public delegate void AttackEnded();
+    public static event AttackEnded onAttackEnd;
+
     public delegate void PlayerDamageHit(int damage);
     public static event PlayerDamageHit onPlayerDamageHit;
 
     [SerializeField] private PlayerMain playerMain;
-    [SerializeField] private float attackDuration;
 
     [Header("KnockBack Configs")]
     [SerializeField] private float knockbackHorizontal;
     [SerializeField] private float knockbackVertical;
     [SerializeField] private float knockbackTime;
     [SerializeField] private float invincibilityTime;
-
-    [Header("Combo Timing Configs")]
-    [Range(0f, 1f)]
-    [SerializeField] private float firstComboTimingPercentage;
-    [Range(0f, 1f)]
-    [SerializeField] private float secondComboTimingPercentage;
 
     public bool isAttacking;
     public bool isInvincible;
@@ -66,6 +64,10 @@ public class PlayerCombatController : MonoBehaviour
         Debug.Log("Combo reset");
         isComboPossible = false;
         isAttacking = false;
+
+        if (onAttackEnd != null)
+            onAttackEnd();
+
         playerMain.PlayerAnimationManager.SetRootMotion(false);
         _comboStep = 0;
         playerMain.PlayerAnimationManager.SetAttackBool(1, false);
@@ -76,12 +78,13 @@ public class PlayerCombatController : MonoBehaviour
     public void LaunchAttack()
     {
         isAttacking = true;
+
         playerMain.PlayerAnimationManager.SetRootMotion(true);
         if (_comboStep == 0)
         {
-            Debug.Log("Launch attack 1");
-            playerMain.PlayerAnimationManager.SetAttackBool(1, true);
-            _comboStep = 1;
+            if (onAttackStart != null)
+                onAttackStart();
+
             return;
         }
 
@@ -93,6 +96,13 @@ public class PlayerCombatController : MonoBehaviour
                 _comboStep++;
             }
         }
+    }
+
+    public void StartAttack()
+    {
+        Debug.Log("Launch attack 1");
+        playerMain.PlayerAnimationManager.SetAttackBool(1, true);
+        _comboStep = 1;
     }
 
     private IEnumerator DisableInvincibility()
@@ -125,5 +135,15 @@ public class PlayerCombatController : MonoBehaviour
 
             ReceiveDamage(enemy);
         }
-    } 
+    }
+
+    private void OnEnable()
+    {
+        CompanionMain.onPlacementCompleted += StartAttack;
+    }
+
+    private void OnDisable()
+    {
+        CompanionMain.onPlacementCompleted -= StartAttack;
+    }
 }
