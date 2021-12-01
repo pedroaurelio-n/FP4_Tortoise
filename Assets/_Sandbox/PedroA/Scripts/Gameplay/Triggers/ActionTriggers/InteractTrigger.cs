@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractTrigger : Trigger
+public class InteractTrigger : ActionTrigger
 {
     public delegate void SetInteractionButtonUI(bool status);
     public static event SetInteractionButtonUI onSetInteractionButton;

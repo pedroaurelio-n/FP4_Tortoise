@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityAmplifierMidAir;
     [SerializeField] private int additionalJumps;
     [SerializeField] private float glideGravityReducer;
+    [SerializeField] private float glideVelocityDecreaseDuration;
 
 
     private Vector3 _movementDirection;
@@ -41,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController playerCharacterController;
     private float _startStepOffset;
+
+    private float _timeElapsed;
 
     private void Awake()
     {
@@ -106,13 +109,31 @@ public class PlayerMovement : MonoBehaviour
         _movementDirection.Normalize();
 
         Vector3 movementVelocity;
-        isSprinting = playerMain.PlayerInputManager.sprintInput && groundCheck.isGrounded;
+        isSprinting = playerMain.PlayerInputManager.sprintInput;
 
         var moveAmount = playerMain.PlayerInputManager.MoveAmount;
 
         if (isSprinting)
         {
-            movementVelocity = _movementDirection * sprintingSpeed * moveAmount;
+            if (groundCheck.isGrounded)
+            {
+                movementVelocity = _movementDirection * sprintingSpeed * moveAmount;
+                _timeElapsed = 0;
+            }
+            
+            else
+            {
+                if (_timeElapsed < glideVelocityDecreaseDuration)
+                {
+                    float actualSpeed = Mathf.Lerp(sprintingSpeed, runningSpeed, _timeElapsed/glideVelocityDecreaseDuration);
+                    _timeElapsed += Time.deltaTime;
+                    Debug.Log(_timeElapsed);
+                    movementVelocity = _movementDirection * actualSpeed * moveAmount;
+                }
+
+                else
+                    movementVelocity = _movementDirection * runningSpeed * moveAmount;
+            }
         }
 
         else

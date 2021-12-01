@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnterTrigger : Trigger
+public class EnterTrigger : ActionTrigger
 {
     private void OnTriggerEnter(Collider other)
     {

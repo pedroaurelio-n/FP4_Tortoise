@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyWaveTrigger : Trigger
+public class EnemyWaveTrigger : ActionTrigger
 {
     public List<Enemy> EnemyList;
     

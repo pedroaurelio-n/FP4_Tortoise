@@ -83,8 +83,8 @@ public class CompanionMain : MonoBehaviour
         {
             if (!companionNavMesh.gameObject.activeInHierarchy)
             {
-                companionNavMesh.gameObject.SetActive(true);
                 companionNavMesh.transform.position = transform.position;
+                companionNavMesh.gameObject.SetActive(true);
             }
             var navMeshPosition = companionNavMesh.transform.position;
             var desiredPosition = new Vector3(navMeshPosition.x, playerCompanionPlacement.position.y, navMeshPosition.z);

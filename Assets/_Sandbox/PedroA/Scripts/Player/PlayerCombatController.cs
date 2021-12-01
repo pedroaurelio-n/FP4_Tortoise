@@ -131,7 +131,7 @@ public class PlayerCombatController : MonoBehaviour
             isComboPossible = true;
             isAttacking = false;
             _comboStep = 0;
-            playerMain.PlayerAnimationManager.SetRootMotion(true);
+            StartCoroutine(DisableRootMotion());
 
             if (onAttackEnd != null)
                 onAttackEnd();
@@ -149,7 +149,7 @@ public class PlayerCombatController : MonoBehaviour
             isComboPossible = true;
             isAttacking = false;
             _comboStep = 0;
-            playerMain.PlayerAnimationManager.SetRootMotion(true);
+            StartCoroutine(DisableRootMotion());
 
             if (onAttackEnd != null)
                 onAttackEnd();
@@ -167,7 +167,7 @@ public class PlayerCombatController : MonoBehaviour
             isComboPossible = true;
             isAttacking = false;
             _comboStep = 0;
-            playerMain.PlayerAnimationManager.SetRootMotion(true);
+            StartCoroutine(DisableRootMotion());
 
             if (onAttackEnd != null)
                 onAttackEnd();
@@ -203,6 +203,12 @@ public class PlayerCombatController : MonoBehaviour
 
         isInvincible = true;
         StartCoroutine(DisableInvincibility());
+    }
+
+    private IEnumerator DisableRootMotion()
+    {
+        yield return new WaitForSeconds(0.5f);
+        playerMain.PlayerAnimationManager.SetRootMotion(false);
     }
 
     private void OnTriggerEnter(Collider other)
