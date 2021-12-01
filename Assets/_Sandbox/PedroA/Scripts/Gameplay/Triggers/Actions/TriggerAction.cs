@@ -9,6 +9,7 @@ public abstract class TriggerAction : MonoBehaviour
     public static event SendFailMessage onFailMessageSent;
     
     public bool isActionOnProgress;
+    public float delayToActivate;
 
     public void SendFailEvent(string message)
     {

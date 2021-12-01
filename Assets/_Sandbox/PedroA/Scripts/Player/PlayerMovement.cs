@@ -187,6 +187,8 @@ public class PlayerMovement : MonoBehaviour
                     _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
 
             }
+
+            playerMain.PlayerAnimationManager.SetGlidingBool(isGliding);
         }
     }
 
@@ -206,7 +208,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 jumpHeight = doubleJumpHeight;
                 playerMain.PlayerAnimationManager.SetTrigger("hasDoubleJumped");
-                Debug.Log("DoubleJump");
                 _jumpsQuantity--;
             }
 
@@ -234,7 +235,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (!groundCheck.isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") && _playerVelocity.y < 0)
         {
-            Debug.Log("Trigger Fall");
             playerMain.PlayerAnimationManager.SetTrigger("isFalling");
         }
     }

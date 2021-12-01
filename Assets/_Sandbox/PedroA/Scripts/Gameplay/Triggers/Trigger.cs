@@ -38,6 +38,11 @@ public abstract class Trigger : MonoBehaviour
                     reference.actionList.RemoveAt(0);
                 }
 
+                else
+                {
+                    yield break;
+                }
+
                 yield return new WaitForSeconds(delayBetweenActions);
             }
 

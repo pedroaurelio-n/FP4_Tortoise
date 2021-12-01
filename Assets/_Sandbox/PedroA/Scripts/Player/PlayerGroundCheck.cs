@@ -14,7 +14,7 @@ public class PlayerGroundCheck : MonoBehaviour
     [SerializeField] private float activationDelay;
 
     private float _radius;
-    private bool isOnMovingPlatform;
+    public bool isOnMovingPlatform;
 
     private void Start()
     {
@@ -45,6 +45,6 @@ public class PlayerGroundCheck : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(transform.position + offset + platformOffset, _radius);
+        Gizmos.DrawWireSphere(transform.position + offset + platformOffset, startRadius);
     }
 }

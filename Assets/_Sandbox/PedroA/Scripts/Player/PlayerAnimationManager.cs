@@ -111,6 +111,11 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.SetBool("Attack" + index, value);
     }
 
+    public void SetGlidingBool(bool isGliding)
+    {
+        playerAnimator.SetBool("isGliding", isGliding);
+    }
+
     public void SetTrigger(string param)
     {
         playerAnimator.SetTrigger(param);
@@ -121,7 +126,17 @@ public class PlayerAnimationManager : MonoBehaviour
         playerAnimator.applyRootMotion = value;
     }
 
-    public void CombatControllerEvent_ComboPossible()
+    public void SetComboStepInt(int value)
+    {
+        playerAnimator.SetInteger("ComboStep", value);
+    }
+
+    public void CombatControllerEvent_ComboCheck()
+    {
+        playerMain.PlayerCombatController.ComboCheck();
+    }
+
+    /*public void CombatControllerEvent_ComboPossible()
     {
         playerMain.PlayerCombatController.ComboPossible();
     }
@@ -134,5 +149,5 @@ public class PlayerAnimationManager : MonoBehaviour
     public void CombatControllerEvent_ResetCombo()
     {
         playerMain.PlayerCombatController.ResetCombo();
-    }
+    }*/
 }
