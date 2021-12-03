@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkingSpeed;
     [SerializeField] private float runningSpeed;
     [SerializeField] private float sprintingSpeed;
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float defaultRotationSpeed;
 
     [Header("Jump & Falling Configs")]
     [SerializeField] private float waitForFall;
@@ -167,6 +167,14 @@ public class PlayerMovement : MonoBehaviour
             targetDirection = transform.forward;
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+        float rotationSpeed;
+
+        if (playerMain.PlayerCombatController.isAttacking)
+            rotationSpeed = defaultRotationSpeed / 2;
+        else
+            rotationSpeed = defaultRotationSpeed;
+        
         Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         transform.rotation = playerRotation;
     }
