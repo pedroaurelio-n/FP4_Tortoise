@@ -127,7 +127,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     float actualSpeed = Mathf.Lerp(sprintingSpeed, runningSpeed, _timeElapsed/glideVelocityDecreaseDuration);
                     _timeElapsed += Time.deltaTime;
-                    Debug.Log(_timeElapsed);
                     movementVelocity = _movementDirection * actualSpeed * moveAmount;
                 }
 

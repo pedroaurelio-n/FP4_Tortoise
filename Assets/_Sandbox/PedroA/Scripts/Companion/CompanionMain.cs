@@ -49,7 +49,7 @@ public class CompanionMain : MonoBehaviour
 
     private void Start()
     {
-        startYPosition = playerCompanionPlacement.position.y;
+        startYPosition = playerCompanionPlacement.localPosition.y;
 
         hoverCoroutine = StartCoroutine(StartHover());
         meshTrail.enabled = false;
@@ -83,7 +83,7 @@ public class CompanionMain : MonoBehaviour
         {
             if (!companionNavMesh.gameObject.activeInHierarchy)
             {
-                companionNavMesh.transform.position = transform.position;
+                companionNavMesh.transform.position = playerCompanionPlacement.position;
                 companionNavMesh.gameObject.SetActive(true);
             }
             var navMeshPosition = companionNavMesh.transform.position;
@@ -145,7 +145,6 @@ public class CompanionMain : MonoBehaviour
 
             if (onPlacementCompleted != null)
             {
-                Debug.Log("Placement completed");
                 onPlacementCompleted();
             }
 
