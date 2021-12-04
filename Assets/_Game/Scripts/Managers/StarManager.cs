@@ -21,6 +21,11 @@ public class StarManager : MonoBehaviour
         return _STARCOUNT;
     }
 
+    public void RemoveStar(int value)
+    {
+        UpdateStarCount(-value);
+    }
+
     private void Start()
     {
         if (onStarCountChange != null)
@@ -39,10 +44,12 @@ public class StarManager : MonoBehaviour
     private void OnEnable()
     {
         Star.onStarCollected += UpdateStarCount;
+        TA_RemoveStar.onStarRemove += UpdateStarCount;
     }   
 
     private void OnDisable()
     {
         Star.onStarCollected -= UpdateStarCount;        
+        TA_RemoveStar.onStarRemove -= UpdateStarCount;
     } 
 }

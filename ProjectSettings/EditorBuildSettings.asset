@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Game/Scenes/LevelTutorial.unity
+    guid: 2246b9940eda68646bf964e2c738d71a
+  - enabled: 0
     path: Assets/_Sandbox/PedroA/Scenes/DemoLevel.unity
     guid: 8c49120984ffcfc43899bfd2ae9c4cb7
   - enabled: 0

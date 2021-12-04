@@ -82,11 +82,13 @@ public class CompanionAlertMessage : MonoBehaviour
     {   
         TriggerAction.onFailMessageSent += UpdateMessage;
         MessageTrigger.onMessageSent += UpdateMessage;
+        TA_SendUIMessage.onMessageSent += UpdateMessage;
     }
 
     private void OnDisable()
     {
         TriggerAction.onFailMessageSent -= UpdateMessage;
         MessageTrigger.onMessageSent -= UpdateMessage;
+        TA_SendUIMessage.onMessageSent -= UpdateMessage;
     }
 }

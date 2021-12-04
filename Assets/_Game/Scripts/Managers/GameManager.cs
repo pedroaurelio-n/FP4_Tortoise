@@ -6,12 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static bool canInput;
+
     [SerializeField] private bool lockMouse;
     [SerializeField] private bool showGraphy;
     [SerializeField] private GameObject graphy;
 
     private void Awake()
     {
+        canInput = true;
+        
         graphy.SetActive(showGraphy);
 
         if (lockMouse)

@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class TA_ActivateMovingPlatform : TriggerAction
+public class TA_InvokeEvent : TriggerAction
 {
-    [SerializeField] private MovingPlatform platform;
+    [SerializeField] private List<UnityEvent> events;
     [SerializeField] private int minimunStarsRequired;
     [SerializeField] private string failMessage;
-    [SerializeField] private bool isPlatformSequential;
-    
+
     public override bool TryToActivateAction()
     {
         if (CanActivateAction())
@@ -28,16 +28,9 @@ public class TA_ActivateMovingPlatform : TriggerAction
 
     protected override void ActivateAction()
     {
-        if (isPlatformSequential)
+        for (int i = 0; i < events.Count; i++)
         {
-            isActionOnProgress = true;
-            platform.canStart = true;
-            platform.CheckStart();
-            isActionOnProgress = false;
-        }
-        else
-        {
-            platform.GoToNextPoint();
+            events[0]?.Invoke();
         }
     }
 }

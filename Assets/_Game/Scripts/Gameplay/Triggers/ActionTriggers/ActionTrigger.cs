@@ -6,6 +6,7 @@ public abstract class ActionTrigger : MonoBehaviour
 {
     public ActionList reference;
     [SerializeField] private bool isListSequential;
+    [SerializeField] private bool willDeleteActions;
     [SerializeField] private float delayBetweenActions;
 
     protected IEnumerator CheckAction(ActionList reference)
@@ -18,7 +19,8 @@ public abstract class ActionTrigger : MonoBehaviour
         {
             if (reference.actionList[0].TryToActivateAction())
             {
-                reference.actionList.RemoveAt(0);
+                if (willDeleteActions)
+                        reference.actionList.RemoveAt(0);
             }
 
             yield return null;
@@ -35,7 +37,8 @@ public abstract class ActionTrigger : MonoBehaviour
                         yield return null;
                     }
 
-                    reference.actionList.RemoveAt(0);
+                    if (willDeleteActions)
+                        reference.actionList.RemoveAt(0);
                 }
 
                 else

@@ -60,10 +60,13 @@ public class PlayerInputManager : MonoBehaviour
 
     public void HandleAllInputs()
     {
-        HandleMovementInput();
-        HandleJumpingInput();
-        HandleAttackInput();
-        HandleInteractInput();
+        if (GameManager.canInput)
+        {
+            HandleMovementInput();
+            HandleJumpingInput();
+            HandleAttackInput();
+            HandleInteractInput();
+        }
     }
 
     private void HandleMovementInput()

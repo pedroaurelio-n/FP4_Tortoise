@@ -6,15 +6,18 @@ using DG.Tweening;
 public class MovingPlatform : MonoBehaviour
 {
     [SerializeField] private List<Transform> points;
+    [SerializeField] private List<bool> willGoDown;
     public bool canStart;
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform parent;
     [SerializeField] private float timeDelay;
     [SerializeField] private float moveTime;
+    [SerializeField] private bool isSequential = true;
     [SerializeField] private Ease ease;
     [SerializeField] private Vector3 platformOffset;
 
     private int index;
+    private bool isMoving;
 
     private Rigidbody rb;
 
@@ -25,6 +28,11 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
+        foreach(Transform point in points)
+        {
+            point.parent = parent;
+        }
+
         CheckStart();
     }
 
@@ -34,13 +42,8 @@ public class MovingPlatform : MonoBehaviour
         {
             points.Add(startPoint);
 
-            foreach(Transform point in points)
-            {
-                point.parent = parent;
-            }
-
             index = 0;
-
+            
             StartCoroutine(Move(index));
         }
     }
@@ -49,7 +52,23 @@ public class MovingPlatform : MonoBehaviour
     {
         yield return new WaitForSeconds(timeDelay);
 
-        rb.DOMove(points[index].position, moveTime).OnComplete(delegate { ChangePoint(); }).SetEase(ease);
+
+        if (isSequential)
+        {
+            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { ChangePoint(); }).SetEase(ease);
+        }
+        else
+        {
+            isMoving = true;
+            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { isMoving = false; }).SetEase(ease);
+        }
+        
+    }
+
+    public void GoToNextPoint()
+    {
+        if (!isMoving)
+            ChangePoint();
     }
 
     private void ChangePoint()
@@ -58,6 +77,8 @@ public class MovingPlatform : MonoBehaviour
 
         if (index >= points.Count)
             index = 0;
+        
+        rb.isKinematic = willGoDown[index];
 
         StartCoroutine(Move(index));
     }
@@ -73,9 +94,9 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out CharacterController player))
+        if (other.gameObject.TryGetComponent(out CharacterController playerController))
         {
-            player.Move(rb.velocity * Time.deltaTime);
+            playerController.Move(rb.velocity * Time.deltaTime);
         }
     }
 
