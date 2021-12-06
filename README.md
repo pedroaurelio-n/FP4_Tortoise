@@ -109,7 +109,7 @@
 - ### Características importantes dos personagens para a gameplay :
     
 
-   -   Os personagens possuem habilidades diferentes, que o jogador poderá utilizar ao longo de sua jornada, como exemplo, o Hoppe, ele será o personagem que o jogador irá controlar para a sua movimentação principal, e Robby, será um personagem que irá auxiliá-lo, como exemplo, ele poderá se transformar em um planador, para que o nosso personagem consiga planar.
+   -   Os personagens possuem habilidades diferentes, que o jogador poderá utilizar ao longo de sua jornada, como exemplo, o Hoppe, ele será o personagem que o jogador irá controlar para a sua movimentação principal, e Robby, será um personagem que irá auxiliá-lo, como exemplo, ele poderá se transformar em um “planador”, para que o nosso personagem consiga planar.
     
 
   
@@ -134,7 +134,7 @@
 - ### Cenário onde se passa o jogo:
     
 
-  -   O jogo se passa em um cenário onde o planeta natal dos personagens principais se esgotaram, restando apenas a morte da vida no planeta. Além do planeta deles, os planetas onde os personagens irão se aventurar, também possuirão problemas próprios.
+  -   O jogo se passa em um cenário onde o planeta natal dos personagens principais se esgotaram, restando apenas a morte no planeta. Além do planeta deles, os planetas onde os personagens irão se aventurar, também possuirão problemas próprios.
     
 
 - ### Game World:
@@ -193,6 +193,7 @@
     
 
     -   O coletável mais importante do jogo será as essências elementais, que irão ser o item principal do jogo, onde através dele será possível progredir nos níveis e na história.
+    -   Outros coletáveis existiram no jogo como chaves, para que o jogador possa prosseguir na sua jornada.
     
 
   
