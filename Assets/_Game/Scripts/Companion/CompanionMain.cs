@@ -39,6 +39,9 @@ public class CompanionMain : MonoBehaviour
     private bool isAttacking;
     private bool isReturningFromAttack;
     private bool isOnGlide;
+    private Coroutine startGliding;
+    private Coroutine returnFromGliding;
+    private Tween scaleToZero;
 
     private void Awake()
     {
@@ -61,13 +64,21 @@ public class CompanionMain : MonoBehaviour
 
         if (playerMovement.isGliding && !isOnGlide)
         {
-            StartCoroutine(ActivateGlideMovement());
+            if (returnFromGliding != null)
+                StopCoroutine(returnFromGliding);
+
+            startGliding = StartCoroutine(ActivateGlideMovement());
         }
 
         if (!playerMovement.isGliding && isOnGlide)
         {
-            StartCoroutine(DeactivateGlideMovement());
-            meshTrail.enabled = false;
+            if (startGliding != null)
+            {
+                StopCoroutine(startGliding);
+            }
+
+            returnFromGliding = StartCoroutine(DeactivateGlideMovement());
+            //meshTrail.enabled = false;
         }
 
         if (Vector3.Distance(mesh.transform.position, transform.position) > 100)
@@ -176,23 +187,29 @@ public class CompanionMain : MonoBehaviour
     {
         yield return null;
         isOnGlide = true;
-        mesh.transform.DOScale(Vector3.zero, glideMovementDuration).SetEase(attackEase);
-        mesh.transform.DOMove(playerCompanionSocket.position, glideMovementDuration).SetEase(attackEase).OnComplete(delegate {
-        //mesh.transform.DOScale(Vector3.zero, movementToAttackDuration).SetEase(attackEase).OnComplete(delegate {
-            mesh.SetActive(false);
-            meshTrail.enabled = true;
-        });
+        scaleToZero = mesh.transform.DOScale(Vector3.zero, glideMovementDuration).SetEase(attackEase);
+        mesh.transform.DOMove(playerCompanionSocket.position, glideMovementDuration).SetEase(attackEase);
+
+        yield return new WaitForSeconds(glideMovementDuration+0.02f);
+        mesh.SetActive(false);
+        meshTrail.enabled = true;
     }
 
     private IEnumerator DeactivateGlideMovement()
     {
         yield return null;
         isOnGlide = false;
+        scaleToZero.Kill();
         transform.position = playerCompanionPlacement.position;
         mesh.transform.position = playerCompanionSocket.position;
         mesh.SetActive(true);
-        mesh.transform.DOScale(Vector3.one, 0f).SetEase(attackEase);
-        mesh.transform.DOMove(transform.position, glideMovementDuration).SetEase(attackEase).OnComplete(delegate { mesh.SetActive(true);});
+        meshTrail.enabled = false;
+        mesh.transform.DOMove(transform.position, glideMovementDuration).SetEase(attackEase);
+
+        yield return new WaitForSeconds(glideMovementDuration+0.01f);
+        mesh.transform.localScale = Vector3.one;
+        mesh.SetActive(true);
+        meshTrail.enabled = false;
     }
 
     private void OnEnable()

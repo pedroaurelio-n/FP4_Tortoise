@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAnimationManager : MonoBehaviour
 {
     [SerializeField] private PlayerMain playerMain;
+    [SerializeField] private List<AudioClip> stepClips;
     [SerializeField] private bool applyAnimationSnapping;
     private Animator playerAnimator;
 
@@ -134,6 +135,12 @@ public class PlayerAnimationManager : MonoBehaviour
     public void CombatControllerEvent_ComboCheck()
     {
         playerMain.PlayerCombatController.ComboCheck();
+    }
+
+    public void TriggerFootstepSFX()
+    {
+        var randomClip = Random.Range(0, stepClips.Count);
+        AudioManager.Instance.PlayAudio(stepClips[randomClip]);
     }
 
     /*public void CombatControllerEvent_ComboPossible()

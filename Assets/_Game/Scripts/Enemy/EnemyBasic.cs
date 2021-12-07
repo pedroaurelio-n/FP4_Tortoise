@@ -6,10 +6,13 @@ using DG.Tweening;
 
 public class EnemyBasic : Enemy
 {
+    [SerializeField] private SkinnedMeshRenderer meshRenderer;
+    [SerializeField] private List<AudioClip> damageClips;
+    [SerializeField] private GameObject hitParticle;
     [SerializeField] private float delayBetweenPoints;
     [SerializeField] private float minimumWanderDistance;
     [SerializeField] private float minimumFollowDistance;
-    [SerializeField] private float maximumFollowDistance;
+    [SerializeField] private float attackDistance;
     [SerializeField] private float followSpeedMultiplier;
     [SerializeField] private float delayOnDamage;
     [SerializeField] private float knockbackforce;
@@ -24,19 +27,20 @@ public class EnemyBasic : Enemy
     private Coroutine followMovement;
     private Coroutine recoverFromDamageFeedback;
     private bool isAlive;
+    private bool isAttacking;
     private Color currentColor;
 
     private Rigidbody rigidBody;
+    private Animator animator;
     private NavMeshAgent navMeshAgent;
-    private MeshRenderer meshRenderer;
 
     private void Awake()
     {
         InitializeValues();
 
         rigidBody = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        meshRenderer = GetComponent<MeshRenderer>();
     }
 
     private void Start()
@@ -91,11 +95,12 @@ public class EnemyBasic : Enemy
         if (followMovement != null)
             StopCoroutine(followMovement);
 
-        currentColor = Color.green;
-        meshRenderer.material.DOColor(currentColor, 0f);
-
-        if (!isAlive)
+        if (!isAlive && isAttacking)
             yield break;
+
+        animator.SetBool("Run", false);
+        animator.SetBool("Activated", true);
+        //meshRenderer.material.DOColor(currentColor, 0f);
 
         while (MovementType == EnemyMovementType.WANDER)
         {
@@ -135,11 +140,11 @@ public class EnemyBasic : Enemy
         if (wanderMovement != null)
             StopCoroutine(wanderMovement);
 
-        currentColor = Color.yellow;
-        meshRenderer.material.DOColor(currentColor, 0f);
-
-        if (!isAlive)
+        if (!isAlive && isAttacking)
             yield break;
+
+        animator.SetBool("Run", true);
+        //meshRenderer.material.DOColor(currentColor, 0f);
 
         navMeshAgent.isStopped = false;
 
@@ -148,8 +153,34 @@ public class EnemyBasic : Enemy
             point.position = target.position;
             navMeshAgent.SetDestination(target.position);
             yield return null;
+
+            if (Vector3.Distance(target.position, transform.position) < attackDistance && !isAttacking)
+            {
+                TriggerAttack();
+            }
         }
         yield return null;
+    }
+
+    public void TriggerAttack()
+    {
+        if (!isAlive)
+            return;
+
+        var lookDirection = Quaternion.LookRotation(target.position - transform.position, Vector3.up);
+        transform.rotation = lookDirection;
+
+        isAttacking = true;
+        navMeshAgent.isStopped = true;
+        navMeshAgent.velocity = Vector3.zero;
+        animator.SetTrigger("Attack");
+    }
+
+    public void ResetAttack()
+    {
+        Debug.Log("test");
+        navMeshAgent.isStopped = false;
+        isAttacking = false;
     }
 
     private IEnumerator RecoverFromDamageFeedback()
@@ -178,21 +209,29 @@ public class EnemyBasic : Enemy
 
     protected override void DamageFeedback(Vector3 hitNormal)
     {
+        var randomClip = Random.Range(0, damageClips.Count);
+        AudioManager.Instance.PlayAudio(damageClips[randomClip]);
+
+        var temp = Instantiate(hitParticle, transform.position, Quaternion.identity);
+        var lenght = temp.GetComponent<ParticleSystem>().main.duration;
+        Destroy(temp, lenght);
+
         if (recoverFromDamageFeedback != null)
             StopCoroutine(recoverFromDamageFeedback);
+
         
         recoverFromDamageFeedback = StartCoroutine(RecoverFromDamageFeedback());
         rigidBody.AddForce(hitNormal.normalized * knockbackforce, ForceMode.Impulse);
 
-        Tween damageWhite = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
-        Tween damageWhite2 = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
-        Tween damageCurrent = meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.05f);
+        Tween damageWhite = meshRenderer.material.DOColor(Color.black, delayOnDamage * 0.05f);
+        Tween damageWhite2 = meshRenderer.material.DOColor(Color.black, delayOnDamage * 0.05f);
+        Tween damageCurrent = meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.05f);
 
         Sequence damageSequence = DOTween.Sequence();
         damageSequence.Append(damageWhite)
         .Append(damageCurrent)
         .Append(damageWhite2)
-        .Append(meshRenderer.material.DOColor(currentColor, delayOnDamage * 0.85f));
+        .Append(meshRenderer.material.DOColor(Color.white, delayOnDamage * 0.85f));
 
         damageSequence.Play();
     }
@@ -200,6 +239,13 @@ public class EnemyBasic : Enemy
     protected override void Die()
     {
         base.Die();
+
+        var randomClip = Random.Range(0, damageClips.Count);
+        AudioManager.Instance.PlayAudio(damageClips[randomClip]);
+
+        var temp = Instantiate(hitParticle, transform.position, Quaternion.identity);
+        var lenght = temp.GetComponent<ParticleSystem>().main.duration;
+        Destroy(temp, lenght);
         
         if (recoverFromDamageFeedback != null)
             StopCoroutine(recoverFromDamageFeedback);
@@ -208,25 +254,27 @@ public class EnemyBasic : Enemy
         navMeshAgent.isStopped = true;
         canDamagePlayer = false;
         navMeshAgent.velocity = Vector3.zero;
+        navMeshAgent.enabled = false;
+        rigidBody.useGravity = true;
 
-        GetComponent<Collider>().enabled = false;
+        //GetComponent<Collider>().enabled = false;
 
-        currentColor = Color.red;
+        currentColor = Color.black;
+        animator.SetBool("Run", false);
+        animator.SetBool("Activated", false);
+
         meshRenderer.material.DOColor(currentColor, 0f);
 
-        transform.DOScale(transform.localScale * 1.25f, 0.1f).OnComplete(delegate {
-            transform.DOScale(Vector3.zero, 0.75f).OnComplete(delegate {
-                Destroy(gameObject);
-            });
-        });
+        //transform.DOScale(transform.localScale * 1.25f, 0.1f).OnComplete(delegate {
+        //    transform.DOScale(Vector3.zero, 0.75f).OnComplete(delegate {
+        //        Destroy(gameObject);
+        //    });
+        //});
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, minimumFollowDistance);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, maximumFollowDistance);
     }
 }

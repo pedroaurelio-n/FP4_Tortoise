@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public static bool canInput;
 
     [SerializeField] private bool lockMouse;
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         canInput = true;
         
         graphy.SetActive(showGraphy);
@@ -22,6 +25,20 @@ public class GameManager : MonoBehaviour
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
+    public void LockMouse(bool value)
+    {
+        if (value)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        else
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 

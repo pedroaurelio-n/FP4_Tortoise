@@ -7,6 +7,9 @@ public class PlayerHealth : MonoBehaviour
     public delegate void HealthChange(float newHealth, float maxHealth, float value);
     public static event HealthChange onHealthChange;
 
+    public delegate void TriggerGameOver();
+    public static event TriggerGameOver onGameOver;
+
     [SerializeField] private float maxHealth;
 
     private float _currentHealth;
@@ -34,6 +37,12 @@ public class PlayerHealth : MonoBehaviour
         _currentHealth += damage;
         if (onHealthChange != null)
             onHealthChange(_currentHealth, maxHealth, damage);
+        
+        if (_currentHealth <= 0)
+        {
+            if (onGameOver != null)
+                onGameOver();
+        }
     }
 
     private void OnEnable()

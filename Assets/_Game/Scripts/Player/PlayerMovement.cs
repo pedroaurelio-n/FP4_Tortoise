@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerGroundCheck groundCheck;
     //[SerializeField] private PlayerCameraFollow cameraFollow;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private GameObject jumpParticle;
 
     [Header("Movement Flags")]
     public bool isSprinting;
@@ -236,6 +237,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 jumpHeight = doubleJumpHeight;
                 playerMain.PlayerAnimationManager.SetTrigger("hasDoubleJumped");
+                var temp = Instantiate(jumpParticle, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+                var lenght = temp.GetComponent<ParticleSystem>().main.duration;
+                Destroy(temp, lenght);
                 _jumpsQuantity--;
             }
 

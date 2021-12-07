@@ -24,6 +24,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool anyglideInput;
     public bool attackInput;
     public bool interactInput;
+    public bool pauseInput;
 
     public bool canTriggerJumpInput = true;
 
@@ -133,6 +134,9 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.Attack.performed += ctx => attackInput = true;
 
             playerControls.PlayerActions.Interact.performed += ctx => interactInput = true;
+
+            //playerControls.PlayerActions.Pause.performed += ctx => pauseInput = true;
+            //playerControls.PlayerActions.Pause.canceled += ctx => pauseInput = false;
         }
 
         playerControls.Enable();

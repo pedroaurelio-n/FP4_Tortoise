@@ -7,6 +7,9 @@ using DG.Tweening;
 
 public class UI_HealthCircle : MonoBehaviour
 {
+    /*public delegate void TriggerGameOver();
+    public static event TriggerGameOver onGameOver;*/
+    
     [Header("UI Components")]
     [SerializeField] private CanvasGroup healthGroup;
     [SerializeField] private Image healthCircle;
@@ -55,7 +58,7 @@ public class UI_HealthCircle : MonoBehaviour
 
     private IEnumerator FillHealthCircleToMax(float maxHealth)
     {
-        yield return new WaitForSeconds(fillStartDelay);
+        yield return new WaitForSecondsRealtime(fillStartDelay);
 
         _maxHealth = maxHealth;
 
@@ -106,7 +109,11 @@ public class UI_HealthCircle : MonoBehaviour
         if (_health > 0)
             healthText.text = _health.ToString();
         else
+        {
             healthText.text = "0";
+            /*if (onGameOver != null)
+                onGameOver();*/
+        }
 
         fadeOut = StartCoroutine(HealthFadeOut());
         yield return null;

@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 [RequireComponent(typeof(Canvas))]
 [DisallowMultipleComponent]
@@ -9,6 +12,8 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private Page initialPage;
     [SerializeField] private GameObject firstFocusItem;
+    [SerializeField] private Image fadeImage;
+    [SerializeField] private float fadeDuration;
 
     private Canvas _rootCanvas;
     private Stack<Page> _pageStack = new Stack<Page>();
@@ -20,6 +25,11 @@ public class MenuController : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
+
+
+        fadeImage.DOFade(1f, 0f).SetUpdate(true);
+        fadeImage.DOFade(1f, fadeDuration).SetUpdate(true).OnComplete(delegate {fadeImage.DOFade(0f, fadeDuration);} );
         if (firstFocusItem != null)
         {
             EventSystem.current.SetSelectedGameObject(firstFocusItem);
@@ -31,15 +41,33 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    private void OnCancel()
+    /*private void OnCancel()
     {
         if (_rootCanvas.enabled && _rootCanvas.gameObject.activeInHierarchy)
         {
             if (_pageStack.Count != 0)
             {
                 PopPage();
+                Debug.Log("a");
+
+                EventSystem.current.SetSelectedGameObject(_pageStack.Peek().onCancelSelectedObject);
             }
         }
+    }*/
+
+    public void StartGame()
+    {
+        StartCoroutine(FadeToGame());
+    }
+
+    public void Credits()
+    {
+        StartCoroutine(FadeToCredits());
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
     public bool IsPageInStack(Page page)
@@ -69,6 +97,9 @@ public class MenuController : MonoBehaviour
 
     public void PopPage()
     {
+        if (_pageStack.Peek().isAnimating)
+            return;
+            
         if (_pageStack.Count > 1)
         {
             var page = _pageStack.Pop();
@@ -93,5 +124,26 @@ public class MenuController : MonoBehaviour
         {
             PopPage();
         }
+    }
+
+    public void SetSelectedGameObject(GameObject selectedObject)
+    {
+        EventSystem.current.SetSelectedGameObject(selectedObject);
+    }
+
+    private IEnumerator FadeToGame()
+    {
+        fadeImage.DOFade(1f, fadeDuration);
+        yield return new WaitForSeconds(fadeDuration);
+        yield return new WaitForSeconds(fadeDuration * 2);
+        SceneManager.LoadScene(1);
+    }
+
+    private IEnumerator FadeToCredits()
+    {
+        fadeImage.DOFade(1f, fadeDuration);
+        yield return new WaitForSeconds(fadeDuration);
+        yield return new WaitForSeconds(fadeDuration * 2);
+        SceneManager.LoadScene(2);
     }
 }

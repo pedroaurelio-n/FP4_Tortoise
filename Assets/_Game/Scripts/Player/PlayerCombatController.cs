@@ -109,6 +109,9 @@ public class PlayerCombatController : MonoBehaviour
 
     public void LaunchAttack()
     {
+        if (!playerMain.PlayerMovement.groundCheck.isGrounded)
+            return;
+            
         if (isComboPossible)
             _comboStep++;
         
@@ -196,6 +199,8 @@ public class PlayerCombatController : MonoBehaviour
         hitNormal.y = 0;
         hitNormal.Normalize();
 
+        Debug.Log(-enemy.GetAttackDamage());
+
         if (onPlayerDamageHit != null)
             onPlayerDamageHit(-enemy.GetAttackDamage());
 
@@ -217,7 +222,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             if (!enemy.CanDamagePlayer())
                 return;
-
+                
             ReceiveDamage(enemy);
         }
     }

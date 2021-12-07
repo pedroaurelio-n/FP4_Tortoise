@@ -17,6 +17,12 @@ public class LevelTutorialMain : MonoBehaviour
     [SerializeField] private List<GameObject> firstPartMessages;
     [SerializeField] private List<GameObject> secondPartMessages;
 
+    private void Start()
+    {
+        fadeImage.DOFade(1f, 0f);
+        fadeImage.DOFade(1f, 1f).OnComplete(delegate { fadeImage.DOFade(0f, fadeDuration * 2.5f); });        
+    }
+
     public void ActivateTransition()
     {
         GameManager.canInput = false;

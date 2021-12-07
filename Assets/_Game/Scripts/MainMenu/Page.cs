@@ -21,11 +21,12 @@ public enum EntryDirection
     LEFT
 }
 
-[RequireComponent(typeof(AudioSource), typeof(CanvasGroup))]
+[RequireComponent(typeof(CanvasGroup))]
 [DisallowMultipleComponent]
 public class Page : MonoBehaviour
 {
     public bool ExitOnNewPagePush = false;
+    public GameObject onCancelSelectedObject;
 
     [SerializeField] private float animationDuration;
     [SerializeField] private AudioClip entryClip;
@@ -40,22 +41,16 @@ public class Page : MonoBehaviour
     [SerializeField] private UnityEvent PrePopAction;
     [SerializeField] private UnityEvent PostPopAction;
 
-    private AudioSource _audioSource;
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
 
-    private bool isAnimating;
+    [HideInInspector] public bool isAnimating;
     private Coroutine _audioCoroutine;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
         _rectTransform = GetComponent<RectTransform>();
         _canvasGroup = GetComponent<CanvasGroup>();
-
-        _audioSource.playOnAwake = false;
-        _audioSource.loop = false;
-        _audioSource.spatialBlend = 0;
     }
 
     public void Enter(bool playAudio)
@@ -112,6 +107,8 @@ public class Page : MonoBehaviour
 
         isAnimating = true;
         _canvasGroup.DOFade(1f, animationDuration).OnComplete(delegate { isAnimating = false; PostPushAction?.Invoke(); });
+        _canvasGroup.interactable = true;
+        _canvasGroup.blocksRaycasts = true;
 
         PlayEntryClip(playAudio);
     }
@@ -134,40 +131,25 @@ public class Page : MonoBehaviour
 
         isAnimating = true;
         _canvasGroup.DOFade(0f, animationDuration).OnComplete(delegate { isAnimating = false; PostPopAction?.Invoke(); });
+        _canvasGroup.interactable = false;
+        _canvasGroup.blocksRaycasts = false;
 
         PlayExitClip(playAudio);
     }
 
     private void PlayEntryClip(bool playAudio)
     {
-        if (playAudio && entryClip != null && _audioSource != null)
+        if (playAudio && entryClip != null)
         {
-            if (_audioCoroutine != null)
-                StopCoroutine(_audioCoroutine);
-            
-            _audioCoroutine = StartCoroutine(PlayAudioClip(entryClip));
+            AudioManager.Instance.PlayAudio(entryClip);
         }
     }
 
     private void PlayExitClip(bool playAudio)
     {
-        if (playAudio && exitClip != null && _audioSource != null)
+        if (playAudio && exitClip != null)
         {
-            if (_audioCoroutine != null)
-                StopCoroutine(_audioCoroutine);
-            
-            _audioCoroutine = StartCoroutine(PlayAudioClip(exitClip));
+            AudioManager.Instance.PlayAudio(exitClip);
         }
-    }
-
-    private IEnumerator PlayAudioClip(AudioClip clip)
-    {
-        _audioSource.enabled = true;
-
-        _audioSource.PlayOneShot(clip);
-
-        yield return new WaitForSeconds(clip.length);
-
-        _audioSource.enabled = false;
     }
 }
