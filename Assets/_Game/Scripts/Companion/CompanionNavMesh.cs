@@ -5,25 +5,28 @@ using UnityEngine.AI;
 
 public class CompanionNavMesh : MonoBehaviour
 {
+    [Header("Companion References")]
     [SerializeField] private CompanionMain companionMain;
     [SerializeField] private Animator animator;
-    [SerializeField] private Vector3 offset;
+
+    [Header("NavMesh Configs")]
     [SerializeField] private float sprintingSpeed;
+    [SerializeField] private Vector3 offset;
     [SerializeField] private float runningSpeed;
     [SerializeField] private float minimumSpeed;
     [SerializeField] private float minimumDistance;
+
+    [Header("Runtime Transform")]
     [SerializeField] private Transform _Dynamic;
 
-
     public bool canHover;
-    //private PlayerMovement playerMovement;
     private PlayerInputManager playerInputManager;
     private NavMeshAgent navMeshAgent;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        playerInputManager = companionMain.playerCompanionPlacement.gameObject.GetComponentInParent<PlayerInputManager>();
+        playerInputManager = companionMain.companionDesiredPlacement.gameObject.GetComponentInParent<PlayerInputManager>();
     }
 
     private void Start()
@@ -33,8 +36,8 @@ public class CompanionNavMesh : MonoBehaviour
 
     public void FollowPlayer()
     {
-        var isAgentCloseToTarget = Vector3.Distance(companionMain.playerCompanionPlacement.position + offset, transform.position) < minimumDistance;
-        var isAgentSomewhatClose = Vector3.Distance(companionMain.playerCompanionPlacement.position + offset, transform.position) < minimumDistance+0.5f;
+        var isAgentCloseToTarget = Vector3.Distance(companionMain.companionDesiredPlacement.position + offset, transform.position) < minimumDistance;
+        var isAgentSomewhatClose = Vector3.Distance(companionMain.companionDesiredPlacement.position + offset, transform.position) < minimumDistance + 0.5f;
 
         if (companionMain.playerMovement.isSprinting)
             navMeshAgent.speed = sprintingSpeed;
@@ -46,7 +49,7 @@ public class CompanionNavMesh : MonoBehaviour
 
         if (!isAgentCloseToTarget)
         {
-            navMeshAgent.SetDestination(companionMain.playerCompanionPlacement.position + offset);
+            navMeshAgent.SetDestination(companionMain.companionDesiredPlacement.position + offset);
 
             animator.SetBool("isMoving", true);
             
@@ -66,6 +69,6 @@ public class CompanionNavMesh : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(companionMain.playerCompanionPlacement.position + offset, minimumDistance);
+        Gizmos.DrawWireSphere(companionMain.companionDesiredPlacement.position + offset, minimumDistance);
     }
 }

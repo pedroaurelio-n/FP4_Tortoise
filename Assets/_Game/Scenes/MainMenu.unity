@@ -7669,6 +7669,7 @@ MonoBehaviour:
   PostPopAction:
     m_PersistentCalls:
       m_Calls: []
+  isAnimating: 0
 --- !u!225 &1398364129
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8155,6 +8156,7 @@ MonoBehaviour:
   PostPopAction:
     m_PersistentCalls:
       m_Calls: []
+  isAnimating: 0
 --- !u!225 &1600412727
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9040,6 +9042,7 @@ MonoBehaviour:
   PostPopAction:
     m_PersistentCalls:
       m_Calls: []
+  isAnimating: 0
 --- !u!1 &2091261920
 GameObject:
   m_ObjectHideFlags: 0

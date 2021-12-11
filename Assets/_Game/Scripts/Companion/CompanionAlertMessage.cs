@@ -7,11 +7,13 @@ using DG.Tweening;
 
 public class CompanionAlertMessage : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed;
+    [Header("Object References")]
     [SerializeField] private Camera _mainCamera;
-
     [SerializeField] private CanvasGroup messageGroup;
     [SerializeField] private TMP_Text messageText;
+
+    [Header("Message Configs")]
+    [SerializeField] private float rotationSpeed;
     [SerializeField] private float fadeInDuration;
     [SerializeField] private float delayBeforeFadeOut;
     [SerializeField] private float fadeOutDuration;
@@ -37,45 +39,60 @@ public class CompanionAlertMessage : MonoBehaviour
 
     private void UpdateMessage(string message)
     {
-        if (!isShowingMessage)
-        {
-            isShowingMessage = true;
-            messageText.text = message;
-            showCoroutine = StartCoroutine(ShowMessage());
-        }
-
-        else
+        if (isShowingMessage)
         {
             StopCoroutine(showCoroutine);
             isShowingMessage = false;
             messageGroup.gameObject.transform.DOScale(Vector3.zero, 0f);
             messageGroup.DOFade(0f, 0f);
-
-            isShowingMessage = true;
-            messageText.text = message;
-            showCoroutine = StartCoroutine(ShowMessage());
         }
+
+        messageText.text = message;
+        showCoroutine = StartCoroutine(ShowMessage());
     }
 
     private IEnumerator ShowMessage()
     {
+        isShowingMessage = true;
+
+        StartCoroutine(MessageFadeIn());
+
+        yield return new WaitForSeconds(fadeInDuration + delayBeforeFadeOut);
+        StartCoroutine(MessageFadeOut(null));
+
+        yield return new WaitForSeconds(fadeOutDuration);
+
+        isShowingMessage = false;
+    }
+
+    public void HideMessage(float duration)
+    {
+        if (showCoroutine != null)
+            StopCoroutine(showCoroutine);
+        
+        StartCoroutine(MessageFadeOut(duration));
+        
+    }
+
+    private IEnumerator MessageFadeIn()
+    {
+        yield return null;
         Sequence fadeIn = DOTween.Sequence();
         fadeIn.Append(messageGroup.gameObject.transform.DOScale(defaultScale, fadeInDuration));
         fadeIn.Insert(0, messageGroup.DOFade(1f, fadeIn.Duration()));
         
         fadeIn.Play();
+    }
 
-        yield return new WaitForSeconds(fadeInDuration + delayBeforeFadeOut);
-
+    private IEnumerator MessageFadeOut(float? optDuration)
+    {
+        var duration = optDuration == null? fadeOutDuration : optDuration;
+        yield return null;
         Sequence fadeOut = DOTween.Sequence();
         fadeOut.Append(messageGroup.gameObject.transform.DOScale(Vector3.zero, fadeOutDuration));
         fadeOut.Insert(0, messageGroup.DOFade(0f, fadeOut.Duration()));
 
         fadeOut.Play();
-
-        yield return new WaitForSeconds(fadeOutDuration);
-
-        isShowingMessage = false;
     }
 
     private void OnEnable()

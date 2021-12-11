@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float defaultRotationSpeed;
 
     [Header("Jump & Falling Configs")]
+    [SerializeField] private float stepOffset;
     [SerializeField] private float waitForFall;
     [SerializeField] private float normalJumpHeight;
     [SerializeField] private float doubleJumpHeightDecreaser;
@@ -41,8 +42,10 @@ public class PlayerMovement : MonoBehaviour
     private int _jumpsQuantity;
     private Coroutine _fallCoroutine;
 
+    private bool isSettingStepOffset;
+
     private CharacterController playerCharacterController;
-    private float _startStepOffset;
+    //private float _startStepOffset;
 
     private float _timeElapsed;
 
@@ -53,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _startStepOffset = playerCharacterController.stepOffset;
+        //_startStepOffset = playerCharacterController.stepOffset;
         isFalling = false;
         isOnKnockback = false;
     }
@@ -77,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (groundCheck.isGrounded)
         {
-            playerCharacterController.stepOffset = _startStepOffset;
+            playerCharacterController.stepOffset = stepOffset;
             _jumpsQuantity = additionalJumps;
             
             if (isFalling)
@@ -97,7 +100,9 @@ public class PlayerMovement : MonoBehaviour
                 _fallCoroutine = StartCoroutine(TriggerFalling());
             }
             
-            playerCharacterController.stepOffset = 0f;
+            if (!isSettingStepOffset)
+                StartCoroutine(SetZeroStepOffset());
+            //playerCharacterController.stepOffset = 0f;
         }
     }
 
@@ -183,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleFalling()
     {
         if (groundCheck.isGrounded)
-        {
+        {            
             isGliding = false;
             _playerVelocity.y += Physics.gravity.y * -gravityAmplifierGrounded * Time.deltaTime;
         }
@@ -200,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
 
             
             if (canGlide || canAnyGlide)
-            {
+            {                
                 isGliding = true;
                 _playerVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
             }
@@ -286,6 +291,15 @@ public class PlayerMovement : MonoBehaviour
         _knockbackVelocity = Vector3.zero;
         isOnKnockback = false;
         yield return null;
+    }
+
+    private IEnumerator SetZeroStepOffset()
+    {
+        isSettingStepOffset = true;
+        yield return new WaitForSeconds(0.1f);
+        playerCharacterController.stepOffset = 0f;
+
+        isSettingStepOffset = false;
     }
 
     public Vector3 GetPlayerVelocity() { return playerCharacterController.velocity; }

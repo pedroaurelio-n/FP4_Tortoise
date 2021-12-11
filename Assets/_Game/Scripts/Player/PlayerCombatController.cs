@@ -229,11 +229,11 @@ public class PlayerCombatController : MonoBehaviour
 
     private void OnEnable()
     {
-        CompanionMain.onPlacementCompleted += StartAttack;
+        CompanionAttackController.onAttackPlacementCompleted += StartAttack;
     }
 
     private void OnDisable()
     {
-        CompanionMain.onPlacementCompleted -= StartAttack;
+        CompanionAttackController.onAttackPlacementCompleted -= StartAttack;
     }
 }

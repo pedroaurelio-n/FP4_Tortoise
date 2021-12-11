@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a772fc2f86e4d4eb66dd9ce29c5720, type: 3}
   m_Name: MainData
   m_EditorClassIdentifier: 
-  SfxVolume: 0.4887118
-  MusicVolume: 0.47627836
+  SfxVolume: 0.9
+  MusicVolume: 0.9

@@ -5,100 +5,64 @@ using DG.Tweening;
 
 public class CompanionMain : MonoBehaviour
 {
-    public delegate void AttackPlacementCompleted();
-    public static event AttackPlacementCompleted onPlacementCompleted;
+    [HideInInspector] public TrailRenderer companionSocketTrail;
 
-    [SerializeField] private GameObject mesh;
-    [SerializeField] private CompanionNavMesh companionNavMesh;
-    public Transform playerCompanionPlacement;
-    [SerializeField] private Transform lookAt;
-    [HideInInspector] public PlayerMovement playerMovement;
-    [SerializeField] private Transform playerCompanionSocket;
-    [SerializeField] private PlayerCombatController playerCombatController;
+    [Header("Companion Components")]
+    public CompanionNavMesh companionNavMesh;
+    public CompanionAlertMessage companionAlertMessage;
+    public CompanionGlideController companionGlideController;
+    public CompanionAttackController companionAttackController;
+    public GameObject companionEntityMesh;
+
+    [Header("Player References")]
+    public PlayerMovement playerMovement;
     [SerializeField] private PlayerGroundCheck playerGroundCheck;
+    public Transform companionDesiredPlacement;
+    public Transform playerCompanionSocket;
+    [SerializeField] private Transform lookAt;
+
+    [Header("Movement/Rotation Configs")]
     [SerializeField] private float smoothTime;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float maxSpeed;
 
-    [SerializeField] private float upHoverOffset;
-    [SerializeField] private float downHoverOffset;
-    [SerializeField] private float hoverDuration;
-    [SerializeField] private Ease hoverEase;
-    [SerializeField] private float movementToAttackDuration;
-    [SerializeField] private float attackToMovementDuration;
-    [SerializeField] private float attackToMovementDelay;
-    [SerializeField] private Ease attackEase;
-    [SerializeField] private float glideMovementDuration;
-
     private Rigidbody rb;
-    private TrailRenderer meshTrail;
     private Vector3 _velocityVector;
-    private float startYPosition;
-    private Coroutine hoverCoroutine;
-
-    private bool isAttacking;
-    private bool isReturningFromAttack;
-    private bool isOnGlide;
-    private Coroutine startGliding;
-    private Coroutine returnFromGliding;
-    private Tween scaleToZero;
 
     private void Awake()
     {
-        playerMovement = playerCompanionPlacement.gameObject.GetComponentInParent<PlayerMovement>();
         rb = GetComponent<Rigidbody>();
-        meshTrail = playerCompanionSocket.gameObject.GetComponent<TrailRenderer>();
+        companionSocketTrail = playerCompanionSocket.gameObject.GetComponent<TrailRenderer>();
     }
 
     private void Start()
     {
-        startYPosition = playerCompanionPlacement.localPosition.y;
-
-        hoverCoroutine = StartCoroutine(StartHover());
-        meshTrail.enabled = false;
+        companionSocketTrail.enabled = false;
     }
 
     private void Update()
     {
         companionNavMesh.FollowPlayer();
+        companionGlideController.HandleGliding();
 
-        if (playerMovement.isGliding && !isOnGlide)
-        {
-            if (returnFromGliding != null)
-                StopCoroutine(returnFromGliding);
-
-            startGliding = StartCoroutine(ActivateGlideMovement());
-        }
-
-        if (!playerMovement.isGliding && isOnGlide)
-        {
-            if (startGliding != null)
-            {
-                StopCoroutine(startGliding);
-            }
-
-            returnFromGliding = StartCoroutine(DeactivateGlideMovement());
-            //meshTrail.enabled = false;
-        }
-
-        if (Vector3.Distance(mesh.transform.position, transform.position) > 100)
-            mesh.transform.position = transform.position;
+        if (Vector3.Distance(companionEntityMesh.transform.position, transform.position) > 100)
+            companionEntityMesh.transform.position = transform.position;
     }
 
     private void FixedUpdate()
     {
-        if (isAttacking)
+        if (companionAttackController.isAttacking)
             return;
 
         if (playerGroundCheck.isGrounded && !playerGroundCheck.isOnMovingPlatform)
         {
             if (!companionNavMesh.gameObject.activeInHierarchy)
             {
-                companionNavMesh.transform.position = playerCompanionPlacement.position;
+                companionNavMesh.transform.position = companionDesiredPlacement.position;
                 companionNavMesh.gameObject.SetActive(true);
             }
             var navMeshPosition = companionNavMesh.transform.position;
-            var desiredPosition = new Vector3(navMeshPosition.x, playerCompanionPlacement.position.y, navMeshPosition.z);
+            var desiredPosition = new Vector3(navMeshPosition.x, companionDesiredPlacement.position.y, navMeshPosition.z);
 
             transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed);
 
@@ -111,116 +75,12 @@ public class CompanionMain : MonoBehaviour
                 companionNavMesh.gameObject.SetActive(false);
             }
             
-            var desiredPosition = playerCompanionPlacement.position;
+            var desiredPosition = companionDesiredPlacement.position;
             rb.MovePosition(Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed));
 
         }
 
         var lookDirection = Quaternion.LookRotation(lookAt.position - transform.position, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, rotationSpeed);
-    }
-
-    private IEnumerator StartHover()
-    {
-        while (true)
-        {
-            playerCompanionPlacement.DOLocalMoveY(startYPosition + downHoverOffset, hoverDuration).SetEase(hoverEase);
-            yield return new WaitForSeconds(hoverDuration);
-
-            playerCompanionPlacement.DOLocalMoveY(startYPosition + upHoverOffset, hoverDuration).SetEase(hoverEase);
-            yield return new WaitForSeconds(hoverDuration);
-
-            yield return null;
-        }
-    }
-
-    private void ActivateAttackMovement()
-    {
-        if (!isReturningFromAttack)
-            StartCoroutine(StartAttack());
-    }
-
-    private void DeactivateAttackMovement()
-    {
-        StartCoroutine(ReturnFromAttack());
-    }
-
-    private IEnumerator StartAttack()
-    {
-        yield return null;
-
-        isAttacking = true;
-        mesh.transform.DOScale(Vector3.zero, movementToAttackDuration).SetEase(attackEase);
-        mesh.transform.DOMove(playerCompanionSocket.position, movementToAttackDuration).SetEase(attackEase).OnComplete(delegate {
-        //mesh.transform.DOScale(Vector3.zero, movementToAttackDuration).SetEase(attackEase).OnComplete(delegate {
-
-            if (onPlacementCompleted != null)
-            {
-                onPlacementCompleted();
-            }
-
-            mesh.SetActive(false);
-            meshTrail.enabled = true;
-        });
-    }
-
-    private IEnumerator ReturnFromAttack()
-    {
-        isReturningFromAttack = true;
-        yield return new WaitForSeconds(attackToMovementDelay);
-        
-        transform.position = playerCompanionPlacement.position;
-        mesh.transform.position = playerCompanionSocket.position;
-        mesh.SetActive(true);
-        meshTrail.enabled = false;
-        mesh.transform.DOScale(Vector3.one, attackToMovementDuration).SetEase(attackEase);
-        mesh.transform.DOMove(transform.position, attackToMovementDuration).SetEase(attackEase).OnComplete(delegate {
-            isAttacking = false; 
-            isReturningFromAttack = false; 
-            mesh.SetActive(true);
-            playerCombatController.ResetAttackState();
-        });
-        //mesh.transform.DOScale(Vector3.zero, attackToMovementDuration).SetEase(attackEase).OnComplete(delegate {isAttacking = false;});
-    }
-
-    private IEnumerator ActivateGlideMovement()
-    {
-        yield return null;
-        isOnGlide = true;
-        scaleToZero = mesh.transform.DOScale(Vector3.zero, glideMovementDuration).SetEase(attackEase);
-        mesh.transform.DOMove(playerCompanionSocket.position, glideMovementDuration).SetEase(attackEase);
-
-        yield return new WaitForSeconds(glideMovementDuration+0.02f);
-        mesh.SetActive(false);
-        meshTrail.enabled = true;
-    }
-
-    private IEnumerator DeactivateGlideMovement()
-    {
-        yield return null;
-        isOnGlide = false;
-        scaleToZero.Kill();
-        transform.position = playerCompanionPlacement.position;
-        mesh.transform.position = playerCompanionSocket.position;
-        mesh.SetActive(true);
-        meshTrail.enabled = false;
-        mesh.transform.DOMove(transform.position, glideMovementDuration).SetEase(attackEase);
-
-        yield return new WaitForSeconds(glideMovementDuration+0.01f);
-        mesh.transform.localScale = Vector3.one;
-        mesh.SetActive(true);
-        meshTrail.enabled = false;
-    }
-
-    private void OnEnable()
-    {
-        PlayerCombatController.onAttackStart += ActivateAttackMovement;
-        PlayerCombatController.onAttackEnd += DeactivateAttackMovement;
-    }
-
-    private void OnDisable()
-    {
-        PlayerCombatController.onAttackStart -= ActivateAttackMovement;
-        PlayerCombatController.onAttackEnd -= DeactivateAttackMovement;
     }
 }
