@@ -62,14 +62,4 @@ public class MusicManager : MonoBehaviour
         _audioSource.clip = clip;
         _audioSource.Play();
     }
-
-    private void OnEnable()
-    {
-        DataManager.onMusicVolumeChange += ChangeVolume;
-    }
-
-    private void OnDisable()
-    {
-        DataManager.onMusicVolumeChange -= ChangeVolume;        
-    }
 }

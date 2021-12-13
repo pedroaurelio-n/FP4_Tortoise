@@ -6,9 +6,6 @@ using DG.Tweening;
 
 public class LevelTutorialMain : MonoBehaviour
 {
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
-    [SerializeField] private float fadeWaitTime;
     [SerializeField] private List<GameObject> unpoweredEnemies;
     [SerializeField] private List<GameObject> enemies;
     [SerializeField] private GameObject elevatorCollider;
@@ -17,21 +14,16 @@ public class LevelTutorialMain : MonoBehaviour
     [SerializeField] private List<GameObject> firstPartMessages;
     [SerializeField] private List<GameObject> secondPartMessages;
 
-    private void Start()
-    {
-        fadeImage.DOFade(1f, 0f);
-        fadeImage.DOFade(1f, 1f).OnComplete(delegate { fadeImage.DOFade(0f, fadeDuration * 2.5f); });        
-    }
-
     public void ActivateTransition()
     {
         GameManager.canInput = false;
-        fadeImage.DOFade(1f, fadeDuration).OnComplete(delegate { StartCoroutine(ActivatePower()); });
+        FadeManager.StartFadeIn(delegate { StartCoroutine(ActivatePower()); });
     }
 
     private IEnumerator ActivatePower()
     {
-        
+        yield return null;
+
         foreach (GameObject enemyobject in unpoweredEnemies)
         {
             enemyobject.SetActive(false);
@@ -62,8 +54,6 @@ public class LevelTutorialMain : MonoBehaviour
             message.SetActive(true);
         }
 
-        yield return new WaitForSeconds(fadeWaitTime);
-
-        fadeImage.DOFade(0f, fadeDuration).OnComplete(delegate { GameManager.canInput = true; });
+        FadeManager.DelayAfterFadeIn(2f, delegate { FadeManager.StartFadeOut(null); });
     }
 }

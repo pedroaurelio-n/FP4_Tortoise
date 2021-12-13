@@ -48,14 +48,4 @@ public class AudioManager : MonoBehaviour
 
         _audioSource.enabled = false;
     }
-
-    private void OnEnable()
-    {
-        DataManager.onSfxVolumeChange += ChangeVolume;
-    }
-
-    private void OnDisable()
-    {
-        DataManager.onSfxVolumeChange -= ChangeVolume;        
-    }
 }

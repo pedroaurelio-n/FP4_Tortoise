@@ -7,11 +7,13 @@ using DG.Tweening;
 
 public class CreditsController : MonoBehaviour
 {
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
+    private void Start()
+    {
+        GameManager.Instance.LockMouse(false);
+    }
 
     public void ReturnToMainMenu()
     {
-        fadeImage.DOFade(1f, fadeDuration).OnComplete(delegate {fadeImage.DOFade(1f, fadeDuration).OnComplete(delegate { GameManager.Instance.LockMouse(false); SceneManager.LoadScene(0); });});
+        FadeManager.StartFadeIn(delegate { FadeManager.DelayAfterFadeIn(1f, delegate { SceneManager.LoadScene(0); }); });
     }
 }

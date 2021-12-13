@@ -6,33 +6,24 @@ using UnityEngine.Events;
 
 public class SliderEvent : MonoBehaviour
 {
-    public delegate void SfxVolumeChange(float value);
-    public static event SfxVolumeChange onSfxVolumeChange;
-
-    public delegate void MusicVolumeChange(float value);
-    public static event MusicVolumeChange onMusicVolumeChange;
-
     [SerializeField] private Slider mainSlider;
-    [SerializeField] private bool isMusic;
+    [SerializeField] private SliderType sliderType;
+
+    public Slider.SliderEvent onValueChangedOverride;
 
     public void Start()
     {
-        if (isMusic)
-            mainSlider.value = DataManager.Instance.Data.MusicVolume;
-        else
-            mainSlider.value = DataManager.Instance.Data.SfxVolume;
+        switch (sliderType)
+        {
+            case SliderType.Music:
+                mainSlider.value = DataManager.Instance.Data.MusicVolume;
+                break;
             
-        mainSlider.onValueChanged.AddListener(delegate {
-            if (isMusic)
-            {
-                if (onMusicVolumeChange != null)
-                    onMusicVolumeChange(mainSlider.value);
-            }
-            else
-            {
-                if (onSfxVolumeChange != null)
-                    onSfxVolumeChange(mainSlider.value);
-            }
-        });
+            case SliderType.Sfx:
+                mainSlider.value = DataManager.Instance.Data.SfxVolume;
+                break;
+        }
+        
+        mainSlider.onValueChanged = onValueChangedOverride;
     }
 }

@@ -7,8 +7,7 @@ using DG.Tweening;
 
 public class TA_LoadLevel : TriggerAction
 {
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
+    [SerializeField] private int levelBuildIndex;
 
     public override bool TryToActivateAction()
     {
@@ -28,6 +27,11 @@ public class TA_LoadLevel : TriggerAction
     protected override void ActivateAction()
     {
         isActionOnProgress = true;
-        fadeImage.DOFade(1f, fadeDuration).OnComplete(delegate {fadeImage.DOFade(1f, fadeDuration).OnComplete(delegate {SceneManager.LoadScene(2); });});
+        FadeManager.StartFadeIn(delegate { 
+            FadeManager.DelayAfterFadeIn(1f, delegate { 
+                isActionOnProgress = false;
+                SceneManager.LoadScene(levelBuildIndex); 
+            }); 
+        });
     }
 }

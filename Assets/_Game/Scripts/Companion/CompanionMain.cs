@@ -42,7 +42,6 @@ public class CompanionMain : MonoBehaviour
 
     private void Update()
     {
-        companionNavMesh.FollowPlayer();
         companionGlideController.HandleGliding();
 
         if (Vector3.Distance(companionEntityMesh.transform.position, transform.position) > 100)

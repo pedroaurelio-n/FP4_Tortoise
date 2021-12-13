@@ -34,6 +34,11 @@ public class CompanionNavMesh : MonoBehaviour
         transform.parent = _Dynamic;
     }
 
+    private void Update()
+    {
+        FollowPlayer();
+    }
+
     public void FollowPlayer()
     {
         var isAgentCloseToTarget = Vector3.Distance(companionMain.companionDesiredPlacement.position + offset, transform.position) < minimumDistance;

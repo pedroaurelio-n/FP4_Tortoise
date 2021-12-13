@@ -5,12 +5,6 @@ using UnityEngine.UI;
 
 public class DataManager : MonoBehaviour
 {
-    public delegate void SfxVolumeChange(float value);
-    public static event SfxVolumeChange onSfxVolumeChange;
-
-    public delegate void MusicVolumeChange(float value);
-    public static event MusicVolumeChange onMusicVolumeChange;
-
     public static DataManager Instance;
 
     public DataHolder Data;
@@ -20,38 +14,29 @@ public class DataManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(this);
         }
-
-        else
-            Destroy(this);
     }
 
     public void ChangeSFXVolume(float value)
     {
         Data.ChangeSFXVolume(value);
-
-        if (onSfxVolumeChange != null)
-            onSfxVolumeChange(value);
+        AudioManager.Instance.ChangeVolume(value);
     }
 
     public void ChangeMusicVolume(float value)
     {
         Data.ChangeMusicVolume(value);
-
-        if (onMusicVolumeChange != null)
-            onMusicVolumeChange(value);
+        MusicManager.Instance.ChangeVolume(value);
     }
 
-    private void OnEnable()
+    public void ChangeFpsCounter(bool value)
     {
-        SliderEvent.onSfxVolumeChange += ChangeSFXVolume;
-        SliderEvent.onMusicVolumeChange += ChangeMusicVolume;
+        Data.ChangeFpsCounter(value);
+        GameManager.Instance.ShowGraphy(value);
     }
 
-    private void OnDisable()
+    public void Test()
     {
-        SliderEvent.onSfxVolumeChange -= ChangeSFXVolume;
-        SliderEvent.onMusicVolumeChange -= ChangeMusicVolume;
+        Debug.Log("test");
     }
 }

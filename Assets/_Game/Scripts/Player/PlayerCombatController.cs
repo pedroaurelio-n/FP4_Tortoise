@@ -199,8 +199,6 @@ public class PlayerCombatController : MonoBehaviour
         hitNormal.y = 0;
         hitNormal.Normalize();
 
-        Debug.Log(-enemy.GetAttackDamage());
-
         if (onPlayerDamageHit != null)
             onPlayerDamageHit(-enemy.GetAttackDamage());
 

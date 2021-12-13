@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using Cinemachine;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject resumeButton;
     [SerializeField] private CinemachineFreeLook freeLookCamera;
@@ -54,7 +49,7 @@ public class PauseManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        fadeImage.DOFade(1f, fadeDuration).SetUpdate(true).OnComplete(delegate { fadeImage.DOFade(1f, fadeDuration*2).SetUpdate(true).OnComplete(delegate {SceneManager.LoadScene(0);});});
+        FadeManager.StartFadeIn(delegate { FadeManager.DelayAfterFadeIn(2f, delegate { SceneManager.LoadScene(0); }); });
     }
 
     private void OnEnable()

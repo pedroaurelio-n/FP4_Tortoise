@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Tayx.Graphy;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,15 +12,16 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private bool lockMouse;
     [SerializeField] private bool showGraphy;
-    [SerializeField] private GameObject graphy;
+    
+    private GameObject graphy;
 
     private void Awake()
     {
         Instance = this;
 
         canInput = true;
-        
-        graphy.SetActive(showGraphy);
+
+        graphy = GraphyManager.Instance.gameObject;
 
         if (lockMouse)
         {
@@ -28,17 +30,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        graphy = GraphyManager.Instance.gameObject;
+        graphy.SetActive(DataManager.Instance.Data.FpsCounter);
+    }
+
+    public void ShowGraphy(bool value)
+    {
+        graphy.SetActive(value);
+    }
+
     public void LockMouse(bool value)
     {
         if (value)
         {
             Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
             Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 

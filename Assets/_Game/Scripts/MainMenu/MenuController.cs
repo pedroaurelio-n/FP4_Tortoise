@@ -12,8 +12,6 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField] private Page initialPage;
     [SerializeField] private GameObject firstFocusItem;
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
 
     private Canvas _rootCanvas;
     private Stack<Page> _pageStack = new Stack<Page>();
@@ -25,11 +23,9 @@ public class MenuController : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.LockMouse(false);
         Time.timeScale = 1;
 
-
-        fadeImage.DOFade(1f, 0f).SetUpdate(true);
-        fadeImage.DOFade(1f, fadeDuration).SetUpdate(true).OnComplete(delegate {fadeImage.DOFade(0f, fadeDuration);} );
         if (firstFocusItem != null)
         {
             EventSystem.current.SetSelectedGameObject(firstFocusItem);
@@ -57,12 +53,12 @@ public class MenuController : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(FadeToGame());
+        FadeManager.StartFadeIn(delegate { FadeManager.DelayAfterFadeIn(2f, delegate{ SceneManager.LoadScene(2); }); });
     }
 
     public void Credits()
     {
-        StartCoroutine(FadeToCredits());
+        FadeManager.StartFadeIn(delegate { FadeManager.DelayAfterFadeIn(2f, delegate{ SceneManager.LoadScene(1); }); });
     }
 
     public void ExitGame()
@@ -129,21 +125,5 @@ public class MenuController : MonoBehaviour
     public void SetSelectedGameObject(GameObject selectedObject)
     {
         EventSystem.current.SetSelectedGameObject(selectedObject);
-    }
-
-    private IEnumerator FadeToGame()
-    {
-        fadeImage.DOFade(1f, fadeDuration);
-        yield return new WaitForSeconds(fadeDuration);
-        yield return new WaitForSeconds(fadeDuration * 2);
-        SceneManager.LoadScene(1);
-    }
-
-    private IEnumerator FadeToCredits()
-    {
-        fadeImage.DOFade(1f, fadeDuration);
-        yield return new WaitForSeconds(fadeDuration);
-        yield return new WaitForSeconds(fadeDuration * 2);
-        SceneManager.LoadScene(2);
     }
 }

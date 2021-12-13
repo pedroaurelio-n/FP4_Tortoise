@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SfxVolume: 0.9
   MusicVolume: 0.9
+  FpsCounter: 0

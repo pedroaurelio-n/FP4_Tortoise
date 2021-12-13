@@ -9,8 +9,7 @@ public class UI_GameOver : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject grayImage;
-    [SerializeField] private Image fadeImage;
-    [SerializeField] private float fadeDuration;
+    [SerializeField] private float waitDuration;
     [SerializeField] private AudioSource musicManager;
 
     private void ActivateGameOver()
@@ -26,18 +25,13 @@ public class UI_GameOver : MonoBehaviour
         GameManager.canInput = false;
         GameManager.Instance.LockMouse(true);
 
-        yield return new WaitForSecondsRealtime(fadeDuration);
+        yield return new WaitForSecondsRealtime(waitDuration);
 
         gameOverScreen.SetActive(true);
 
-        yield return new WaitForSecondsRealtime(fadeDuration);
+        yield return new WaitForSecondsRealtime(waitDuration);
 
-        fadeImage.DOFade(1f, fadeDuration).SetUpdate(true);
-        yield return new WaitForSecondsRealtime(fadeDuration);
-        yield return new WaitForSecondsRealtime(fadeDuration);
-        
-        GameManager.Instance.LockMouse(false);
-        SceneManager.LoadScene(0);
+        FadeManager.StartFadeIn(delegate { FadeManager.DelayAfterFadeIn(1f, delegate { SceneManager.LoadScene(0); }); });
     }
 
     private void OnEnable()
