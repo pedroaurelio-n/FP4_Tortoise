@@ -12,16 +12,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private bool lockMouse;
     [SerializeField] private bool showGraphy;
-    
-    private GameObject graphy;
 
     private void Awake()
     {
         Instance = this;
 
         canInput = true;
-
-        graphy = GraphyManager.Instance.gameObject;
 
         if (lockMouse)
         {
@@ -32,13 +28,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        graphy = GraphyManager.Instance.gameObject;
-        graphy.SetActive(DataManager.Instance.Data.FpsCounter);
+        GetGraphyInstance().SetActive(DataManager.Instance.Data.FpsCounter);
     }
 
     public void ShowGraphy(bool value)
     {
-        graphy.SetActive(value);
+        GetGraphyInstance().SetActive(value);
+    }
+
+    private GameObject GetGraphyInstance()
+    {
+        return GraphyManager.Instance.gameObject;
     }
 
     public void LockMouse(bool value)

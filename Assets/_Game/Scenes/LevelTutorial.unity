@@ -14115,7 +14115,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209032692}
-  m_LocalRotation: {x: 0.16334331, y: -0.09266164, z: 0.015411731, w: 0.98208725}
+  m_LocalRotation: {x: 0.16334331, y: -0.092661686, z: 0.015411727, w: 0.98208725}
   m_LocalPosition: {x: 2.4693022, y: 77.17497, z: -12.5212555}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -18825,7 +18825,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371440481}
-  m_LocalRotation: {x: 0.1554777, y: -0.09278203, z: 0.014669593, w: 0.9833631}
+  m_LocalRotation: {x: 0.1554777, y: -0.092782065, z: 0.014669599, w: 0.9833631}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -55636,7 +55636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pause
+  m_text: Jogo Pausado
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
