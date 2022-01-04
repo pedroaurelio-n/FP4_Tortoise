@@ -3008,7 +3008,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89115576}
-  m_LocalRotation: {x: 0.17333886, y: -0.09249985, z: 0.016354823, w: 0.98037237}
+  m_LocalRotation: {x: 0.17333883, y: -0.09249983, z: 0.01635482, w: 0.98037237}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5308,7 +5308,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22174
+  m_Name: pb_Mesh122108
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14115,8 +14115,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209032692}
-  m_LocalRotation: {x: 0.16334331, y: -0.092661686, z: 0.015411727, w: 0.98208725}
-  m_LocalPosition: {x: 2.4693022, y: 77.17497, z: -12.5212555}
+  m_LocalRotation: {x: 0.16334328, y: -0.09266162, z: 0.015411724, w: 0.98208725}
+  m_LocalPosition: {x: 2.629302, y: 77.19298, z: -12.551256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -18825,7 +18825,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371440481}
-  m_LocalRotation: {x: 0.1554777, y: -0.092782065, z: 0.014669599, w: 0.9833631}
+  m_LocalRotation: {x: 0.15547769, y: -0.092782006, z: 0.014669585, w: 0.9833631}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -25944,7 +25944,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573613607}
-  m_LocalRotation: {x: 0.13761248, y: -0.093032874, z: 0.012983976, w: 0.9860219}
+  m_LocalRotation: {x: 0.13761246, y: -0.093032904, z: 0.012983978, w: 0.9860219}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -35907,7 +35907,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh25600
+  m_Name: pb_Mesh131350
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -37198,7 +37198,6 @@ MonoBehaviour:
   isActionOnProgress: 0
   delayToActivate: 0
   starsNumberToRemove: 1
-  failMessage: You need the fuse to activate the power!
 --- !u!4 &925155573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2001111941098671086, guid: 1927b3a7d496bdf4fbd5048a760fd372, type: 3}
@@ -37400,15 +37399,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1508631275221188658, guid: 1927b3a7d496bdf4fbd5048a760fd372, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.34
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1508631275221188658, guid: 1927b3a7d496bdf4fbd5048a760fd372, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 73.426994
+      value: 73.445
       objectReference: {fileID: 0}
     - target: {fileID: 1508631275221188658, guid: 1927b3a7d496bdf4fbd5048a760fd372, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.59
+      value: -6.62
       objectReference: {fileID: 0}
     - target: {fileID: 1508631275221188658, guid: 1927b3a7d496bdf4fbd5048a760fd372, type: 3}
       propertyPath: m_LocalRotation.w
@@ -51966,7 +51965,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398011412}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4693022, y: 77.17497, z: -12.5212555}
+  m_LocalPosition: {x: 2.629302, y: 77.19298, z: -12.551256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 89115578}
@@ -53637,8 +53636,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  minimunStarsRequired: 0
-  failMessage: 
+  minimunStarsRequired: 1
+  failMessage: "Voc\xEA precisa da pilha para ativar o gerador!"
 --- !u!1001 &1460394330
 PrefabInstance:
   m_ObjectHideFlags: 0

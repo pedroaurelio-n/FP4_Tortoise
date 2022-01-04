@@ -8,7 +8,6 @@ public class TA_RemoveStar : TriggerAction
     public static event StarRemove onStarRemove;
 
     [SerializeField] private int starsNumberToRemove;
-    [SerializeField] private string failMessage;
 
     public override bool TryToActivateAction()
     {
@@ -16,7 +15,6 @@ public class TA_RemoveStar : TriggerAction
             ActivateAction();
         else
         {
-            SendFailEvent(failMessage);
         }
 
         return CanActivateAction();
