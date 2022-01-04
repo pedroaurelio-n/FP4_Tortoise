@@ -137,6 +137,11 @@ public class PlayerAnimationManager : MonoBehaviour
         playerMain.PlayerCombatController.ComboCheck();
     }
 
+    public void CombatControllerEvent_SetComboPossibleTrue()
+    {
+        playerMain.PlayerCombatController.SetComboPossible(true);
+    }
+
     public void TriggerFootstepSFX()
     {
         var randomClip = Random.Range(0, stepClips.Count);

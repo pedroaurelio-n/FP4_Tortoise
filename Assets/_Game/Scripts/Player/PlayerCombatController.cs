@@ -28,84 +28,15 @@ public class PlayerCombatController : MonoBehaviour
 
     private void Start()
     {
-        isAttacking = false;
-        isComboPossible = true;
-        _comboStep = 0;
+        ResetAttackState();
     }
 
     public void ResetAttackState()
     {
         isAttacking = false;
-        isComboPossible = true;
+        SetComboPossible(true);
         _comboStep = 0;
     }
-
-    /*public void ComboPossible()
-    {
-        isComboPossible = true;
-    }
-
-    public void NextAttack()
-    {
-        if (_comboStep == 2)
-        {
-            Debug.Log("Launch attack 2");
-            playerMain.PlayerAnimationManager.PlayAnimation("Attack_Hit2");
-            //playerMain.PlayerAnimationManager.SetTrigger("Attack2");
-            //playerMain.PlayerAnimationManager.SetAttackBool(1, false);
-            //playerMain.PlayerAnimationManager.SetAttackBool(2, true);
-        }
-        else if (_comboStep == 3)
-        {
-            Debug.Log("Launch attack 3");
-            playerMain.PlayerAnimationManager.PlayAnimation("Attack_Hit3");
-            //playerMain.PlayerAnimationManager.SetTrigger("Attack3");
-            //playerMain.PlayerAnimationManager.SetAttackBool(2, false);
-            //playerMain.PlayerAnimationManager.SetAttackBool(3, true);
-        }
-        else
-            Debug.Log("Error");
-
-    }
-
-    public void ResetCombo()
-    {
-        Debug.Log("Combo reset");
-        isComboPossible = false;
-        isAttacking = false;
-
-        if (onAttackEnd != null)
-            onAttackEnd();
-
-        playerMain.PlayerAnimationManager.SetRootMotion(false);
-        _comboStep = 0;
-        playerMain.PlayerAnimationManager.SetAttackBool(1, false);
-        playerMain.PlayerAnimationManager.SetAttackBool(2, false);
-        playerMain.PlayerAnimationManager.SetAttackBool(3, false);
-    }
-
-    public void LaunchAttack()
-    {
-        isAttacking = true;
-
-        playerMain.PlayerAnimationManager.SetRootMotion(true);
-        if (_comboStep == 0)
-        {
-            if (onAttackStart != null)
-                onAttackStart();
-
-            return;
-        }
-
-        else
-        {
-            if (isComboPossible)
-            {
-                isComboPossible = false;
-                _comboStep++;
-            }
-        }
-    }*/
 
     public void LaunchAttack()
     {
@@ -113,7 +44,10 @@ public class PlayerCombatController : MonoBehaviour
             return;
             
         if (isComboPossible)
+        {
+            SetComboPossible(false);
             _comboStep++;
+        }
         
         if (_comboStep == 1)
         {
@@ -126,12 +60,10 @@ public class PlayerCombatController : MonoBehaviour
 
     public void ComboCheck()
     {
-        isComboPossible = false;
-
         if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Attack_Hit1") && _comboStep == 1)
         {
             playerMain.PlayerAnimationManager.SetComboStepInt(0);
-            isComboPossible = true;
+            SetComboPossible(true);
             isAttacking = false;
             _comboStep = 0;
             StartCoroutine(DisableRootMotion());
@@ -143,13 +75,13 @@ public class PlayerCombatController : MonoBehaviour
         else if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Attack_Hit1") && _comboStep >= 2)
         {
             playerMain.PlayerAnimationManager.SetComboStepInt(2);
-            isComboPossible = true;
+            SetComboPossible(true);
         }
 
         else if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Attack_Hit2") && _comboStep == 2)
         {
             playerMain.PlayerAnimationManager.SetComboStepInt(0);
-            isComboPossible = true;
+            SetComboPossible(true);
             isAttacking = false;
             _comboStep = 0;
             StartCoroutine(DisableRootMotion());
@@ -161,13 +93,13 @@ public class PlayerCombatController : MonoBehaviour
         else if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Attack_Hit2") && _comboStep >= 3)
         {
             playerMain.PlayerAnimationManager.SetComboStepInt(3);
-            isComboPossible = true;
+            SetComboPossible(true);
         }
 
         else if (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Attack_Hit3"))
         {
             playerMain.PlayerAnimationManager.SetComboStepInt(0);
-            isComboPossible = true;
+            SetComboPossible(true);
             isAttacking = false;
             _comboStep = 0;
             StartCoroutine(DisableRootMotion());
@@ -179,12 +111,14 @@ public class PlayerCombatController : MonoBehaviour
 
     public void StartAttack()
     {
-        //Debug.Log("Launch attack 1");
-        //playerMain.PlayerAnimationManager.SetAttackBool(1, true);
         isAttacking = true;
         playerMain.PlayerAnimationManager.SetRootMotion(true);
         playerMain.PlayerAnimationManager.SetComboStepInt(1);
-        //_comboStep = 1;
+    }
+
+    public void SetComboPossible(bool value)
+    {
+        isComboPossible = value;
     }
 
     private IEnumerator DisableInvincibility()

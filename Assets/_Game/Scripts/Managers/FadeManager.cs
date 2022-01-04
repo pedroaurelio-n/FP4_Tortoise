@@ -28,6 +28,7 @@ public class FadeManager : MonoBehaviour
             if (startHasDelay)
             {
                 fadeImage.DOFade(1f, 0f);
+                GameManager.canInput = false;
                 DelayAfterFadeIn(fadeDelayValue, delegate{ StartFadeOut(null); });
             }
             else

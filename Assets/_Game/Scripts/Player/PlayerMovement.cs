@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runningSpeed;
     [SerializeField] private float sprintingSpeed;
     [SerializeField] private float defaultRotationSpeed;
+    [Range(0f, 1f)] [SerializeField] private float attackRotationSpeedMultiplier;
 
     [Header("Jump & Falling Configs")]
     [SerializeField] private float stepOffset;
@@ -33,6 +34,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float glideGravityReducer;
     [SerializeField] private float glideVelocityDecreaseDuration;
 
+    [Header("Slope Detection Configs")]
+    [SerializeField] private float sphereRadius;
+    [SerializeField] private Vector3 sphereOffset;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private LayerMask groudMask;
+    [SerializeField] private float slideSpeed;
+    [SerializeField] private float minimumSlopeAngle;
+    [SerializeField] private float maximumSlopeAngle;
+
 
     private Vector3 _movementDirection;
     private Vector3 _playerVelocity;
@@ -44,10 +54,13 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isSettingStepOffset;
 
-    private CharacterController playerCharacterController;
-    //private float _startStepOffset;
+    private Vector3 hitNormal;
+    private float hitNormalAngle;
+    private bool isOnSlope;
 
-    private float _timeElapsed;
+    private CharacterController playerCharacterController;
+
+    private float _airTimeElapsed;
 
     private void Awake()
     {
@@ -56,7 +69,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        //_startStepOffset = playerCharacterController.stepOffset;
         isFalling = false;
         isOnKnockback = false;
     }
@@ -64,7 +76,9 @@ public class PlayerMovement : MonoBehaviour
     public void HandleUpdateMovements()
     {
         if (groundCheck.isGrounded && _playerVelocity.y < 0)
-            _playerVelocity.y = 0f;
+        {
+            _playerVelocity = Vector3.zero;
+        }
     }
 
     public void HandleFixedUpdateMovements()
@@ -85,7 +99,6 @@ public class PlayerMovement : MonoBehaviour
             
             if (isFalling)
             {
-                //cameraFollow.OnHitGround();
                 isFalling = false;
                 StopCoroutine(_fallCoroutine);
             }
@@ -96,18 +109,16 @@ public class PlayerMovement : MonoBehaviour
             if (!isFalling && !isOnKnockback)
             {
                 isFalling = true;
-                //groundCheck.ActivateGroundCheck();
                 _fallCoroutine = StartCoroutine(TriggerFalling());
             }
             
             if (!isSettingStepOffset)
                 StartCoroutine(SetZeroStepOffset());
-            //playerCharacterController.stepOffset = 0f;
         }
     }
 
     private void HandleMovement()
-    {
+    {        
         _movementDirection = mainCamera.transform.forward * playerMain.PlayerInputManager.VerticalInput
                             + mainCamera.transform.right * playerMain.PlayerInputManager.HorizontalInput;
         
@@ -124,15 +135,15 @@ public class PlayerMovement : MonoBehaviour
             if (groundCheck.isGrounded)
             {
                 movementVelocity = _movementDirection * sprintingSpeed * moveAmount;
-                _timeElapsed = 0;
+                _airTimeElapsed = 0;
             }
             
             else
             {
-                if (_timeElapsed < glideVelocityDecreaseDuration)
+                if (_airTimeElapsed < glideVelocityDecreaseDuration)
                 {
-                    float actualSpeed = Mathf.Lerp(sprintingSpeed, runningSpeed, _timeElapsed/glideVelocityDecreaseDuration);
-                    _timeElapsed += Time.deltaTime;
+                    float actualSpeed = Mathf.Lerp(sprintingSpeed, runningSpeed, _airTimeElapsed/glideVelocityDecreaseDuration);
+                    _airTimeElapsed += Time.deltaTime;
                     movementVelocity = _movementDirection * actualSpeed * moveAmount;
                 }
 
@@ -156,7 +167,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (!playerMain.PlayerCombatController.isAttacking)
         {
-            playerCharacterController.Move(new Vector3(movementVelocity.x, _playerVelocity.y, movementVelocity.z) * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
+            var movementVector = new Vector3(movementVelocity.x + _playerVelocity.x, _playerVelocity.y, movementVelocity.z + _playerVelocity.z);
+
+            playerCharacterController.Move(movementVector * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
             playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
         }
 
@@ -177,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
         float rotationSpeed;
 
         if (playerMain.PlayerCombatController.isAttacking)
-            rotationSpeed = defaultRotationSpeed / 2;
+            rotationSpeed = defaultRotationSpeed * attackRotationSpeedMultiplier;
         else
             rotationSpeed = defaultRotationSpeed;
         
@@ -187,6 +200,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFalling()
     {
+        CheckSphereCast();
+
+        Vector3 slopeForce;
+
+        if (playerMain.PlayerInputManager.jumpInput)
+        {
+            slopeForce = CalculateSlopeForce(slideSpeed * 0.3f);
+        }
+
+        else
+            slopeForce = CalculateSlopeForce(slideSpeed);
+
         if (groundCheck.isGrounded)
         {            
             isGliding = false;
@@ -222,6 +247,9 @@ public class PlayerMovement : MonoBehaviour
 
             }
 
+            _playerVelocity.x += slopeForce.x;
+            _playerVelocity.z += slopeForce.z;
+
             playerMain.PlayerAnimationManager.SetGlidingBool(isGliding);
         }
     }
@@ -256,6 +284,55 @@ public class PlayerMovement : MonoBehaviour
 
             _playerVelocity.y = Mathf.Sqrt(jumpHeight * gravityAmplifierMidAir * Physics.gravity.y);
         }
+    }
+
+    private void CheckSphereCast()
+    {
+        RaycastHit hit;
+
+        var sphereCast = Physics.SphereCast(transform.position + sphereOffset, sphereRadius, Vector3.down, out hit, maxDistance, groudMask);
+
+        if (sphereCast)
+        {
+            hitNormal = hit.normal;
+            hitNormalAngle = Vector3.Angle(Vector3.up, hitNormal);
+
+            if (hitNormalAngle > minimumSlopeAngle)
+                isOnSlope = true;
+            else
+            {
+                _playerVelocity.x = 0f;
+                _playerVelocity.z = 0f;
+                isOnSlope = false;
+            }
+        }
+        else
+        {
+            _playerVelocity.x = 0f;
+            _playerVelocity.z = 0f;
+            isOnSlope = false;
+        }
+    }
+
+    private Vector3 CalculateSlopeForce(float slideSpeed)
+    {
+        Vector3 slopeDirection;
+        float slideX = 0f;
+        float slideZ = 0f;
+
+        if (isOnSlope)
+        {
+            slideX += ((1f - hitNormal.y) * hitNormal.x) * slideSpeed;
+            slideZ += ((1f - hitNormal.y) * hitNormal.z) * slideSpeed;
+
+            slopeDirection = new Vector3(slideX, 0, slideZ);
+        }
+        else
+        {
+            slopeDirection = Vector3.zero;
+        }
+        
+        return slopeDirection;
     }
 
     public void TriggerKnockback(Vector3 direction, float knockbackHorizontal, float knockbackVertical, float knockbackTime)
@@ -304,4 +381,10 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 GetPlayerVelocity() { return playerCharacterController.velocity; }
     public int GetAvalilableJumps() { return _jumpsQuantity; }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position + sphereOffset, sphereRadius);
+    }
 }

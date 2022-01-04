@@ -70,8 +70,8 @@ public class CompanionAlertMessage : MonoBehaviour
         if (showCoroutine != null)
             StopCoroutine(showCoroutine);
         
-        StartCoroutine(MessageFadeOut(duration));
-        
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(MessageFadeOut(duration));
     }
 
     private IEnumerator MessageFadeIn()
