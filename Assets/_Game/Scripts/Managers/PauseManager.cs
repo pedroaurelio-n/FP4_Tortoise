@@ -9,10 +9,15 @@ public class PauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject resumeButton;
-    [SerializeField] private CinemachineFreeLook freeLookCamera;
 
+    private CinemachineFreeLook freeLookCamera;
     private PlayerControls playerControls;
     private bool isPaused;
+
+    private void Start()
+    {
+        freeLookCamera = GameManager.Instance.freeLookCamera;
+    }
 
     private void CheckPauseInput()
     {

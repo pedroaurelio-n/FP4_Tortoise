@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 
 public class UI_DevStats : MonoBehaviour
 {
-    [SerializeField] private CinemachineInputChange cinemachineInputChange;
     [SerializeField] private TMP_Text hVelocity;
     [SerializeField] private TMP_Text vVelocity;
     [SerializeField] private TMP_Text availableJumps;
@@ -25,6 +24,7 @@ public class UI_DevStats : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerGroundCheck groundCheck;
     private Rigidbody playerRb;
+    private CinemachineInputChange cinemachineInputChange;
 
     private Vector2 horizontalVelocity;
 
@@ -38,6 +38,7 @@ public class UI_DevStats : MonoBehaviour
 
     private void Start()
     {
+        cinemachineInputChange = GameManager.Instance.freeLookCamera.GetComponent<CinemachineInputChange>();
         if (playerMovement == null)
             Debug.LogException(new System.Exception("PlayerMovement couldn't be found."));
         

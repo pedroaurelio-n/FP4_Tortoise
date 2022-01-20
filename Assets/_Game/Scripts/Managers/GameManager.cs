@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 using Tayx.Graphy;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public static bool canInput;
+
+    public CinemachineFreeLook freeLookCamera;
 
     [SerializeField] private bool lockMouse;
     [SerializeField] private bool showGraphy;
