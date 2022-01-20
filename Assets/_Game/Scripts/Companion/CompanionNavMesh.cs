@@ -31,7 +31,10 @@ public class CompanionNavMesh : MonoBehaviour
 
     private void Start()
     {
-        transform.parent = _Dynamic;
+        if (_Dynamic != null)
+            transform.parent = _Dynamic;
+        else
+            transform.parent = null;
     }
 
     private void Update()

@@ -69,6 +69,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+        
         isFalling = false;
         isOnKnockback = false;
     }

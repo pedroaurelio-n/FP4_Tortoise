@@ -8,7 +8,7 @@ using DG.Tweening;
 public class CompanionAlertMessage : MonoBehaviour
 {
     [Header("Object References")]
-    [SerializeField] private Camera _mainCamera;
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private CanvasGroup messageGroup;
     [SerializeField] private TMP_Text messageText;
 
@@ -29,11 +29,14 @@ public class CompanionAlertMessage : MonoBehaviour
 
         messageGroup.alpha = 0f;
         messageGroup.gameObject.transform.DOScale(Vector3.zero, 0f);
+
+        if (mainCamera == null)
+            mainCamera = Camera.main;
     }
 
     private void Update()
     {
-        var lookDirection = Quaternion.LookRotation(transform.position - _mainCamera.transform.position, Vector3.up);
+        var lookDirection = Quaternion.LookRotation(transform.position - mainCamera.transform.position, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, rotationSpeed);
     }
 

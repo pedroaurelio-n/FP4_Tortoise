@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class CheckMaxHeight : MonoBehaviour
 {
-    public PlayerGroundCheck groundCheck;
-    public UI_DevStats devStats;
+    public PlayerMain player;
+
+    private UI_DevStats devStats;
+    private PlayerGroundCheck groundCheck;
 
     private float _height;
     private float _maxHeight;
     private float _airTime;
+
+    private void Awake()
+    {
+        devStats = GetComponent<UI_DevStats>();
+        groundCheck = player.gameObject.GetComponentInChildren<PlayerGroundCheck>();
+    }
+
+    private void Start()
+    {
+        if (groundCheck == null)
+            Debug.LogException(new System.Exception("PlayerGroundCheck couldn't be found."));
+    }
 
     private void Update()
     {

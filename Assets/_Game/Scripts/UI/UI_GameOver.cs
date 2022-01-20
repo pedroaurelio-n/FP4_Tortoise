@@ -20,7 +20,10 @@ public class UI_GameOver : MonoBehaviour
     private IEnumerator GameOver()
     {
         grayImage.SetActive(true);
-        musicManager.Stop();
+
+        if (musicManager != null)
+            musicManager.Stop();
+            
         Time.timeScale = 0f;
         GameManager.canInput = false;
         GameManager.Instance.LockMouse(true);

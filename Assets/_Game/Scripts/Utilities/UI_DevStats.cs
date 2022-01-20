@@ -7,10 +7,7 @@ using UnityEngine.InputSystem;
 
 public class UI_DevStats : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private PlayerGroundCheck groundCheck;
     [SerializeField] private CinemachineInputChange cinemachineInputChange;
-    [SerializeField] private Rigidbody playerRb;
     [SerializeField] private TMP_Text hVelocity;
     [SerializeField] private TMP_Text vVelocity;
     [SerializeField] private TMP_Text availableJumps;
@@ -24,7 +21,32 @@ public class UI_DevStats : MonoBehaviour
     [SerializeField] private TMP_Text cameraXSpeed;
     [SerializeField] private TMP_Text cameraYSpeed;
 
+    private CheckMaxHeight checkMaxHeight;
+    private PlayerMovement playerMovement;
+    private PlayerGroundCheck groundCheck;
+    private Rigidbody playerRb;
+
     private Vector2 horizontalVelocity;
+
+    private void Awake()
+    {
+        checkMaxHeight = GetComponent<CheckMaxHeight>();
+        playerMovement = checkMaxHeight.player.GetComponent<PlayerMovement>();
+        groundCheck = checkMaxHeight.player.GetComponentInChildren<PlayerGroundCheck>();
+        playerRb = checkMaxHeight.player.GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        if (playerMovement == null)
+            Debug.LogException(new System.Exception("PlayerMovement couldn't be found."));
+        
+        if (groundCheck == null)
+            Debug.LogException(new System.Exception("PlayerGroundCheck couldn't be found."));
+        
+        if (playerRb == null)
+            Debug.LogException(new System.Exception("PlayerRigidBody couldn't be found."));
+    }
 
     private void Update()
     {

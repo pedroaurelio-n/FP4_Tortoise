@@ -37,6 +37,9 @@ public class CompanionMain : MonoBehaviour
 
     private void Start()
     {
+        if (transform.parent.TryGetComponent(out PlayerMain player))
+            transform.parent = transform.parent.parent;
+
         companionSocketTrail.enabled = false;
     }
 
