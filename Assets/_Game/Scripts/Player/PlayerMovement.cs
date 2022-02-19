@@ -31,8 +31,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityAmplifierGrounded;
     [SerializeField] private float gravityAmplifierMidAir;
     [SerializeField] private int additionalJumps;
-    [SerializeField] private float glideGravityReducer;
     [SerializeField] private float glideVelocityDecreaseDuration;
+    [Range(0.05f, 0.9f)] [SerializeField] private float glideGravityReducer = 0.1f;
+    [SerializeField] private bool isGlideConstant;
+    [Range(-5, -0.1f)] [SerializeField] private float glideYVelocity = -2.5f;
 
     [Header("Slope Detection Configs")]
     [SerializeField] private float sphereRadius;
@@ -41,11 +43,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groudMask;
     [SerializeField] private float slideSpeed;
     [SerializeField] private float minimumSlopeAngle;
-    [SerializeField] private float maximumSlopeAngle;
 
 
     private Vector3 _movementDirection;
     private Vector3 _playerVelocity;
+    private Vector3 _playerGlideVelocity;
     private Vector3 _knockbackVelocity;
 
     private bool isOnKnockback;
@@ -219,6 +221,7 @@ public class PlayerMovement : MonoBehaviour
         {            
             isGliding = false;
             _playerVelocity.y += Physics.gravity.y * -gravityAmplifierGrounded * Time.deltaTime;
+            _playerGlideVelocity = Vector3.zero;
         }
 
         else
@@ -235,7 +238,13 @@ public class PlayerMovement : MonoBehaviour
             if (canGlide || canAnyGlide)
             {                
                 isGliding = true;
-                _playerVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
+
+                if (isGlideConstant)
+                    _playerGlideVelocity.y = glideYVelocity;
+                else
+                    _playerGlideVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
+                
+                _playerVelocity.y = _playerGlideVelocity.y;
             }
 
             else

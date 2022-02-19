@@ -60,8 +60,11 @@ public class UI_DevStats : MonoBehaviour
         sprinting.text = playerMovement.isSprinting.ToString();
         gliding.text = playerMovement.isGliding.ToString();
         cameraSensitivity.text = cinemachineInputChange.CameraSensitivity.ToString("0.0");
-        cameraXSpeed.text = cinemachineInputChange.GetCameraSpeed().x.ToString("0.000");
-        cameraYSpeed.text = cinemachineInputChange.GetCameraSpeed().y.ToString("0.000");
+        if (cinemachineInputChange != null)
+        {
+            cameraXSpeed.text = cinemachineInputChange.GetCameraSpeed().x.ToString("0.000");
+            cameraYSpeed.text = cinemachineInputChange.GetCameraSpeed().y.ToString("0.000");
+        }
     }
 
     public void ChangeJumpHeight(float height)

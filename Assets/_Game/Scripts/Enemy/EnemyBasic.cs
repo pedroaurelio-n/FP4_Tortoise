@@ -3,6 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using UnityEditor;
+
+[CustomEditor(typeof(EnemyBasic))]
+public class SetEnemyActiveEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        EnemyBasic enemyBasic = (EnemyBasic)target;
+        if (GUILayout.Button("Toggle Enemy"))
+        {
+            enemyBasic.ToggleEnemy();
+        }
+    }
+}
 
 public class EnemyBasic : Enemy
 {
@@ -13,7 +29,6 @@ public class EnemyBasic : Enemy
     [SerializeField] private float minimumWanderDistance;
     [SerializeField] private float minimumFollowDistance;
     [SerializeField] private float attackDistance;
-    [SerializeField] private float followSpeedMultiplier;
     [SerializeField] private float delayOnDamage;
     [SerializeField] private float knockbackforce;
     [SerializeField] private Transform target;
@@ -21,12 +36,11 @@ public class EnemyBasic : Enemy
     [SerializeField] private Transform _Dynamic;
     [SerializeField] private BoxCollider wanderArea;
 
-    public EnemyMovementType MovementType;
+    private EnemyMovementType MovementType;
 
     private Coroutine wanderMovement;
     private Coroutine followMovement;
     private Coroutine recoverFromDamageFeedback;
-    private bool isAlive;
     private bool isAttacking;
     private Color currentColor;
 
@@ -45,33 +59,74 @@ public class EnemyBasic : Enemy
 
     private void Start()
     {
-        isAlive = true;
+        MovementType = EnemyMovementType.IDLE;
+
+        animator.SetBool("Activated", isAlive);
+
         canDamagePlayer = true;
 
-        point.parent = _Dynamic;
+        if (_Dynamic == null)
+            point.parent = null;
+        else
+            point.parent = _Dynamic;
+
+        if (wanderArea == null)
+            Debug.LogWarning("Wander Area is null. Enemy will be stationary.");
+
+        if (target == null)
+            Debug.LogWarning("Target is null. Enemy will not follow player.");
 
         Move();
     }
 
+    public void ToggleEnemy()
+    {
+        if (_currentHealth > 0)
+        {
+            var value = !isAlive;
+            isAlive = value;
+            animator.SetBool("Activated", isAlive);
+        }
+    }
+
     private void Update()
     {
-        if (MovementType == EnemyMovementType.WANDER && IsCloseToPlayer())
+        if (!isAlive && MovementType != EnemyMovementType.IDLE)
         {
-            MovementType = EnemyMovementType.FOLLOW;
-            Move();
+            ChangeMovementState(EnemyMovementType.IDLE);
         }
 
-        //Vector3.Distance(transform.position, wanderArea.center) > maximumFollowDistance
-        if (MovementType == EnemyMovementType.FOLLOW && !IsCloseToPlayer())
+        if (isAlive && wanderArea != null && MovementType == EnemyMovementType.IDLE)
         {
-            MovementType = EnemyMovementType.WANDER;
-            Move();
+            ChangeMovementState(EnemyMovementType.WANDER);
+        }
+
+        if (isAlive && target != null && (MovementType == EnemyMovementType.WANDER || MovementType == EnemyMovementType.IDLE) && IsCloseToPlayer())
+        {
+            ChangeMovementState(EnemyMovementType.FOLLOW);
+        }
+
+        if (isAlive && MovementType == EnemyMovementType.FOLLOW && !IsCloseToPlayer())
+        {
+            if (wanderArea != null)
+                ChangeMovementState(EnemyMovementType.WANDER);
+            else
+                ChangeMovementState(EnemyMovementType.IDLE);
         }
     }
 
     private bool IsCloseToPlayer()
     {
-        return Vector3.Distance(transform.position, target.position) < minimumFollowDistance;
+        if (target == null)
+            return false;
+        else
+            return Vector3.Distance(transform.position, target.position) < minimumFollowDistance;
+    }
+
+    private void ChangeMovementState(EnemyMovementType newState)
+    {
+        MovementType = newState;
+        Move();
     }
 
     protected override void Move()
@@ -86,7 +141,10 @@ public class EnemyBasic : Enemy
                 followMovement = StartCoroutine(MoveFollow());
             break;
 
-            case EnemyMovementType.IDLE: return;
+            case EnemyMovementType.IDLE: 
+                animator.SetBool("Run", false); 
+                navMeshAgent.isStopped = true;
+            break;
         }
     }
 
@@ -178,7 +236,6 @@ public class EnemyBasic : Enemy
 
     public void ResetAttack()
     {
-        Debug.Log("test");
         navMeshAgent.isStopped = false;
         isAttacking = false;
     }
@@ -250,12 +307,11 @@ public class EnemyBasic : Enemy
         if (recoverFromDamageFeedback != null)
             StopCoroutine(recoverFromDamageFeedback);
         
-        isAlive = false;
         navMeshAgent.isStopped = true;
         canDamagePlayer = false;
         navMeshAgent.velocity = Vector3.zero;
-        navMeshAgent.enabled = false;
-        rigidBody.useGravity = true;
+        //navMeshAgent.enabled = false;
+        //rigidBody.useGravity = true;
 
         //GetComponent<Collider>().enabled = false;
 

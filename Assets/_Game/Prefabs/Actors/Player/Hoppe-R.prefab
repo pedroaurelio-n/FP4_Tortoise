@@ -2001,8 +2001,10 @@ MonoBehaviour:
   gravityAmplifierGrounded: -25
   gravityAmplifierMidAir: -2.5
   additionalJumps: 1
-  glideGravityReducer: 0.1
   glideVelocityDecreaseDuration: 2
+  glideGravityReducer: 0.1
+  isGlideConstant: 0
+  glideYVelocity: -2
   sphereRadius: 0.32
   sphereOffset: {x: 0, y: 0.5, z: 0}
   maxDistance: 1

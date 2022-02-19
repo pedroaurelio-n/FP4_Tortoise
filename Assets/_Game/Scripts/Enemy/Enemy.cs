@@ -8,17 +8,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private EnemyWaveTrigger wave;
     [SerializeField] private int maxHealth;
     [SerializeField] private int attackDamage;
+    [SerializeField] private bool isActiveOnStart;
 
     protected int _maxHealth;
     protected int _attackDamage;
     protected int _currentHealth;
     protected bool canDamagePlayer;
+    protected bool isAlive;
 
     protected void InitializeValues()
     {
         _maxHealth = maxHealth;
         _attackDamage = attackDamage;
         _currentHealth = _maxHealth;
+        isAlive = isActiveOnStart;
     }
 
     public int GetAttackDamage() { return _attackDamage; }
@@ -27,19 +30,24 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected abstract void Move();
     public virtual void TakeDamage(Vector3 hitNormal)
     {
-        _currentHealth--;
-
-        if (_currentHealth <= 0)
-            Die();
-
-        else
+        if (isAlive)
         {
-            DamageFeedback(hitNormal);
+            _currentHealth--;
+
+            if (_currentHealth <= 0)
+                Die();
+
+            else
+            {
+                DamageFeedback(hitNormal);
+            }
         }
     }
     protected abstract void DamageFeedback(Vector3 hitNormal);
     protected virtual void Die()
     {
+        isAlive = false;
+
         if (wave != null)
             wave.RemoveEnemy(this);
     }
