@@ -8,8 +8,10 @@ public abstract class TriggerAction : MonoBehaviour
     public delegate void SendFailMessage(string message);
     public static event SendFailMessage onFailMessageSent;
     
-    public bool isActionOnProgress;
-    public float delayToActivate;
+    [HideInInspector] public bool isActionOnProgress;
+    public int minimumStarsRequired;
+    public bool willReduceStars;
+    [SerializeField] private string failMessage;
 
     public void SendFailEvent(string message)
     {
@@ -17,7 +19,26 @@ public abstract class TriggerAction : MonoBehaviour
             onFailMessageSent(message);
     }
 
-    public abstract bool TryToActivateAction();
-    protected abstract bool CanActivateAction();
+    public bool TryToActivateAction()
+    {
+        if (CanActivateAction())
+        {
+            ActivateAction();
+        }
+        else
+            SendFailEvent(failMessage);
+
+        return CanActivateAction();
+    }
+
+    protected bool CanActivateAction()
+    {
+        if (minimumStarsRequired > 0)
+            return StarManager.GetStarCount() >= minimumStarsRequired;
+        
+        else
+            return true;
+    }
+
     protected abstract void ActivateAction();
 }

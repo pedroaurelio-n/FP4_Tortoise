@@ -44,12 +44,12 @@ public class StarManager : MonoBehaviour
     private void OnEnable()
     {
         Star.onStarCollected += UpdateStarCount;
-        TA_RemoveStar.onStarRemove += UpdateStarCount;
+        ActionTrigger.onStarRemove += UpdateStarCount;
     }   
 
     private void OnDisable()
     {
         Star.onStarCollected -= UpdateStarCount;        
-        TA_RemoveStar.onStarRemove -= UpdateStarCount;
+        ActionTrigger.onStarRemove -= UpdateStarCount;
     } 
 }

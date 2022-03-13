@@ -6,10 +6,9 @@ using DG.Tweening;
 public class MovingPlatform : MonoBehaviour
 {
     [SerializeField] private List<Transform> points;
-    [SerializeField] private List<bool> willGoDown;
+    [SerializeField] private List<bool> activateKinematic;
     public bool canStart;
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform parent;
+    [SerializeField] private Transform _Dynamic;
     [SerializeField] private float timeDelay;
     [SerializeField] private float moveTime;
     [SerializeField] private bool isSequential = true;
@@ -26,11 +25,19 @@ public class MovingPlatform : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    public bool GetSequential()
+    {
+        return isSequential;
+    }
+
     private void Start()
     {
         foreach(Transform point in points)
         {
-            point.parent = parent;
+            if (_Dynamic != null)
+                point.parent = _Dynamic;
+            else
+                point.parent = null;
         }
 
         CheckStart();
@@ -40,9 +47,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (canStart)
         {
-            points.Add(startPoint);
-
-            index = 0;
+            index = 1;
             
             StartCoroutine(Move(index));
         }
@@ -78,7 +83,7 @@ public class MovingPlatform : MonoBehaviour
         if (index >= points.Count)
             index = 0;
         
-        rb.isKinematic = willGoDown[index];
+        rb.isKinematic = activateKinematic[index];
 
         StartCoroutine(Move(index));
     }
@@ -87,6 +92,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
+            Debug.Log("enter");
             player.groundCheck.SetMovingPlatformBool(true);
             player.groundCheck.platformOffset = platformOffset;
         }
@@ -96,6 +102,8 @@ public class MovingPlatform : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out CharacterController playerController))
         {
+            Debug.Log("stay");
+            Debug.Log(rb.velocity * Time.deltaTime);
             playerController.Move(rb.velocity * Time.deltaTime);
         }
     }
@@ -104,6 +112,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out PlayerMovement player))
         {
+            Debug.Log("exit");
             player.groundCheck.SetMovingPlatformBool(false);
             player.groundCheck.platformOffset = Vector3.zero;
         }

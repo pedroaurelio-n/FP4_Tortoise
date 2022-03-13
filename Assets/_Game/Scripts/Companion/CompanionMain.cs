@@ -66,7 +66,7 @@ public class CompanionMain : MonoBehaviour
             var navMeshPosition = companionNavMesh.transform.position;
             var desiredPosition = new Vector3(navMeshPosition.x, companionDesiredPlacement.position.y, navMeshPosition.z);
 
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed);
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed, Time.smoothDeltaTime);
 
         }
 
@@ -78,7 +78,8 @@ public class CompanionMain : MonoBehaviour
             }
             
             var desiredPosition = companionDesiredPlacement.position;
-            rb.MovePosition(Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed));
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed, Time.smoothDeltaTime);
+            //rb.MovePosition(Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocityVector, smoothTime, maxSpeed, Time.smoothDeltaTime));
 
         }
 

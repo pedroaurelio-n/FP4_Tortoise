@@ -9,21 +9,6 @@ public class TA_LoadLevel : TriggerAction
 {
     [SerializeField] private int levelBuildIndex;
 
-    public override bool TryToActivateAction()
-    {
-        if (CanActivateAction())
-            ActivateAction();
-        else
-            Debug.Log("Couldn't perform action");
-
-        return CanActivateAction();
-    }
-
-    protected override bool CanActivateAction()
-    {
-        return true;
-    }
-
     protected override void ActivateAction()
     {
         isActionOnProgress = true;
