@@ -6,17 +6,17 @@ using DG.Tweening;
 public class MovingPlatform : MonoBehaviour
 {
     [SerializeField] private List<Transform> points;
-    [SerializeField] private List<bool> activateKinematic;
     public bool canStart;
     [SerializeField] private Transform _Dynamic;
     [SerializeField] private float timeDelay;
     [SerializeField] private float moveTime;
     [SerializeField] private bool isSequential = true;
     [SerializeField] private Ease ease;
-    [SerializeField] private Vector3 platformOffset;
 
     private int index;
     private bool isMoving;
+    private bool isPlayerOnPlatform;
+    private CharacterController playerC;
 
     private Rigidbody rb;
 
@@ -43,6 +43,19 @@ public class MovingPlatform : MonoBehaviour
         CheckStart();
     }
 
+    private void FixedUpdate()
+    {
+        if (playerC == null)
+            return;
+
+        if (isPlayerOnPlatform)
+        {
+            Debug.Log(rb.velocity * Time.deltaTime);
+            playerC.Move(rb.velocity * Time.deltaTime);
+        }
+            
+    }
+
     public void CheckStart()
     {
         if (canStart)
@@ -60,14 +73,13 @@ public class MovingPlatform : MonoBehaviour
 
         if (isSequential)
         {
-            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { ChangePoint(); }).SetEase(ease);
+            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { ChangePoint(); }).SetEase(ease).SetUpdate(UpdateType.Fixed);
         }
         else
         {
             isMoving = true;
-            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { isMoving = false; }).SetEase(ease);
+            rb.DOMove(points[index].position, moveTime).OnComplete(delegate { isMoving = false; }).SetEase(ease).SetUpdate(UpdateType.Fixed);
         }
-        
     }
 
     public void GoToNextPoint()
@@ -82,8 +94,6 @@ public class MovingPlatform : MonoBehaviour
 
         if (index >= points.Count)
             index = 0;
-        
-        rb.isKinematic = activateKinematic[index];
 
         StartCoroutine(Move(index));
     }
@@ -94,17 +104,16 @@ public class MovingPlatform : MonoBehaviour
         {
             Debug.Log("enter");
             player.groundCheck.SetMovingPlatformBool(true);
-            player.groundCheck.platformOffset = platformOffset;
-        }
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.TryGetComponent(out CharacterController playerController))
-        {
-            Debug.Log("stay");
-            Debug.Log(rb.velocity * Time.deltaTime);
-            playerController.Move(rb.velocity * Time.deltaTime);
+            isPlayerOnPlatform = true;
+
+            if (playerC == null)
+            {
+                if (player.TryGetComponent(out CharacterController controller))
+                {
+                    playerC = controller;
+                }
+            }
         }
     }
 
@@ -114,7 +123,8 @@ public class MovingPlatform : MonoBehaviour
         {
             Debug.Log("exit");
             player.groundCheck.SetMovingPlatformBool(false);
-            player.groundCheck.platformOffset = Vector3.zero;
+            
+            isPlayerOnPlatform = false;
         }
     }
 }
