@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerMain playerMain;
     public PlayerGroundCheck groundCheck;
-    //[SerializeField] private PlayerCameraFollow cameraFollow;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject jumpParticle;
 
@@ -50,14 +49,21 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _playerGlideVelocity;
     private Vector3 _knockbackVelocity;
 
+    private bool isOnPushForceArea;
+    private bool isPushForceUp;
+    private bool isPushForceOngoing;
+    private Vector3 _pushForceVelocity;
+    private Coroutine _startPushCoroutine;
+    private Coroutine _endPushCoroutine;
+
     private bool isOnKnockback;
     private int _jumpsQuantity;
     private Coroutine _fallCoroutine;
 
     private bool isSettingStepOffset;
 
-    private Vector3 hitNormal;
-    private float hitNormalAngle;
+    private Vector3 _hitNormal;
+    private float _hitNormalAngle;
     private bool isOnSlope;
 
     private CharacterController playerCharacterController;
@@ -111,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
 
         else
         {
-            if (!isFalling && !isOnKnockback)
+            if (!isFalling && !isOnKnockback && !isGliding)
             {
                 isFalling = true;
                 _fallCoroutine = StartCoroutine(TriggerFalling());
@@ -174,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
         {
             var movementVector = new Vector3(movementVelocity.x + _playerVelocity.x, _playerVelocity.y, movementVelocity.z + _playerVelocity.z);
 
-            playerCharacterController.Move(movementVector * Time.deltaTime + _knockbackVelocity * Time.deltaTime);
+            playerCharacterController.Move(movementVector * Time.deltaTime + _knockbackVelocity * Time.deltaTime + _pushForceVelocity * Time.deltaTime);
             playerMain.PlayerAnimationManager.UpdateAnimatorValues(0, playerMain.PlayerInputManager.MoveAmount, isSprinting);
         }
 
@@ -243,20 +249,29 @@ public class PlayerMovement : MonoBehaviour
                     _playerGlideVelocity.y = glideYVelocity;
                 else
                     _playerGlideVelocity.y += Physics.gravity.y * (-gravityAmplifierMidAir * glideGravityReducer) * Time.deltaTime;
-                
-                _playerVelocity.y = _playerGlideVelocity.y;
+
+                if (!isOnPushForceArea)
+                {
+                    _playerVelocity.y = _playerGlideVelocity.y;
+                }
             }
 
             else
             {
                 isGliding = false;
-
-                if (!playerMain.PlayerInputManager.jumpInput)
-                    _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * lowJumpMultiplier * Time.deltaTime;
                 
-                else
-                    _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
-
+                if (!isOnPushForceArea || !isPushForceUp)
+                {
+                    if (!playerMain.PlayerInputManager.jumpInput)
+                    {
+                        _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * lowJumpMultiplier * Time.deltaTime;
+                    }
+                    
+                    else
+                    {
+                        _playerVelocity.y += Physics.gravity.y * -gravityAmplifierMidAir * Time.deltaTime;
+                    }
+                }
             }
 
             _playerVelocity.x += slopeForce.x;
@@ -306,10 +321,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (sphereCast)
         {
-            hitNormal = hit.normal;
-            hitNormalAngle = Vector3.Angle(Vector3.up, hitNormal);
+            _hitNormal = hit.normal;
+            _hitNormalAngle = Vector3.Angle(Vector3.up, _hitNormal);
 
-            if (hitNormalAngle > minimumSlopeAngle)
+            if (_hitNormalAngle > minimumSlopeAngle)
                 isOnSlope = true;
             else
             {
@@ -334,8 +349,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isOnSlope)
         {
-            slideX += ((1f - hitNormal.y) * hitNormal.x) * slideSpeed;
-            slideZ += ((1f - hitNormal.y) * hitNormal.z) * slideSpeed;
+            slideX += ((1f - _hitNormal.y) * _hitNormal.x) * slideSpeed;
+            slideZ += ((1f - _hitNormal.y) * _hitNormal.z) * slideSpeed;
 
             slopeDirection = new Vector3(slideX, 0, slideZ);
         }
@@ -347,22 +362,23 @@ public class PlayerMovement : MonoBehaviour
         return slopeDirection;
     }
 
+    private IEnumerator TriggerFalling()
+    {
+        yield return new WaitForSeconds(waitForFall);
+
+        if ((!groundCheck.isGrounded && (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") || playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Landing")) && _playerVelocity.y < 0) ||
+            (!groundCheck.isGrounded && (playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") || playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Landing")) && _pushForceVelocity.y > 0))
+        {
+            playerMain.PlayerAnimationManager.SetTrigger("isFalling");
+        }
+    }
+
     public void TriggerKnockback(Vector3 direction, float knockbackHorizontal, float knockbackVertical, float knockbackTime)
     {
         isOnKnockback = true;
         _knockbackVelocity = direction * knockbackHorizontal * Time.deltaTime;
         _knockbackVelocity.y = knockbackVertical;
         StartCoroutine(ResetKnockbackVelocity(knockbackTime));
-    }
-
-    private IEnumerator TriggerFalling()
-    {
-        yield return new WaitForSeconds(waitForFall);
-
-        if (!groundCheck.isGrounded && playerMain.PlayerAnimationManager.GetCurrentAnimation().IsName("Movement") && _playerVelocity.y < 0)
-        {
-            playerMain.PlayerAnimationManager.SetTrigger("isFalling");
-        }
     }
 
     private IEnumerator ResetKnockbackVelocity(float knockbackTime)
@@ -379,6 +395,105 @@ public class PlayerMovement : MonoBehaviour
 
         _knockbackVelocity = Vector3.zero;
         isOnKnockback = false;
+        yield return null;
+    }
+
+    public void SetPushForceAreaBool(bool value)
+    {
+        isOnPushForceArea = value;
+    }
+
+    public void SetPushForceUpBool(bool value)
+    {
+        isPushForceUp = value;
+    }
+
+    public void ActivatePushForce(Vector3 direction, float force, float startDuration)
+    {       
+        if (_endPushCoroutine != null)
+        {
+            StopCoroutine(_endPushCoroutine);
+            _endPushCoroutine = null;
+            _pushForceVelocity = Vector3.zero;
+        }
+
+        if (direction.y > 0)
+        {
+            groundCheck.DeactivateGroundCheck();
+            _fallCoroutine = StartCoroutine(TriggerFalling());
+        }
+
+        _startPushCoroutine = StartCoroutine(StartPushForce(direction, force, startDuration));
+    }
+
+    private IEnumerator StartPushForce(Vector3 direction, float force, float startDuration)
+    {
+        /*isPushForceOngoing = true;
+        float elapsedTime = 0;
+        Vector3 start = Vector3.zero;
+
+        while (elapsedTime < startDuration)
+        {
+            _pushForceVelocity = Vector3.Lerp(start, direction * force, (elapsedTime/startDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        _pushForceVelocity = direction * force;
+        _startPushCoroutine = null;
+        yield return null;*/
+
+        isPushForceOngoing = true;        
+        var maxMagnitude = direction.magnitude * force;
+        while (isOnPushForceArea)
+        {
+            if (_playerVelocity.y < 0)
+                _playerVelocity.y += direction.y * force * 2 * Time.deltaTime;
+
+            _pushForceVelocity += direction * force * Time.deltaTime;
+
+            if (_pushForceVelocity.magnitude > maxMagnitude)
+                _pushForceVelocity = direction * force;
+            
+            yield return null;
+        }
+
+        _pushForceVelocity = direction * force;
+        _startPushCoroutine = null;
+        yield return null;
+    }
+
+    public void DeactivatePushForce(float endDuration)
+    {
+        if (isOnPushForceArea || !isPushForceOngoing || _pushForceVelocity == Vector3.zero)
+        {
+            return;
+        }
+
+        if (_startPushCoroutine != null)
+        {
+            StopCoroutine(_startPushCoroutine);
+            _startPushCoroutine = null;
+        }
+        
+        _endPushCoroutine = StartCoroutine(EndPushForce(endDuration));
+    }
+
+    private IEnumerator EndPushForce(float endDuration)
+    {
+        float elapsedTime = 0;
+        Vector3 start = _pushForceVelocity;
+
+        while (elapsedTime < endDuration)
+        {
+            _pushForceVelocity = Vector3.Lerp(start, Vector3.zero, (elapsedTime/endDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isPushForceOngoing = false;
+        _pushForceVelocity = Vector3.zero;
+        _endPushCoroutine = null;
         yield return null;
     }
 
