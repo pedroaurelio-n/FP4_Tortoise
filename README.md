@@ -123,8 +123,11 @@
          - Andar
          - Pular / Duplo pulo
          - Planar
+				 - Esta mecânica ajuda o jogador a alcançar locais mais distantes.
          - Atacar
+				 - Esta mecânica ajuda o jogador a derrotar os inimigos.
          - Escudo
+				 - Esta mecânica bloqueia projéteis ou refletem eles dependendo da coloração do escudo.
 
     -   O Robby será um dos personagens principais da história, no entanto ele não será jogável e apenas auxiliará o jogador em sua gameplay.
     
@@ -190,18 +193,18 @@
     
 
          -   Receber dano o suficiente de um monstro para que a vida dele diminui para zero
+				 -   Pode ser um ataque simples como um soco, ou um projétil acertando o personagem.
     
          -   Cenário (Buraco,Lava,Espinhos, etc)
+         -   Correntes de ar
+			-	Area onde impulssionará o jogador
 
--  ### Coletáveis : Ítens que irá ajudar o jogador
+- ### Coletáveis : Ítens que irá ajudar o jogador
     
 
     -   O coletável mais importante do jogo será as essências elementais, que irão ser o item principal do jogo, onde através dele será possível progredir nos níveis e na história.
     -   Outros coletáveis existiram no jogo como chaves, para que o jogador possa prosseguir na sua jornada.
     
-
-  
-
 # Inimigos :
     
 
@@ -232,6 +235,9 @@
 
     -   Até então os inimigos não possuem uma história especial.
     
+- ### Existirá inimigos especiais? :
+
+	- Existirá uma espécie de chefão em cada fase, um inimigo mais poderoso e tambem com mecânicas diferentes
 
   
 
