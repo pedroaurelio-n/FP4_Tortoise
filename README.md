@@ -117,8 +117,15 @@
 -   ### O controle dos personagens :
     
 
-    -    O jogador irá controlar o Hoppe, podendo : correr, andar, pular, planar e atacar.
-    
+    -    O jogador irá controlar o Hoppe, podendo :
+
+         - Correr
+         - Andar
+         - Pular / Duplo pulo
+         - Planar
+         - Atacar
+         - Escudo
+
     -   O Robby será um dos personagens principais da história, no entanto ele não será jogável e apenas auxiliará o jogador em sua gameplay.
     
 
@@ -185,9 +192,6 @@
          -   Receber dano o suficiente de um monstro para que a vida dele diminui para zero
     
          -   Cenário (Buraco,Lava,Espinhos, etc)
-    
-
-  
 
 -  ### Coletáveis : Ítens que irá ajudar o jogador
     
