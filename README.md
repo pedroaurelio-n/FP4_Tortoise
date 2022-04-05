@@ -12,7 +12,7 @@
  - O gênero deste jogo será de plataforma, aventura e ação.
 
 ### Mecânicas
- - O personagem poderá navegar pelo mundo andando, correndo, pulando e planando. Além disso, poderá atacar para derrotar inimigos ou destruir obstáculos.
+ - O personagem poderá navegar pelo mundo andando, correndo, pulando e planando. Além disso, poderá atacar para derrotar inimigos ou destruir obstáculos e também possuirá um escudo que será capaz de refletir projéteis e até mesmo bloqueá-los!
 
 #### Objetivo do jogo
  - Restaurar o planeta natal do personagem principal coletando as essências elementais de outros planetas.
@@ -80,7 +80,7 @@
 - ### Desafios:
     
 
-   -   O jogo proporciona para o jogador desafios de plataforma e uma aventura desafiadora com um enredo envolvente.
+   -   O jogo proporciona para o jogador desafios de plataforma, uma aventura desafiadora com um enredo envolvente.
     
 
 - ### Objetivo do jogo
@@ -205,6 +205,11 @@
     -   O coletável mais importante do jogo será as essências elementais, que irão ser o item principal do jogo, onde através dele será possível progredir nos níveis e na história.
     -   Outros coletáveis existiram no jogo como chaves, para que o jogador possa prosseguir na sua jornada.
     
+- ### Bloquear projéteis ou Refleti-los
+
+	-	Uma das mecânicas que irá ajudar o jogador a derrotar inimigos mais fortes, e tambem passar por quebra-cabeças diferentes. Esta mecânica gira em torno do escudo, que poderá tanto bloquear ou refletir um projétil, dependendo da coloração dele, esta coloração dependerá de uma barra de energia, quando estiver cheia irá refletir um projétil, caso contrário, apenas irá bloquear.
+
+
 # Inimigos :
     
 
@@ -222,6 +227,7 @@
     
 
     -   Os inimigos sempre estão alertas com os personagens em jogo e caso avistem o jogador, eles irão tentar derrotar ele, e como, dependerá das ferramentas de cada inimigo.
+    -   Alguns inimigos especiais poderão ser um obstáculo para que o jogador possa prosseguir.
     
 
 - ### Como o jogador poderá vencê-los? :
@@ -237,7 +243,7 @@
     
 - ### Existirá inimigos especiais? :
 
-	- Existirá uma espécie de chefão em cada fase, um inimigo mais poderoso e tambem com mecânicas diferentes
+	- Existirá uma espécie de chefão em cada fase, um inimigo mais poderoso e tambem com mecânicas diferentes que extrairá o uso de todas as mecânicas apresentadas.
 
   
 
