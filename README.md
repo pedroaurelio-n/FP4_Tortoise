@@ -247,13 +247,13 @@
 
 - ### Fluxograma comportamentais dos agentes virtuais:
 	- Inimigo comum :
-		- ![[Untitled Diagram.drawio.png]]
+		- ![Untitled Diagram drawio](https://user-images.githubusercontent.com/43623947/162648223-12784477-d582-4061-9bd3-00ec11302b09.png)
 	- Chefe 1 :
-		- ![[Untitled Diagram.drawio (2).png]]
+		- ![Untitled Diagram drawio (2)](https://user-images.githubusercontent.com/43623947/162648231-6ffd7351-ef6c-4457-9f2d-58ad574f080f.png)
 	- Robby : 
-		- ![[Untitled Diagram.drawio (3) 1.png]]
+		- ![Untitled Diagram drawio (3)](https://user-images.githubusercontent.com/43623947/162648255-28ae7398-be7e-4e34-9ef3-958e543763f4.png)
 	- Objetos Interagíveis / Coletáveis
-		- ![[Untitled Diagram.drawio (4).png]]
+		- ![Untitled Diagram drawio (4)](https://user-images.githubusercontent.com/43623947/162648262-5abb7968-28ba-4d17-9a4d-c1b1c5b40eb9.png)
 
 - ### Tabela classificatória dos agentes virtuais:
 	- https://docs.google.com/spreadsheets/d/1Ao5exP5nXAd3fijl1nQ6EZ0zaG2Ohr1pOMYWXg_nnkg/edit?usp=sharing
