@@ -245,6 +245,19 @@
 
 	- Existirá uma espécie de chefão em cada fase, um inimigo mais poderoso e tambem com mecânicas diferentes que extrairá o uso de todas as mecânicas apresentadas.
 
+- ### Fluxograma comportamentais dos agentes virtuais:
+	- Inimigo comum :
+		- ![[Untitled Diagram.drawio.png]]
+	- Chefe 1 :
+		- ![[Untitled Diagram.drawio (2).png]]
+	- Robby : 
+		- ![[Untitled Diagram.drawio (3) 1.png]]
+	- Objetos Interagíveis / Coletáveis
+		- ![[Untitled Diagram.drawio (4).png]]
+
+- ### Tabela classificatória dos agentes virtuais:
+	- https://docs.google.com/spreadsheets/d/1Ao5exP5nXAd3fijl1nQ6EZ0zaG2Ohr1pOMYWXg_nnkg/edit?usp=sharing
+
   
 
 # Cutscenes ou Cenas de corte :
