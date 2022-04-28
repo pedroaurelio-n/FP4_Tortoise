@@ -69,6 +69,7 @@ public class DialogueManager : MonoBehaviour
 
     private void CheckDialogueInput(TextAsset json)
     {
+        Debug.Log("Check");
         if (!_isDialoguePlaying)
         {
             EnterDialogueMode(json);
@@ -88,6 +89,11 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void CheckDialogueInput2()
+    {
+
     }
 
     private void EnterDialogueMode(TextAsset json)
@@ -172,7 +178,6 @@ public class DialogueManager : MonoBehaviour
 
     private void SkipDisplayLineCoroutine()
     {
-        Debug.Log("Test");
         if (_displayLineCoroutine != null)
         {
             StopCoroutine(_displayLineCoroutine);
@@ -269,7 +274,6 @@ public class DialogueManager : MonoBehaviour
         {
             _canMakeChoice = false;
             _isDeactivatingChoice = true;
-            Debug.Log("1");
             _currentStory.ChooseChoiceIndex(index);
             EventSystem.current.SetSelectedGameObject(null);
             if (_canContinueToNextLine)
@@ -309,11 +313,11 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        DialogueTrigger.onDialogue += CheckDialogueInput;
+        TA_Dialogue.onDialogue += CheckDialogueInput;
     }
 
     private void OnDisable()
     {
-        DialogueTrigger.onDialogue -= CheckDialogueInput;
+        TA_Dialogue.onDialogue -= CheckDialogueInput;
     }
 }
