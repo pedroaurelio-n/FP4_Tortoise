@@ -102,7 +102,8 @@
     
 
    -   Os personagens principais, são dois robôs, Hoppe e Robby, onde acordam no futuro e se deparam com o seu planeta natal esgotado de recursos. Os personagens principais possuem como missão restaurar o seu planeta. (Hoppe está de pé e Robby está em sua mochila).
-
+   -   Personagens dentro do jogo :
+   -   ![[Capturar.png]](https://cdn.discordapp.com/attachments/278668431295774730/983541774658179082/Capturar.PNG)
 ![](https://lh5.googleusercontent.com/_BVvUYTmBYyUcANbP5U7-mW0xi8jZeSXc6qji8wX2YhcnI_lzUWRVRb1vk7V7ZwruDE4zrRANqmFMLfVmIqPsjKkIrCZ2dqv71oBmaCXhh2cEiU7wF7tknG_VNTBsBrjJXYq1Fby)
     
 
@@ -151,6 +152,8 @@
     
 
    -   O mundo do jogo se passa em um mundo fictício e fantasioso, a interação do jogador com o mundo é através das fases e da progressão dele na história.
+   -   Primeiro Level :
+   -   ![[untitled.png]](https://cdn.discordapp.com/attachments/278668431295774730/983541773785767997/untitled.png)
     
 
    ## Game Experience :
@@ -247,8 +250,14 @@
 
 - ### Fluxograma comportamentais dos agentes virtuais:
 	- Inimigo comum :
+		- Modelo :
+		- ![](https://cdn.discordapp.com/attachments/878389472956399636/960310305316028546/unknown.png)
+		- Comportamento :
 		- ![Untitled Diagram drawio](https://user-images.githubusercontent.com/43623947/162648223-12784477-d582-4061-9bd3-00ec11302b09.png)
 	- Chefe 1 :
+		- Modelo :
+		- ![](https://cdn.discordapp.com/attachments/278668431295774730/983541774268137502/imagem_2022-05-04_174620195.png)
+		- Comportamento :
 		- ![Untitled Diagram drawio (2)](https://user-images.githubusercontent.com/43623947/162648231-6ffd7351-ef6c-4457-9f2d-58ad574f080f.png)
 	- Robby : 
 		- ![Untitled Diagram drawio (3)](https://user-images.githubusercontent.com/43623947/162648255-28ae7398-be7e-4e34-9ef3-958e543763f4.png)
