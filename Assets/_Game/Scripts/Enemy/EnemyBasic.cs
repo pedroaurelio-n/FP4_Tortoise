@@ -276,7 +276,7 @@ public class EnemyBasic : Enemy
         if (recoverFromDamageFeedback != null)
             StopCoroutine(recoverFromDamageFeedback);
 
-        
+        animator.SetTrigger("Damage");
         recoverFromDamageFeedback = StartCoroutine(RecoverFromDamageFeedback());
         rigidBody.AddForce(hitNormal.normalized * knockbackforce, ForceMode.Impulse);
 

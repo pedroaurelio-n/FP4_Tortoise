@@ -9,7 +9,9 @@ public enum Vector3Direction
     Right,
     Left,
     Up,
-    Down
+    Down,
+    RadialOut,
+    RadialIn
 }
 
 public class PushForce : MonoBehaviour
@@ -33,6 +35,11 @@ public class PushForce : MonoBehaviour
         UpdatePushForceDirection();
     }
 
+    public void SetPlayer(PlayerMovement player)
+    {
+        playerMovement = player;
+    }
+
     public void UpdatePushForceDirection()
     {
         switch (pushDirection)
@@ -43,7 +50,42 @@ public class PushForce : MonoBehaviour
             case Vector3Direction.Left: _pushDirection = -transform.right; break;
             case Vector3Direction.Up: _pushDirection = transform.up; break;
             case Vector3Direction.Down: _pushDirection = -transform.up; break;
+            case Vector3Direction.RadialOut:
+                if (playerMovement == null)
+                    return;
+                
+                _pushDirection = new Vector3
+                (
+                    (playerMovement.transform.position - transform.position).x,
+                    0f,
+                    (playerMovement.transform.position - transform.position).z
+                );
+                break;
+            case Vector3Direction.RadialIn:
+                if (playerMovement == null)
+                    return;
+
+                _pushDirection = new Vector3
+                (
+                    (transform.position - playerMovement.transform.position).x,
+                    0f,
+                    (transform.position - playerMovement.transform.position).z
+                );
+                break;
         }
+    }
+
+    public void TriggerPush()
+    {
+        playerMovement.SetPushForceAreaBool(true);
+            
+        if (pushDirection == Vector3Direction.Up)
+            playerMovement.SetPushForceUpBool(true);
+        else
+            playerMovement.SetPushForceUpBool(false);
+
+        playerMovement.ActivatePushForce(_pushDirection, pushForce, startDuration);
+        Debug.Log($"test");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,14 +95,8 @@ public class PushForce : MonoBehaviour
             if (playerMovement == null)
                 playerMovement = player;
 
-            playerMovement.SetPushForceAreaBool(true);
-            
-            if (pushDirection == Vector3Direction.Up)
-                playerMovement.SetPushForceUpBool(true);
-            else
-                playerMovement.SetPushForceUpBool(false);
 
-            playerMovement.ActivatePushForce(_pushDirection, pushForce, startDuration);
+            TriggerPush();
         }
     }
 

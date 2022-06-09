@@ -6,11 +6,11 @@ public class PlayerHitbox : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.TryGetComponent(out IDamageable target))
+        if (other.transform.parent != null && other.transform.parent.TryGetComponent(out IDamageable target))
         {
             Vector3 hitNormal = other.ClosestPoint(transform.position) - transform.position;
 
-            target.TakeDamage(hitNormal);
+            target.TakeDamage(hitNormal, false);
         }
     }
 }

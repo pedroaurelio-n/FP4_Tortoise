@@ -119,6 +119,8 @@ public class DialogueManager : MonoBehaviour
         _isDialoguePlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
+
+        GameManager.canInput = true;
     }
 
     private void ContinueStory()
@@ -313,11 +315,13 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
+        TriggerAction.onFailMessageSent += CheckDialogueInput;
         TA_Dialogue.onDialogue += CheckDialogueInput;
     }
 
     private void OnDisable()
     {
+        TriggerAction.onFailMessageSent -= CheckDialogueInput;
         TA_Dialogue.onDialogue -= CheckDialogueInput;
     }
 }

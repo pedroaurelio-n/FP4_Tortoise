@@ -55,14 +55,4 @@ public class UI_Message : MonoBehaviour
 
         isShowingMessage = false;
     }
-
-    private void OnEnable()
-    {   
-        TriggerAction.onFailMessageSent += UpdateMessage;
-    }
-
-    private void OnDisable()
-    {
-        TriggerAction.onFailMessageSent -= UpdateMessage;
-    }
 }

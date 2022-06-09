@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10281af4828f7c343bfbba0a637ef016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeLookCamera: {fileID: 0}
   lockMouse: 0
   showGraphy: 0
 --- !u!4 &59314719
@@ -1380,7 +1381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -543, y: -490.42}
+  m_AnchoredPosition: {x: -542.99994, y: -490.42004}
   m_SizeDelta: {x: -1546.554, y: -980.83}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &412072129
@@ -2001,6 +2002,10 @@ PrefabInstance:
       propertyPath: m_keepAlive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11496292, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
+      propertyPath: m_audioListener
+      value: 
+      objectReference: {fileID: 210670053}
     - target: {fileID: 22451668, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_Pivot.x
       value: 0

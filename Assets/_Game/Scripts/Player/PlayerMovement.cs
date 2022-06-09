@@ -443,6 +443,8 @@ public class PlayerMovement : MonoBehaviour
         _startPushCoroutine = null;
         yield return null;*/
 
+        yield return new WaitForSeconds(startDuration);
+
         isPushForceOngoing = true;        
         var maxMagnitude = direction.magnitude * force;
         while (isOnPushForceArea)

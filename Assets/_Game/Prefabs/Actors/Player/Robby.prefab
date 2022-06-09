@@ -54,7 +54,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.8
+  m_Time: 0.4
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -63,7 +63,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.114285715
+        value: 0.053311594
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61b9d5d211d39274180de23dcfed6e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 0}
+  mainCamera: {fileID: 0}
   messageGroup: {fileID: 6579659041039472462}
   messageText: {fileID: 6579659041038444522}
   rotationSpeed: 20
@@ -870,7 +870,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d92f0d4264050af4abc94165beb4fd41, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d92f0d4264050af4abc94165beb4fd41, type: 3}
+      propertyPath: m_TagString
+      value: IgnoreCamera
       objectReference: {fileID: 0}
     - target: {fileID: 3188951021027112985, guid: d92f0d4264050af4abc94165beb4fd41, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

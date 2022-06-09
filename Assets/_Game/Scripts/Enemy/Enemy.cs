@@ -9,6 +9,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private int maxHealth;
     [SerializeField] private int attackDamage;
     [SerializeField] private bool isActiveOnStart;
+    [SerializeField] private GameObject deathParticle;
 
     protected int _maxHealth;
     protected int _attackDamage;
@@ -26,9 +27,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public int GetAttackDamage() { return _attackDamage; }
     public bool CanDamagePlayer() { return canDamagePlayer; }
+    public bool IsAlive() { return isAlive; }
 
     protected abstract void Move();
-    public virtual void TakeDamage(Vector3 hitNormal)
+    public virtual void TakeDamage(Vector3 hitNormal, bool byBullet)
     {
         if (isAlive)
         {
@@ -50,6 +52,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         if (wave != null)
             wave.RemoveEnemy(this);
+
+        var temp = Instantiate(deathParticle, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
 

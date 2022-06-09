@@ -202,6 +202,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Protect",
+                    "type": "Button",
+                    "id": "fc0c13d0-7e17-4f75-8e8a-0adacf86a087",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "f665b927-b105-4518-9101-815b1ed7539f",
@@ -288,7 +296,7 @@
                 {
                     "name": "",
                     "id": "1027e9d5-c19f-4d6d-90d6-e6a87d9ccd63",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
@@ -310,7 +318,7 @@
                 {
                     "name": "",
                     "id": "6effe9d5-4db7-4989-94de-326b7240d95a",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
@@ -353,12 +361,12 @@
                 },
                 {
                     "name": "",
-                    "id": "943d4038-1bc3-4b10-8ea8-ff12b5ea0b25",
-                    "path": "<Keyboard>/h",
+                    "id": "f72ad907-0a4e-4c81-b86d-e604fe17c12e",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Pause",
+                    "groups": "KeyboardMouse",
+                    "action": "Protect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -9,6 +9,7 @@ public class PlayerMain : MonoBehaviour
     public PlayerInputManager PlayerInputManager;
     public PlayerAnimationManager PlayerAnimationManager;
     public PlayerCombatController PlayerCombatController;
+    public PlayerShieldController PlayerShieldController;
     public PlayerInteractController PlayerInteractController;
 
     private void Update()
@@ -16,6 +17,7 @@ public class PlayerMain : MonoBehaviour
         PlayerInputManager.HandleAllInputs();
         PlayerInputManager.CheckForControlSchemeChange();
         PlayerMovement.HandleUpdateMovements();
+        PlayerShieldController.HandleShield();
     }
 
     private void FixedUpdate()

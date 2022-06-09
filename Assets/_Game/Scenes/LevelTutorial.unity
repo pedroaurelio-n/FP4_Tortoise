@@ -11630,7 +11630,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   levelBuildIndex: 1
 --- !u!64 &179583547
 MeshCollider:
@@ -12255,6 +12258,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 1755626957}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!64 &201754982
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27310,6 +27316,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8e7a3bf1a2b10b043bed17acc53f2a70, type: 3}
   m_PrefabInstance: {fileID: 697625400}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &702508882 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 875751735559769627, guid: 4a926d699ea9a4149812e4fc70b44152, type: 3}
+  m_PrefabInstance: {fileID: 6699750640560874293}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a9eba96062877d44962b737dec03df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &702647510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29468,6 +29485,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 1992907396}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!64 &794427347
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33116,9 +33136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a15eb73c24dd549a3e230d1af456ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActionOnProgress: 0
-  delayToActivate: 0
-  starsNumberToRemove: 1
 --- !u!4 &925236111 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2716829681471341476, guid: 257b0312c8437c9409dadca7cc25ff81, type: 3}
@@ -40440,6 +40457,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 1924479689}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!64 &1142982023
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43343,7 +43363,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   message: "N\xE3o podemos usar o observat\xF3rio. A energia precisa estar ligada."
 --- !u!4 &1261421706
 Transform:
@@ -48120,7 +48143,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   events:
   - m_PersistentCalls:
       m_Calls:
@@ -48136,8 +48162,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  minimunStarsRequired: 1
-  failMessage: "Voc\xEA precisa da pilha para ativar o gerador!"
 --- !u!1001 &1460394330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54230,9 +54254,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reference: {fileID: 1994316736470624636}
-  isListSequential: 0
-  willDeleteActions: 0
-  delayBetweenActions: 0
 --- !u!1001 &1645778191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57754,9 +57775,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   newRotationFromOrigin: {x: 0, y: 0, z: -135}
   actionDuration: 1
+  ease: 0
 --- !u!4 &1756720512 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2716829681471341476, guid: 257b0312c8437c9409dadca7cc25ff81, type: 3}
@@ -58654,15 +58679,12 @@ MonoBehaviour:
   points:
   - {fileID: 1337196438}
   - {fileID: 421175671}
-  willGoDown: 0100
   canStart: 0
-  startPoint: {fileID: 1337196438}
-  parent: {fileID: 1848346871}
+  _Dynamic: {fileID: 0}
   timeDelay: 0
   moveTime: 15
   isSequential: 0
   ease: 1
-  platformOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &1791038163
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -61797,7 +61819,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   message: "O elevador n\xE3o funcionar\xE1 sem energia."
 --- !u!4 &1924479690
 Transform:
@@ -64396,11 +64421,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   platform: {fileID: 1791038162}
-  minimunStarsRequired: 0
-  failMessage: 
-  isPlatformSequential: 0
 --- !u!1 &1993429836
 GameObject:
   m_ObjectHideFlags: 0
@@ -66631,10 +66656,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActionOnProgress: 0
-  delayToActivate: 0
+  minimumStarsRequired: 0
+  willReduceStars: 0
+  failMessageinkJSON: {fileID: 0}
+  willPreventInput: 0
   surfaces:
   - {fileID: 1278955367}
   - {fileID: 1910353192}
+  delayInterval: 0
 --- !u!1 &2105087798 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b8c3066258afaf42ae35d87604106de, type: 3}
@@ -67931,6 +67960,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 1261421705}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!1 &401092253346458818
 GameObject:
   m_ObjectHideFlags: 0
@@ -68577,6 +68609,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 176047795}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!4 &2001111941875627329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5133869381458744948, guid: 4a926d699ea9a4149812e4fc70b44152, type: 3}
@@ -69292,6 +69327,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3439627337870915354, guid: 80f399d042af7a64f9ca010f633acecf, type: 3}
+      propertyPath: shield
+      value: 
+      objectReference: {fileID: 702508882}
     - target: {fileID: 3764691469631503317, guid: 80f399d042af7a64f9ca010f633acecf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -71059,7 +71098,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionList:
   - {fileID: 1460387067}
-  - {fileID: 924919563}
+  - {fileID: 0}
+  isListSequential: 0
+  willDeleteActions: 0
+  DelayBetweenActions: 0
 --- !u!33 &6047615841260784634
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -71589,15 +71631,15 @@ PrefabInstance:
       objectReference: {fileID: 2001111941875627329}
     - target: {fileID: 7054725129765718468, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.17333885
+      value: 0.17333883
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129765718468, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.092499815
+      value: -0.09249983
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129765718468, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.016354816
+      value: 0.01635482
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129880688516, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.x
@@ -71605,11 +71647,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129880688516, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.09266162
+      value: -0.09266166
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129880688516, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.015411719
+      value: 0.015411722
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129880688520, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_Enabled
@@ -71617,19 +71659,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129986210077, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.09278201
+      value: -0.09278203
       objectReference: {fileID: 0}
     - target: {fileID: 7054725129986210077, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.014669588
+      value: 0.01466959
       objectReference: {fileID: 0}
     - target: {fileID: 7054725130320766039, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.09303286
+      value: -0.093032904
       objectReference: {fileID: 0}
     - target: {fileID: 7054725130320766039, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.012983973
+      value: 0.012983978
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3206f0d386b23b040979a2720914ae29, type: 3}
@@ -72302,9 +72344,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reference: {fileID: 794427346}
-  isListSequential: 0
-  willDeleteActions: 0
-  delayBetweenActions: 0
 --- !u!65 &8291476155879137759
 BoxCollider:
   m_ObjectHideFlags: 0

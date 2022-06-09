@@ -127,14 +127,14 @@ public class PlayerCombatController : MonoBehaviour
         isInvincible = false;
     }
 
-    private void ReceiveDamage(Enemy enemy)
+    private void ReceiveDamage(GameObject enemyObj, int damage)
     {
-        var hitNormal = transform.position - enemy.transform.position;
+        var hitNormal = transform.position - enemyObj.transform.position;
         hitNormal.y = 0;
         hitNormal.Normalize();
 
         if (onPlayerDamageHit != null)
-            onPlayerDamageHit(-enemy.GetAttackDamage());
+            onPlayerDamageHit(-damage);
 
         playerMain.PlayerMovement.TriggerKnockback(hitNormal, knockbackHorizontal, knockbackVertical, knockbackTime);
 
@@ -150,12 +150,18 @@ public class PlayerCombatController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.TryGetComponent(out Enemy enemy) && !isInvincible)
+        if (other.TryGetComponent(out EnemyBullet enemyBullet) && !isInvincible && !enemyBullet.WasDeflected())
+        {
+            ReceiveDamage(enemyBullet.gameObject, enemyBullet.GetDamage());
+            enemyBullet.DestroyBullet();
+        }
+        
+        else if (other.transform.parent.TryGetComponent(out Enemy enemy) && !isInvincible)
         {
             if (!enemy.CanDamagePlayer())
                 return;
                 
-            ReceiveDamage(enemy);
+            ReceiveDamage(enemy.gameObject, enemy.GetAttackDamage());
         }
     }
 

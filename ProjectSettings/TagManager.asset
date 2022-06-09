@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - IgnoreCamera
+  - CinemachineTarget
   layers:
   - Default
   - TransparentFX
@@ -19,9 +20,9 @@ TagManager:
   - EnemyArea
   - Enemy
   - Companion
-  - 
-  - 
-  - 
+  - Shield
+  - EnemyBullets
+  - PlayerBullets
   - 
   - 
   - 

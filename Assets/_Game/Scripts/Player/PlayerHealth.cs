@@ -40,9 +40,14 @@ public class PlayerHealth : MonoBehaviour
         
         if (_currentHealth <= 0)
         {
-            if (onGameOver != null)
-                onGameOver();
+            StartCoroutine(GameOverCoroutine());
         }
+    }
+
+    private IEnumerator GameOverCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        onGameOver?.Invoke();
     }
 
     private void OnEnable()

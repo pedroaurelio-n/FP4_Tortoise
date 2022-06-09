@@ -215,6 +215,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Protect"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc0c13d0-7e17-4f75-8e8a-0adacf86a087"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""f665b927-b105-4518-9101-815b1ed7539f"",
@@ -301,7 +309,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1027e9d5-c19f-4d6d-90d6-e6a87d9ccd63"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
@@ -323,7 +331,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6effe9d5-4db7-4989-94de-326b7240d95a"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
@@ -366,12 +374,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""943d4038-1bc3-4b10-8ea8-ff12b5ea0b25"",
-                    ""path"": ""<Keyboard>/h"",
+                    ""id"": ""f72ad907-0a4e-4c81-b86d-e604fe17c12e"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Protect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -654,6 +662,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerActions_Glide = m_PlayerActions.FindAction("Glide", throwIfNotFound: true);
         m_PlayerActions_AnyGlide = m_PlayerActions.FindAction("AnyGlide", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerActions_Protect = m_PlayerActions.FindAction("Protect", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
         // UI
@@ -758,6 +767,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_Glide;
     private readonly InputAction m_PlayerActions_AnyGlide;
     private readonly InputAction m_PlayerActions_Attack;
+    private readonly InputAction m_PlayerActions_Protect;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Pause;
     public struct PlayerActionsActions
@@ -769,6 +779,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Glide => m_Wrapper.m_PlayerActions_Glide;
         public InputAction @AnyGlide => m_Wrapper.m_PlayerActions_AnyGlide;
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
+        public InputAction @Protect => m_Wrapper.m_PlayerActions_Protect;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
@@ -795,6 +806,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
+                @Protect.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnProtect;
+                @Protect.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnProtect;
+                @Protect.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnProtect;
                 @Interact.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
@@ -820,6 +834,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Protect.started += instance.OnProtect;
+                @Protect.performed += instance.OnProtect;
+                @Protect.canceled += instance.OnProtect;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
@@ -925,6 +942,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnGlide(InputAction.CallbackContext context);
         void OnAnyGlide(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnProtect(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }

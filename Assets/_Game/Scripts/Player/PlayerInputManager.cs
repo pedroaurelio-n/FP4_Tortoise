@@ -23,6 +23,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool glideInput;
     public bool anyglideInput;
     public bool attackInput;
+    public bool protectInput;
     public bool interactInput;
     public bool pauseInput;
 
@@ -65,9 +66,9 @@ public class PlayerInputManager : MonoBehaviour
         {
             HandleMovementInput();
             HandleJumpingInput();
-            HandleAttackInput();
-            HandleInteractInput();
         }
+        
+        HandleInteractInput();
     }
 
     private void HandleMovementInput()
@@ -91,6 +92,20 @@ public class PlayerInputManager : MonoBehaviour
 
         else
             canTriggerJumpInput = true;
+    }
+
+    private void AttackInput(InputAction.CallbackContext ctx)
+    {
+        if (!GameManager.canInput)
+            return;
+
+        attackInput = true;
+
+        if (attackInput)
+        {
+            attackInput = false;
+            playerMain.PlayerCombatController.LaunchAttack();
+        }
     }
 
     private void HandleAttackInput()
@@ -131,12 +146,12 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.AnyGlide.performed += ctx => anyglideInput = true;
             playerControls.PlayerActions.AnyGlide.canceled += ctx => anyglideInput = false;
 
-            playerControls.PlayerActions.Attack.performed += ctx => attackInput = true;
+            playerControls.PlayerActions.Attack.performed +=  AttackInput;
+
+            playerControls.PlayerActions.Protect.performed += ctx => protectInput = true;
+            playerControls.PlayerActions.Protect.canceled += ctx => protectInput = false;
 
             playerControls.PlayerActions.Interact.performed += ctx => interactInput = true;
-
-            //playerControls.PlayerActions.Pause.performed += ctx => pauseInput = true;
-            //playerControls.PlayerActions.Pause.canceled += ctx => pauseInput = false;
         }
 
         playerControls.Enable();

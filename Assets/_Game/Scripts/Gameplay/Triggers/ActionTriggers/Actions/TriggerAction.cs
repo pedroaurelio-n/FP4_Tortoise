@@ -5,18 +5,24 @@ using UnityEngine.Events;
 
 public abstract class TriggerAction : MonoBehaviour
 {    
-    public delegate void SendFailMessage(string message);
+    public delegate void SendFailMessage(TextAsset message);
     public static event SendFailMessage onFailMessageSent;
     
     [HideInInspector] public bool isActionOnProgress;
     public int minimumStarsRequired;
     public bool willReduceStars;
-    [SerializeField] private string failMessage;
+    [SerializeField] private TextAsset failMessageinkJSON;
+    [SerializeField] private bool willPreventInput;
 
-    public void SendFailEvent(string message)
+    public void SendFailEvent(TextAsset message)
     {
         if (onFailMessageSent != null)
+        {
+            if (willPreventInput)
+                GameManager.canInput = false;
+            
             onFailMessageSent(message);
+        }
     }
 
     public bool TryToActivateAction()
@@ -26,7 +32,7 @@ public abstract class TriggerAction : MonoBehaviour
             ActivateAction();
         }
         else
-            SendFailEvent(failMessage);
+            SendFailEvent(failMessageinkJSON);
 
         return CanActivateAction();
     }
